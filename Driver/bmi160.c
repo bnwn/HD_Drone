@@ -33,7 +33,7 @@ bool bmi160_init()
 
         /* reset bmi160 */
         I2C_WriteByte(BMI160_SLAVE_ADDRESS, BMI160_REG_CMD, BMI160_CMD_SOFTRESET);
-        // delay_ms(BMI160_SOFTRESET_DELAY_MSEC);
+        delay_ms(BMI160_SOFTRESET_DELAY_MSEC);
 
         /* read chip ID */
         tmp = I2C_ReadByte(BMI160_SLAVE_ADDRESS, BMI160_REG_CHIPID);;
@@ -43,10 +43,10 @@ bool bmi160_init()
 
         /* set accel and gyro work on normal mode */
         I2C_WriteByte(BMI160_SLAVE_ADDRESS, BMI160_REG_CMD, BMI160_CMD_ACCEL_NORMAL_POWER_MODE);
-        // delay_ms(BMI160_CMD_ACCEL_NORMAL_POWER_MODE_DELAY_MSEC);
+        delay_ms(BMI160_CMD_ACCEL_NORMAL_POWER_MODE_DELAY_MSEC);
 
         I2C_WriteByte(BMI160_SLAVE_ADDRESS, BMI160_REG_CMD, BMI160_CMD_GYRO_NORMAL_POWER_MODE);
-        // delay_ms(BMI160_CMD_GYRO_NORMAL_POWER_MODE_DELAY_MSEC);
+        delay_ms(BMI160_CMD_GYRO_NORMAL_POWER_MODE_DELAY_MSEC);
 
         if (!configure_accel()) {
             continue;
@@ -82,10 +82,10 @@ bool configure_accel()
     // bool ret = false;
 
     I2C_WriteByte(BMI160_SLAVE_ADDRESS, BMI160_REG_ACC_CONF, BMI160_OSR | BMI160_ODR);
-    // delay_ms(1);
+    delay_ms(1);
 
     I2C_WriteByte(BMI160_SLAVE_ADDRESS, BMI160_REG_ACC_RANGE, BMI160_ACC_RANGE_BITS);
-    // delay_ms(1);
+    delay_ms(1);
     r = _dev->write_register(BMI160_REG_ACC_RANGE, BMI160_ACC_RANGE_BITS);
 
     _accel_scale = GRAVITY_MSS / (1 << (14 - BMI160_ACC_RANGE));
@@ -98,10 +98,10 @@ bool configure_gyro()
     // bool ret = false;
 
     I2C_WriteByte(BMI160_SLAVE_ADDRESS, BMI160_REG_GYR_CONF, BMI160_OSR | BMI160_ODR);
-    // delay_ms(1);
+    delay_ms(1);
 
     I2C_WriteByte(BMI160_SLAVE_ADDRESS, BMI160_REG_GYR_RANGE, BMI160_GYR_RANGE);
-    // delay_ms(1);
+    delay_ms(1);
 
     /* The sensitivity in LSb/degrees/s a gyro range i can be calculated with:
      *     2 ^ 16 / (2 * 2000 / 2 ^ i) = 2 ^ (14 + i) / 1000
@@ -117,7 +117,7 @@ bool configure_fifo()
     // bool ret = false;
 
     I2C_WriteByte(BMI160_SLAVE_ADDRESS, BMI160_REG_FIFO_CONFIG_1, BMI160_FIFO_ACC_EN | BMI160_FIFO_GYR_EN);
-    // delay_ms(1);
+    delay_ms(1);
 
     I2C_WriteByte(BMI160_SLAVE_ADDRESS, BMI160_REG_CMD, BMI160_CMD_FIFO_FLUSH);
 

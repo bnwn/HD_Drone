@@ -1,5 +1,5 @@
-#include "fbm320.h"
 #include "PN020Series.h"
+#include "fbm320.h"
 
 uint8_t	Formula_Select = 0;
 
@@ -13,7 +13,7 @@ bool fbm320_init()
     }
     fbm320_packet.Version = ((I2C_ReadByte(FBM320_SLAVE_ADDRESS, 0xA5) & 0x70) >> 2) | ((I2C_ReadByte(FBM320_SLAVE_ADDRESS, 0xF4) & 0xC0) >> 6);
 
-    /* default param */
+    /* set default param */
     fbm320_packet.RPC = 3;
     Formula_Select |= 0x01;
 
@@ -21,12 +21,12 @@ bool fbm320_init()
 
     /* read temperature */
     I2C_WriteByte(FBM320_SLAVE_ADDRESS, FBM320_REG_CMD, FBM320_READ_TEMPERATURE);
-    // delay_ms(5);
+    delay_ms(5);
     fbm320_packet.UT = fbm320_read_long_data();
 
     /* read pressure */
     I2C_WriteByte(FBM320_SLAVE_ADDRESS, FBM320_REG_CMD, FBM320_READ_PRESSURE);
-    // delay_ms(20);
+    delay_ms(20);
     fbm320_packet.UP = fbm320_read_long_data();
 
     calculate(fbm320_packet.UP, fbm320_packet.UT);
