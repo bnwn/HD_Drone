@@ -1,6 +1,23 @@
 #include "PN020Series.h"
 #include "bmi160.h"
 
+/* variance define */
+float _accel_scale;
+float _gyro_scale;
+
+struct RawData {
+    struct {
+        int16_t x;
+        int16_t y;
+        int16_t z;
+    }accel;
+    struct {
+        int16_t x;
+        int16_t y;
+        int16_t z;
+    }gyro;
+};
+
 /**
  * @brief bmi160 init
  */

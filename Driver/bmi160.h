@@ -80,8 +80,17 @@
 #define BMI160_READ_FLAG 0x80
 #define BMI160_HARDWARE_INIT_MAX_TRIES 5
 
+/**
+ * @brief bmi160 configuration
+ * @return
+ */
 bool bmi160_init();
 
+/**
+ * @brief read accel and gyro raw from bmi160
+ * @param _acc
+ * @param _gyro
+ */
 void bmi160_read_raw(int16_t _acc[], int16_t _gyro[]);
 
 /**
@@ -113,20 +122,7 @@ bool configure_fifo();
 void _read_fifo();
 
 /* variance define */
-float _accel_scale;
-float _gyro_scale;
-
-struct RawData {
-    struct {
-        int16_t x;
-        int16_t y;
-        int16_t z;
-    }accel;
-    struct {
-        int16_t x;
-        int16_t y;
-        int16_t z;
-    }gyro;
-};
+extern float _accel_scale;
+extern float _gyro_scale;
 
 #endif
