@@ -2,6 +2,7 @@
 #define __BMI160_H
 
 #include "bsp/bsp_i2c.h"
+#include "bsp/timer_delay.h"
 
 #define BMI160_SLAVE_ADDRESS 0xD0 // SDO connect to GND, slave address is 0x68
 //#define BMI160_SLAVE_ADDRESS // 0x69
@@ -18,9 +19,11 @@
             /* For convenience, use log2(range) - 1 instead of bits defined in
              * the datasheet. See _configure_accel(). */
 #define BMI160_ACC_RANGE_16G 3
+#define BMI160_ACC_RANGE_4G 1
 #define BMI160_REG_GYR_CONF 0x42
 #define BMI160_REG_GYR_RANGE 0x43
 #define BMI160_GYR_RANGE_2000DPS 0x00
+#define BMI160_GYR_RANGE_1000DPS 0x01
 #define BMI160_REG_FIFO_CONFIG_0 0x46
 #define BMI160_REG_FIFO_CONFIG_1 0x47
 #define BMI160_FIFO_ACC_EN 0x40
@@ -56,8 +59,8 @@
 
 #define BMI160_OSR BMI160_OSR_NORMAL
 #define BMI160_ODR BMI160_ODR_1600HZ
-#define BMI160_ACC_RANGE BMI160_ACC_RANGE_16G
-#define BMI160_GYR_RANGE BMI160_GYR_RANGE_2000DPS
+#define BMI160_ACC_RANGE BMI160_ACC_RANGE_4G
+#define BMI160_GYR_RANGE BMI160_GYR_RANGE_1000DPS
 
 /* By looking at the datasheet, the accel range i (as defined by the macros
  * BMI160_ACC_RANGE_*G) maps to the range bits by the function f defined:
@@ -91,7 +94,7 @@ bool bmi160_init();
  * @param _acc
  * @param _gyro
  */
-void bmi160_read_raw(int16_t _acc[], int16_t _gyro[]);
+void bmi160_read_raw(Inertial_Sensor *_sensor);
 
 /**
  * Configure accelerometer sensor. The device semaphore must already be
@@ -119,7 +122,7 @@ bool configure_fifo();
 /**
  * Read samples from fifo.
  */
-void _read_fifo();
+void read_fifo(Inertial_Sensor *_sensor);
 
 /* variance define */
 extern float _accel_scale;

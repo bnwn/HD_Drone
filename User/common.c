@@ -21,9 +21,14 @@ void system_init()
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init Timer Clock                                                                                        */
     /*---------------------------------------------------------------------------------------------------------*/
+    /* timer delay configure */
     CLK_EnableModuleClock(TMR0_MODULE);
     CLK_SetModuleClock(TMR0_MODULE, CLK_CLKSEL1_TMR0SEL_HCLK);
-    NVIC_SetPriority(TMR0_IRQn, 0);
+    NVIC_SetPriority(TMR0_IRQn, 3);
+    /* timer perioic configure */
+    CLK_EnableModuleClock(TMR1_MODULE);
+    CLK_SetModuleClock(TMR1_MODULE, CLK_CLKSEL1_TMR1SEL_HCLK);
+
 
     /* Set P5.7 and P5.6 for I2C SDA and SCL */
     CLK_EnableModuleClock(I2C0_MODULE);
@@ -33,7 +38,7 @@ void system_init()
     SYS_LockReg();
 }
 
-void driver_init()
+void peripheral_init()
 {
     /* I2C Bus device init */
     I2C_Init(I2C0, 100000);
@@ -49,4 +54,7 @@ void driver_init()
 
     /* uart device setting */
     uart_console_init(UART0, CONSOLE_BAUDRATE);
+
+    /* task scheduler timer init */
+    scheduler_init();
 }

@@ -1,5 +1,6 @@
 #include "PN020Series.h"
 #include "bmi160.h"
+#include "../AHRS/inertial_sensor.h"
 
 /* variance define */
 float _accel_scale;
@@ -43,10 +44,10 @@ bool bmi160_init()
 
         /* set accel and gyro work on normal mode */
         I2C_WriteByte(BMI160_SLAVE_ADDRESS, BMI160_REG_CMD, BMI160_CMD_ACCEL_NORMAL_POWER_MODE);
-        delay_ms(BMI160_CMD_ACCEL_NORMAL_POWER_MODE_DELAY_MSEC);
+        delay_ms(BMI160_ACCEL_NORMAL_POWER_MODE_DELAY_MSEC);
 
         I2C_WriteByte(BMI160_SLAVE_ADDRESS, BMI160_REG_CMD, BMI160_CMD_GYRO_NORMAL_POWER_MODE);
-        delay_ms(BMI160_CMD_GYRO_NORMAL_POWER_MODE_DELAY_MSEC);
+        delay_ms(BMI160_GYRO_NORMAL_POWER_MODE_DELAY_MSEC);
 
         if (!configure_accel()) {
             continue;
@@ -72,9 +73,9 @@ bool bmi160_init()
  * @param _acc
  * @param _gyro
  */
-void bmi160_read_raw(int16_t _acc[], int16_t _gyro[])
+void bmi160_read_raw(Inertial_Sensor *_sensor)
 {
-
+    read_fifo(_sensor);
 }
 
 bool configure_accel()
@@ -124,9 +125,11 @@ bool configure_fifo()
     return true;
 }
 
-bool read_fifo()
+void read_fifo(Inertial_Sensor *_sensor)
 {
     struct RawData raw_data[BMI160_MAX_FIFO_SAMPLES];
+    uint32_t sum_acc[3] = {0}, sum_gyro[3] = {0};
+    uint8_t fifo_num = 0;
     uint8_t buf[BMI160_MAX_FIFO_FRAME];
     uint16_t num_bytes;
     uint8_t num_byte[2] = {0};
@@ -164,23 +167,41 @@ read_fifo_read_data:
 
     num_samples = num_bytes / sizeof(struct RawData);
     for (; sample_index < num_samples; sample_index++) {
-        raw_data[i].accel.x = (buf[buf_index + 1] << 8) | buf[buf_index + 0];
-        raw_data[i].accel.y = (buf[buf_index + 3] << 8) | buf[buf_index + 2];
-        raw_data[i].accel.z = (buf[buf_index + 5] << 8) | buf[buf_index + 4];
-        raw_data[i].accel.x = (buf[buf_index + 7] << 8) | buf[buf_index + 6];
-        raw_data[i].accel.x = (buf[buf_index + 9] << 8) | buf[buf_index + 8];
-        raw_data[i].accel.x = (buf[buf_index + 11] << 8) | buf[buf_index + 10];
+        raw_data[sample_index].accel.x = (buf[buf_index + 1] << 8) | buf[buf_index + 0];
+        raw_data[sample_index].accel.y = (buf[buf_index + 3] << 8) | buf[buf_index + 2];
+        raw_data[sample_index].accel.z = (buf[buf_index + 5] << 8) | buf[buf_index + 4];
+        raw_data[sample_index].gyro.x = (buf[buf_index + 7] << 8) | buf[buf_index + 6];
+        raw_data[sample_index].gyro.y = (buf[buf_index + 9] << 8) | buf[buf_index + 8];
+        raw_data[sample_index].gyro.z = (buf[buf_index + 11] << 8) | buf[buf_index + 10];
 
+        sum_acc[0] += raw_data[sample_index].accel.x;
+        sum_acc[1] += raw_data[sample_index].accel.y;
+        sum_acc[2] += raw_data[sample_index].accel.z;
+        sum_gyro[0] += raw_data[sample_index].gyro.x;
+        sum_gyro[1] += raw_data[sample_index].gyro.y;
+        sum_gyro[2] += raw_data[sample_index].gyro.z;
 
         buf_index += 12;
 //        raw_data *= _accel_scale;
 //        gyro *= _gyro_scale;
     }
 
+    fifo_num += sample_index;
     if (excess) {
         num_bytes = excess;
+        sample_index = 0;
         goto read_fifo_read_data;
     }
+
+    _sensor->accel.latest = raw_data[sample_index - 1].accel;
+    _sensor->gyro.latest = raw_data[sample_index - 1].gyro;
+    _sensor->accel.average.x = sum_acc[0] / fifo_num;
+    _sensor->accel.average.y = sum_acc[1] / fifo_num;
+    _sensor->accel.average.z = sum_acc[2] / fifo_num;
+    _sensor->gyro.average.x = sum_gyro[0] / fifo_num;
+    _sensor->gyro.average.y = sum_gyro[1] / fifo_num;
+    _sensor->gyro.average.z = sum_gyro[2] / fifo_num;
+
 
 read_fifo_end:
 //    if (!ret) {

@@ -1,6 +1,6 @@
 Dependencies for Project 'HD_Drone', Target 'HD_Drone': (DO NOT MODIFY !)
-F (.\main.c)(0x5987C8E8)()
-F (.\Library\Device\Panchip\PN020Series\Source\system_PN020Series.c)(0x58EE06E5)(-c --cpu Cortex-M0 --li -g -O0 --apcs=interwork -I.\Driver -I.\Module -I.\Library\Device\Panchip\PN020Series\Source\ARM -I.\Library\Device\Panchip\PN020Series\Include -I.\Library\StdDriver\inc-I C:\Keil_v4\ARM\RV31\INC-I C:\Keil_v4\ARM\CMSIS\Include-o .\output\system_pn020series.o --omf_browse .\output\system_pn020series.crf --depend .\output\system_pn020series.d)
+F (.\main.c)(0x00000000)(-c --cpu Cortex-M0 --li -g -O0 --apcs=interwork -I.\Driver -I.\Module -I.\Library\Device\Panchip\PN020Series\Source\ARM -I.\Library\Device\Panchip\PN020Series\Include -I.\Library\StdDriver\inc-I C:\Keil_v4\ARM\RV31\INC-I C:\Keil_v4\ARM\CMSIS\Include-o .\output\main.o --omf_browse .\output\main.crf --depend .\output\main.d)
+F (.\Library\Device\Panchip\PN020Series\Source\system_PN020Series.c)(0x00000000)(-c --cpu Cortex-M0 --li -g -O0 --apcs=interwork -I.\Driver -I.\Module -I.\Library\Device\Panchip\PN020Series\Source\ARM -I.\Library\Device\Panchip\PN020Series\Include -I.\Library\StdDriver\inc-I C:\Keil_v4\ARM\RV31\INC-I C:\Keil_v4\ARM\CMSIS\Include-o .\output\system_pn020series.o --omf_browse .\output\system_pn020series.crf --depend .\output\system_pn020series.d)
 I (C:\Keil_v4\ARM\ARMCC\include\stdint.h)(0x51C7B744)
 I (C:\Users\Administrator.DESKTOP-ZXM\Desktop\workspace\HD_Drone\HD_Drone_Firmware\Library\Device\Panchip\PN020Series\Include\PN020Series.h)(0x58EE06E5)
 I (C:\Keil_v4\ARM\CMSIS\Include\core_cm0.h)(0x51C7B54A)
@@ -20,4 +20,4 @@ I (C:\Users\Administrator.DESKTOP-ZXM\Desktop\workspace\HD_Drone\HD_Drone_Firmwa
 I (C:\Users\Administrator.DESKTOP-ZXM\Desktop\workspace\HD_Drone\HD_Drone_Firmware\Library\StdDriver\inc\uart.h)(0x58EE06E5)
 I (C:\Users\Administrator.DESKTOP-ZXM\Desktop\workspace\HD_Drone\HD_Drone_Firmware\Library\StdDriver\inc\wdt.h)(0x58EE06E5)
 I (C:\Users\Administrator.DESKTOP-ZXM\Desktop\workspace\HD_Drone\HD_Drone_Firmware\Library\StdDriver\inc\wwdt.h)(0x58EE06E5)
-F (.\Library\Device\Panchip\PN020Series\Source\ARM\startup_PN020Series.s)(0x58EE06E5)(--cpu Cortex-M0 --li -g --apcs=interwork -I C:\Keil_v4\ARM\RV31\INC-I C:\Keil_v4\ARM\CMSIS\Include--list .\startup_pn020series.lst --xref -o .\output\startup_pn020series.o --depend .\output\startup_pn020series.d)
+F (.\Library\Device\Panchip\PN020Series\Source\ARM\startup_PN020Series.s)(0x00000000)(--cpu Cortex-M0 --li -g --apcs=interwork -I C:\Keil_v4\ARM\RV31\INC-I C:\Keil_v4\ARM\CMSIS\Include--list .\startup_pn020series.lst --xref -o .\output\startup_pn020series.o --depend .\output\startup_pn020series.d)

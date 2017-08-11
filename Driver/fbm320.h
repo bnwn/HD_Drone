@@ -2,6 +2,7 @@
 #define __FBM320_H
 
 #include "bsp/bsp_i2c.h"
+#include "bsp/timer_delay.h"
 
 /* Register define */
 #define FBM320_SLAVE_ADDRESS 0x6C
@@ -43,7 +44,7 @@ int32_t fbm320_read_long_data();
 /**
  * @brief timer procedure, call in 100us
  */
-void timer_procedure(void);
+void fbm320_timer_procedure(void);
 
 void coefficient(void);
 
@@ -60,7 +61,7 @@ typedef struct FMTI_Sensor
     int32_t UT;
     int32_t RP;																								//Unit: Pa
     int32_t RT;																								//Unit: 0.01 degree
-    float Altitude;																						//Unit: meter
+    int16_t Altitude;																						//Unit: centi meter
     uint16_t C0, C1, C2, C3, C6, C8, C9, C10, C11, C12;
     uint32_t C4, C5, C7;
 }FMTI_Sensor;

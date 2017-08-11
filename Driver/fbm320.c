@@ -45,7 +45,10 @@ int32_t fbm320_read_long_data()
     return (int32_t)(buf[0] << 16 | buf[1] << 8 | buf[2]);
 }
 
-void timer_procedure(void)
+/**
+ * @brief timer procedure, call in 100us
+ */
+void fbm320_timer_procedure(void)
 {
     static uint16_t timer_count = 0;
 
@@ -62,7 +65,7 @@ void timer_procedure(void)
         I2C_WriteByte(FBM320_SLAVE_ADDRESS, FBM320_REG_CMD, FBM320_READ_PRESSURE);
 
         calculate(fbm320_packet.UP, fbm320_packet.UT);
-        fbm320_packet.Altitude = ((float)abs_altitude(fbm320_packet.RP)) / 1000;
+        fbm320_packet.Altitude = abs_altitude(fbm320_packet.RP) / 10;
     default:
         break;
     }
