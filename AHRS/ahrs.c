@@ -2,14 +2,13 @@
 #include "ahrs.h"
 #include "inertial_sensor.h"
 #include "../Algorithm/Algorithm_filter/Algorithm_filter.h"
+#include "../Algorithm/Algorithm_quaternion/Algorithm_quaternion.h"
+#include "../Algorithm/Algorithm_math/Algorithm_math.h"
+#include "../Algorithm/Algorithm_math/mymath.h"
 
 #define KpDef 0.8f
 #define KiDef 0.0005f
 #define SampleRateHalf 0.00125f  //0.001
-
-fp32 yawangle;
-u16 testtime;
-
 
 // /*	
 // 	Q:过程噪声，Q增大，动态响应变快，收敛稳定性变坏
@@ -20,7 +19,6 @@ u16 testtime;
 
 Quaternion NumQ = {1, 0, 0, 0};
 EulerAngle AngE = {0},IMU = {0};
-
 
 int16_t MAG[3];
 Gravity V;//重力分量
@@ -36,11 +34,11 @@ Gravity V;//重力分量
 /*====================================================================================================*/
 void AHRS_GetQ( Quaternion *pNumQ )
 {
-  fp32 ErrX, ErrY, ErrZ;
-  fp32 AccX, AccY, AccZ;
-  fp32 GyrX, GyrY, GyrZ;
-	fp32 Normalize;
-  static fp32 exInt = 0.0f, eyInt = 0.0f, ezInt = 0.0f;
+  float ErrX, ErrY, ErrZ;
+  float AccX, AccY, AccZ;
+  float GyrX, GyrY, GyrZ;
+    float Normalize;
+  static float exInt = 0.0f, eyInt = 0.0f, ezInt = 0.0f;
 
 	
 	// 加速度归一化
@@ -84,7 +82,7 @@ void AHRS_GetQ( Quaternion *pNumQ )
 /*====================================================================================================*/
 void AHRS_Update(void)
 {
-	fp32 sin_pitch,sin_roll,cos_roll,cos_pitch;
+    float sin_pitch,sin_roll,cos_roll,cos_pitch;
 	
     inertial_sensor_read();
 	
@@ -104,14 +102,14 @@ void AHRS_Update(void)
   //flag.MagIssue=0;//地磁存在问题，待调试解决
   //flag.MagExist=0;
 
+#if 0
 	if(!flag.MagIssue && flag.MagExist){//40US
 		// 地磁倾角补偿
-		fp32 hx = MAG[0]*cos_pitch + MAG[1]*sin_pitch*sin_roll - MAG[2]*cos_roll*sin_pitch; 
-		fp32 hy = MAG[1]*cos_roll + MAG[2]*sin_roll;
+        float hx = MAG[0]*cos_pitch + MAG[1]*sin_pitch*sin_roll - MAG[2]*cos_roll*sin_pitch;
+        float hy = MAG[1]*cos_roll + MAG[2]*sin_roll;
 		
 		// 利用地磁解算航向角
-		fp32 mag_yaw = -Degree(atan2((fp64)hy,(fp64)hx));
-		 yawangle=mag_yaw;
+        float mag_yaw = -Degree(atan2((fp64)hy,(fp64)hx));
 		// 陀螺仪积分解算航向角
 //		AngE.Yaw += Degree(sensor.gyro.averag.z * Gyro_Gr * 2 * SampleRateHalf);//重大bug，已经是角度，这里不能再乘以Gyro_Gr了
 		AngE.Yaw += sensor.gyro.averag.z * 2  * SampleRateHalf;
@@ -122,7 +120,9 @@ void AHRS_Update(void)
 			IMU.Yaw = IMU.Yaw * 0.988f + mag_yaw * 0.012f;
 	}
 	else 
+#endif
 		IMU.Yaw = Degree(AngE.Yaw);
+
 
   IMU.Roll = Degree(AngE.Roll);  // roll
 	IMU.Pitch = Degree(AngE.Pitch); // pitch
