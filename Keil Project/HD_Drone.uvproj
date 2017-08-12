@@ -351,7 +351,7 @@
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>.\Driver;.\Module;.\Library\Device\Panchip\PN020Series\Source\ARM;.\Library\Device\Panchip\PN020Series\Include;.\Library\StdDriver\inc</IncludePath>
+              <IncludePath>.\Driver;.\Module;.\Library\Device\Panchip\PN020Series\Source\ARM;.\Library\Device\Panchip\PN020Series\Include;.\Library\StdDriver\inc;..\AHRS;..\Algorithm\Algorithm_filter;..\Algorithm\Algorithm_math;..\Algorithm\Algorithm_pid;..\Algorithm\Algorithm_quaternion;..\Algorithm\Algorithm_sqLite;..\Control;..\Driver;..\Driver\bsp;..\Scheduler;..\User</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -391,17 +391,36 @@
       <Groups>
         <Group>
           <GroupName>Driver</GroupName>
-        </Group>
-        <Group>
-          <GroupName>Module</GroupName>
+          <Files>
+            <File>
+              <FileName>bmi160.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Driver\bmi160.c</FilePath>
+            </File>
+            <File>
+              <FileName>fbm320.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Driver\fbm320.c</FilePath>
+            </File>
+            <File>
+              <FileName>motor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Driver\motor.c</FilePath>
+            </File>
+          </Files>
         </Group>
         <Group>
           <GroupName>User</GroupName>
           <Files>
             <File>
+              <FileName>common.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\common.c</FilePath>
+            </File>
+            <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\main.c</FilePath>
+              <FilePath>..\User\main.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -417,6 +436,106 @@
               <FileName>startup_PN020Series.s</FileName>
               <FileType>2</FileType>
               <FilePath>.\Library\Device\Panchip\PN020Series\Source\ARM\startup_PN020Series.s</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Algorithm</GroupName>
+          <Files>
+            <File>
+              <FileName>Algorithm_filter.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Algorithm\Algorithm_filter\Algorithm_filter.c</FilePath>
+            </File>
+            <File>
+              <FileName>Algorithm_math.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Algorithm\Algorithm_math\Algorithm_math.c</FilePath>
+            </File>
+            <File>
+              <FileName>mymath.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Algorithm\Algorithm_math\mymath.c</FilePath>
+            </File>
+            <File>
+              <FileName>Algorithm_pid.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Algorithm\Algorithm_pid\Algorithm_pid.c</FilePath>
+            </File>
+            <File>
+              <FileName>Algorithm_quaternion.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Algorithm\Algorithm_quaternion\Algorithm_quaternion.c</FilePath>
+            </File>
+            <File>
+              <FileName>Algorithm_sqLite.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Algorithm\Algorithm_sqLite\Algorithm_sqLite.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Control</GroupName>
+          <Files>
+            <File>
+              <FileName>attitude_control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Control\attitude_control.c</FilePath>
+            </File>
+            <File>
+              <FileName>flight_mode_control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Control\flight_mode_control.c</FilePath>
+            </File>
+            <File>
+              <FileName>position_control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Control\position_control.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Scheduler</GroupName>
+          <Files>
+            <File>
+              <FileName>scheduler.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Scheduler\scheduler.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>AHRS</GroupName>
+          <Files>
+            <File>
+              <FileName>ahrs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\AHRS\ahrs.c</FilePath>
+            </File>
+            <File>
+              <FileName>inertial_sensor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\AHRS\inertial_sensor.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Bsp</GroupName>
+          <Files>
+            <File>
+              <FileName>bsp_i2c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Driver\bsp\bsp_i2c.c</FilePath>
+            </File>
+            <File>
+              <FileName>timer_delay.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Driver\bsp\timer_delay.c</FilePath>
+            </File>
+            <File>
+              <FileName>uart_console.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Driver\bsp\uart_console.c</FilePath>
             </File>
           </Files>
         </Group>

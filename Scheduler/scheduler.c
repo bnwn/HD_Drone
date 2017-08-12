@@ -27,6 +27,7 @@ void TMR1_IRQHandler(void)
 
 void fast_loop()
 {
+		
     /* fbm320 read running in 100us */
     fbm320_timer_procedure();
 
