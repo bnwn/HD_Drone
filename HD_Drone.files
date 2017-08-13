@@ -80,3 +80,5 @@ AHRS/inertial_sensor.h
 Control/attitude_control.c
 Control/flight_mode_control.c
 Control/flight_mode_control.h
+Control/motor_control.c
+Control/motor_control.h

@@ -90,7 +90,7 @@ double KalmanFilter(const double ResrcData,double ProcessNiose_Q,double MeasureN
 **±¸×¢ : None
 **====================================================================================================*/
 /*====================================================================================================*/
-fp32 LPF_1st(fp32 oldData, fp32 newData, fp32 lpf_factor)
+float LPF_1st(float oldData, float newData, float lpf_factor)
 {
 	return oldData * (1 - lpf_factor) + newData * lpf_factor;
 }

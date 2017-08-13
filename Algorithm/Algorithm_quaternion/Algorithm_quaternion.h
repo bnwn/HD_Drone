@@ -20,9 +20,6 @@ typedef volatile struct {
   float z;
 } Gravity;
 
-
-extern EulerAngle AngE,IMU;
-
 Gravity Quaternion_vectorGravity( Quaternion *pNumQ );
 void Quaternion_ToNumQ( Quaternion *pNumQ, EulerAngle *pAngE );
 void Quaternion_ToAngE( Quaternion *pNumQ, EulerAngle *pAngE );

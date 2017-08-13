@@ -219,27 +219,27 @@ void Data_Parser(u16 *rxBuffer)
 //			switch(*(rxBuffer+3)){
 //				// PITCH内环参数
 //				case 0x30:
-//					ctrl.pitch.core.kp = (fp32)((vs16)(*(rxBuffer+4)<<8)|*(rxBuffer+5))/100;
-//				  ctrl.pitch.core.ki = (fp32)((vs16)(*(rxBuffer+6)<<8)|*(rxBuffer+7))/1000;
-//					ctrl.pitch.core.kd = (fp32)((vs16)(*(rxBuffer+8)<<8)|*(rxBuffer+9))/100;
+//					ctrl.pitch.core.kp = (float)((vs16)(*(rxBuffer+4)<<8)|*(rxBuffer+5))/100;
+//				  ctrl.pitch.core.ki = (float)((vs16)(*(rxBuffer+6)<<8)|*(rxBuffer+7))/1000;
+//					ctrl.pitch.core.kd = (float)((vs16)(*(rxBuffer+8)<<8)|*(rxBuffer+9))/100;
 //				  break;
 //				// ROLL内环参数
 //				case 0x31:
-//					ctrl.roll.core.kp = (fp32)((vs16)(*(rxBuffer+4)<<8)|*(rxBuffer+5))/100;
-//				  ctrl.roll.core.ki = (fp32)((vs16)(*(rxBuffer+6)<<8)|*(rxBuffer+7))/1000;
-//					ctrl.roll.core.kd = (fp32)((vs16)(*(rxBuffer+8)<<8)|*(rxBuffer+9))/100;
+//					ctrl.roll.core.kp = (float)((vs16)(*(rxBuffer+4)<<8)|*(rxBuffer+5))/100;
+//				  ctrl.roll.core.ki = (float)((vs16)(*(rxBuffer+6)<<8)|*(rxBuffer+7))/1000;
+//					ctrl.roll.core.kd = (float)((vs16)(*(rxBuffer+8)<<8)|*(rxBuffer+9))/100;
 //					break;
 //				// YAW内环参数
 //				case 0x32:
-//					ctrl.yaw.core.kp = (fp32)((vs16)(*(rxBuffer+4)<<8)|*(rxBuffer+5))/100;
-//				  ctrl.yaw.core.ki = (fp32)((vs16)(*(rxBuffer+6)<<8)|*(rxBuffer+7))/1000;
-//					ctrl.yaw.core.kd = (fp32)((vs16)(*(rxBuffer+8)<<8)|*(rxBuffer+9))/100;
+//					ctrl.yaw.core.kp = (float)((vs16)(*(rxBuffer+4)<<8)|*(rxBuffer+5))/100;
+//				  ctrl.yaw.core.ki = (float)((vs16)(*(rxBuffer+6)<<8)|*(rxBuffer+7))/1000;
+//					ctrl.yaw.core.kd = (float)((vs16)(*(rxBuffer+8)<<8)|*(rxBuffer+9))/100;
 //					break;
 //				//气压计内环参数
 //				case 0x33:
-//					baro_wz_speed_pid.kp = (fp32)((vs16)(*(rxBuffer+4)<<8)|*(rxBuffer+5))/100;
-//				  baro_wz_speed_pid.ki = (fp32)((vs16)(*(rxBuffer+6)<<8)|*(rxBuffer+7))/1000;
-//					baro_wz_speed_pid.kd = (fp32)((vs16)(*(rxBuffer+8)<<8)|*(rxBuffer+9))/100;
+//					baro_wz_speed_pid.kp = (float)((vs16)(*(rxBuffer+4)<<8)|*(rxBuffer+5))/100;
+//				  baro_wz_speed_pid.ki = (float)((vs16)(*(rxBuffer+6)<<8)|*(rxBuffer+7))/1000;
+//					baro_wz_speed_pid.kd = (float)((vs16)(*(rxBuffer+8)<<8)|*(rxBuffer+9))/100;
 //					break;
 //				default: break;
 //			}

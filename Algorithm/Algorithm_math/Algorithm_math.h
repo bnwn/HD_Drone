@@ -2,6 +2,7 @@
 #define	__Algorithm_math_H
 
 #define M_PI  (float)3.1415926535
+#define M_2PI (float)6.283185307
 #define squa( Sq )        (((float)Sq)*((float)Sq))
 #define toRad( Math_D )	  ((float)(Math_D)*0.0174532925f)
 #define toDeg( Math_R )	  ((float)(Math_R)*57.2957795f)

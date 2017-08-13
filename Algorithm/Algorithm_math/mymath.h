@@ -8,10 +8,11 @@
 *       to fast computation the result of trigonometric functions and
 *       the square root.
 ****/
-#include "stm32f10x.h"
 
 #ifndef __MYMATH_H__
 #define __MYMATH_H__
+
+#include "math.h"
 
 #define REAL   float
 #define TAN_MAP_RES     0.003921569f     /* (smallest non-zero value in table) */

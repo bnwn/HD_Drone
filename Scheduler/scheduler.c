@@ -19,6 +19,7 @@ void TMR1_IRQHandler(void)
 {
     time_slice();
 
+    /* main loop */
     fast_loop();
 
     // clear timer interrupt flag
@@ -27,10 +28,24 @@ void TMR1_IRQHandler(void)
 
 void fast_loop()
 {
-		
     /* fbm320 read running in 100us */
     fbm320_timer_procedure();
 
+    if (slice_flag.fast_loop) {
+        /* core sensor update */
+        inertial_sensor_read();
+
+        /* run attitude angle rate control in 400Hz, first call in loop ensure attitude stable */
+        attitude_angle_rate_controller();
+
+        motors_output();
+
+        AHRS_Update();
+
+        update_flight_mode();
+
+        slice_flag.fast_loop = false;
+    }
 }
 
 void scheduler_run()
@@ -44,23 +59,29 @@ void scheduler_run()
     if (slice_flag.loop_10Hz) {
 
     }
+    if (slice_flag.loop_50Hz) {
+        set_flight_mode(Stabilize);
+
+        slice_flag.loop_50Hz = false;
+    }
 }
 
 
 void time_slice()
 {
-    static uint16_t count_1Hz = 0, count_5Hz = 0, count_10Hz = 0, count_20Hz = 0,\
-            count_50Hz = 0, count_100Hz = 0, count_200Hz = 0, count_400Hz = 0, count_fast_loop = 0;
+    static uint16_t count_1Hz = 9997, count_5Hz = 1995, count_10Hz = 993, count_20Hz = 491,\
+            count_50Hz = 189, count_100Hz = 87, count_200Hz = 35, count_400Hz = 8, count_fast_loop = 49;
 
-    count_1Hz++;
-    count_5Hz++;
-    count_10Hz++;
-    count_20Hz++;
-    count_50Hz++;
-    count_100Hz++;
-    count_200Hz++;
-    count_400Hz++;
-    count_fast_loop++;
+    if (!slice_flag.loop_1Hz) count_1Hz++;
+    if (!slice_flag.loop_5Hz) count_5Hz++;
+    if (!slice_flag.loop_10Hz) count_10Hz++;
+    if (!slice_flag.loop_20Hz) count_20Hz++;
+    if (!slice_flag.loop_50Hz) count_50Hz++;
+    if (!slice_flag.loop_100Hz) count_100Hz++;
+    if (!slice_flag.loop_200Hz) count_200Hz++;
+    if (!slice_flag.loop_400Hz) count_400Hz++;
+    if (!slice_flag.fast_loop) count_fast_loop++;
+
     if (count_1Hz >= 10000) {
         slice_flag.loop_1Hz = true;
         count_1Hz = 0;

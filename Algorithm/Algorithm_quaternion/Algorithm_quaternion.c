@@ -1,5 +1,7 @@
 #include "PN020Series.h"
 #include "Algorithm_quaternion.h"
+#include "../Algorithm_math/Algorithm_math.h"
+#include "../Algorithm_math/mymath.h"
 
 /*====================================================================================================*/
 /*====================================================================================================*
@@ -30,24 +32,24 @@ Gravity Quaternion_vectorGravity( Quaternion *pNumQ )
 /*====================================================================================================*/
 void Quaternion_ToNumQ( Quaternion *pNumQ, EulerAngle *pAngE )
 {
-  fp32 halfP = pAngE->Pitch/2.0f;
-  fp32 halfR = pAngE->Roll/2.0f;
-  fp32 halfY = pAngE->Yaw/2.0f;
+  float halfP = pAngE->Pitch/2.0f;
+  float halfR = pAngE->Roll/2.0f;
+  float halfY = pAngE->Yaw/2.0f;
 
 #ifndef USE_ARM_MATH_LIB
-  fp32 sinP = sinf(halfP);
-  fp32 cosP = cosf(halfP);
-  fp32 sinR = sinf(halfR);
-  fp32 cosR = cosf(halfR);
-  fp32 sinY = sinf(halfY);
-  fp32 cosY = cosf(halfY);
+  float sinP = sinf(halfP);
+  float cosP = cosf(halfP);
+  float sinR = sinf(halfR);
+  float cosR = cosf(halfR);
+  float sinY = sinf(halfY);
+  float cosY = cosf(halfY);
 #else
-  fp32 sinP = arm_sin_f32(halfP);
-  fp32 cosP = arm_cos_f32(halfP);
-  fp32 sinR = arm_sin_f32(halfR);
-  fp32 cosR = arm_cos_f32(halfR);
-  fp32 sinY = arm_sin_f32(halfY);  
-  fp32 cosY = arm_cos_f32(halfY);
+  float sinP = arm_sin_f32(halfP);
+  float cosP = arm_cos_f32(halfP);
+  float sinR = arm_sin_f32(halfR);
+  float cosR = arm_cos_f32(halfR);
+  float sinY = arm_sin_f32(halfY);
+  float cosY = arm_cos_f32(halfY);
 #endif
 
   pNumQ->q0 = cosY*cosR*cosP + sinY*sinR*sinP;
@@ -66,11 +68,11 @@ void Quaternion_ToNumQ( Quaternion *pNumQ, EulerAngle *pAngE )
 /*====================================================================================================*/
 void Quaternion_ToAngE( Quaternion *pNumQ, EulerAngle *pAngE )
 {
-  fp32 NumQ_T11 = pNumQ->q0*pNumQ->q0 + pNumQ->q1*pNumQ->q1 - pNumQ->q2*pNumQ->q2 - pNumQ->q3*pNumQ->q3;
-  fp32 NumQ_T12 = 2.0f*(pNumQ->q0*pNumQ->q3 + pNumQ->q1*pNumQ->q2);
-  fp32 NumQ_T13 = 2.0f*(pNumQ->q1*pNumQ->q3 - pNumQ->q0*pNumQ->q2);
-  fp32 NumQ_T23 = 2.0f*(pNumQ->q0*pNumQ->q1 + pNumQ->q2*pNumQ->q3);
-  fp32 NumQ_T33 = pNumQ->q0*pNumQ->q0 - pNumQ->q1*pNumQ->q1 - pNumQ->q2*pNumQ->q2 + pNumQ->q3*pNumQ->q3;
+  float NumQ_T11 = pNumQ->q0*pNumQ->q0 + pNumQ->q1*pNumQ->q1 - pNumQ->q2*pNumQ->q2 - pNumQ->q3*pNumQ->q3;
+  float NumQ_T12 = 2.0f*(pNumQ->q0*pNumQ->q3 + pNumQ->q1*pNumQ->q2);
+  float NumQ_T13 = 2.0f*(pNumQ->q1*pNumQ->q3 - pNumQ->q0*pNumQ->q2);
+  float NumQ_T23 = 2.0f*(pNumQ->q0*pNumQ->q1 + pNumQ->q2*pNumQ->q3);
+  float NumQ_T33 = pNumQ->q0*pNumQ->q0 - pNumQ->q1*pNumQ->q1 - pNumQ->q2*pNumQ->q2 + pNumQ->q3*pNumQ->q3;
 
   pAngE->Pitch = -asinf(NumQ_T13);
   pAngE->Roll    = atan2f(NumQ_T23, NumQ_T33);
@@ -111,7 +113,7 @@ Quaternion Quaternion_Multiply( Quaternion NowQ, Quaternion OldQ )
 /*====================================================================================================*/
 void Quaternion_Normalize( Quaternion *pNumQ )
 {
-  fp32 Normalize = 0.0f;
+  float Normalize = 0.0f;
 
 	Normalize = Q_rsqrt(squa(pNumQ->q0) + squa(pNumQ->q1) + squa(pNumQ->q2) + squa(pNumQ->q3));
 
@@ -131,10 +133,10 @@ void Quaternion_Normalize( Quaternion *pNumQ )
 /*====================================================================================================*/
 void Quaternion_RungeKutta( Quaternion *pNumQ, float GyrX, float GyrY, float GyrZ, float helfTimes )
 {
-  fp32 tmpq0 = pNumQ->q0;
-  fp32 tmpq1 = pNumQ->q1;
-  fp32 tmpq2 = pNumQ->q2;
-  fp32 tmpq3 = pNumQ->q3;
+  float tmpq0 = pNumQ->q0;
+  float tmpq1 = pNumQ->q1;
+  float tmpq2 = pNumQ->q2;
+  float tmpq3 = pNumQ->q3;
 
   pNumQ->q0 = pNumQ->q0 + (-tmpq1*GyrX - tmpq2*GyrY - tmpq3*GyrZ) * helfTimes;
   pNumQ->q1 = pNumQ->q1 + ( tmpq0*GyrX - tmpq3*GyrY + tmpq2*GyrZ) * helfTimes;
