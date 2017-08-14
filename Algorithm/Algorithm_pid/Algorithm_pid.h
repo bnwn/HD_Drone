@@ -28,6 +28,6 @@ void reset_pid_I(Pid_t *_pid);
 void reset_pid_D(Pid_t *_pid);
 float get_integrator(Pid_t *_pid);
 // calc_filt_alpha - recalculate the input filter alpha
-float get_filt_alpha(Pid_t _pid) const;
+float get_filt_alpha(Pid_t _pid);
 
 #endif

@@ -30,15 +30,15 @@
 /**
  * @brief motor init
  */
-void motor_init();
+void motor_init(void);
 
 /**
  * @brief update motor pwm output
  * @param _duty
  */
-void motor_update(uint32_t *_duty);
+void motor_update(int32_t *_duty);
 
 
-extern uint32_t motor_duty[MOTOR_MAX_NUM];
+extern int32_t motor_duty[MOTOR_MAX_NUM];
 
 #endif

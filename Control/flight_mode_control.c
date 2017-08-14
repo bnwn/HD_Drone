@@ -44,7 +44,7 @@ bool set_flight_mode(enum Flight_Mode _mode)
     }
 }
 
-void update_flight_mode()
+void update_flight_mode(void)
 {
     switch (control_mode) {
         case Stabilize:
@@ -95,7 +95,7 @@ bool stabilize_init(bool _ignore_checks)
 
 // stabilize_run - runs the main stabilize controller
 // should be called at 100hz or more
-void stabilize_run()
+void stabilize_run(void)
 {
     float target_roll, target_pitch;
     float target_yaw_rate, throttle;
@@ -168,7 +168,7 @@ bool Copter::althold_init(bool ignore_checks)
 
 // althold_run - runs the althold controller
 // should be called at 100hz or more
-void Copter::althold_run()
+void Copter::althold_run(void)
 {
     AltHoldModeState althold_state;
     float takeoff_climb_rate = 0.0f;
@@ -297,7 +297,7 @@ void Copter::althold_run()
     }
 }
 
-float get_smoothing_gain()
+float get_smoothing_gain(void)
 {
     float sense_gain = 1;
 

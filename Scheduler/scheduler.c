@@ -4,8 +4,18 @@
 
 uint32_t micro_100_counter = 0;
 
-void scheduler_init()
+void scheduler_init(void)
 {
+    slice_flag.loop_1Hz = false;
+    slice_flag.loop_5Hz = false;
+    slice_flag.loop_10Hz = false;
+    slice_flag.loop_20Hz = false;
+    slice_flag.loop_50Hz = false;
+    slice_flag.loop_100Hz = false;
+    slice_flag.loop_200Hz = false;
+    slice_flag.loop_400Hz = false;
+    slice_flag.fast_loop = false;
+
     TIMER_Open(TIMER1, TIMER_PERIODIC_MODE, MAIN_ISR_FREQ);
 
     /* enable timer1 interrupt */
@@ -26,7 +36,7 @@ void TMR1_IRQHandler(void)
     TIMER_ClearIntFlag(TIMER0);
 }
 
-void fast_loop()
+void fast_loop(void)
 {
     /* fbm320 read running in 100us */
     fbm320_timer_procedure();
@@ -48,7 +58,7 @@ void fast_loop()
     }
 }
 
-void scheduler_run()
+void scheduler_run(void)
 {
     if (slice_flag.loop_1Hz) {
 
@@ -67,7 +77,7 @@ void scheduler_run()
 }
 
 
-void time_slice()
+void time_slice(void)
 {
     static uint16_t count_1Hz = 9997, count_5Hz = 1995, count_10Hz = 993, count_20Hz = 491,\
             count_50Hz = 189, count_100Hz = 87, count_200Hz = 35, count_400Hz = 8, count_fast_loop = 49;

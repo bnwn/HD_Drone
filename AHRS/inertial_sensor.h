@@ -5,8 +5,8 @@
 
 #define SENSOR_TYPE SENSOR_BMI160
 
-void inertial_sensor_read();
-void gyro_caloffest(float x,float y,float z,u16 amount);
+void inertial_sensor_read(void);
+void gyro_caloffest(float x,float y,float z,uint16_t amount);
 void gyro_offset(void);
 void accel_offset(void);
 

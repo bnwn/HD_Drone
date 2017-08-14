@@ -32,7 +32,7 @@ void EE_SAVE_ACC_OFFSET(void);
 void EE_SAVE_MAG_OFFSET(void);
 void EE_SAVE_Attitude_PID(void);
 void paramLoad(void);
-void Data_Parser(u16 *rxBuffer);
+void Data_Parser(uint16_t *rxBuffer);
 #endif /* __Algorithm_sqLite_H */
 #endif
 

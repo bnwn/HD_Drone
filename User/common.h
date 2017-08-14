@@ -20,8 +20,8 @@
 #include "../Driver/motor.h"
 #include "../Scheduler/scheduler.h"
 
-void system_init();
+void system_init(void);
 
-void peripheral_init();
+void peripheral_init(void);
 
 #endif

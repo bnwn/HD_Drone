@@ -1,7 +1,7 @@
 #include "PN020Series.h"
 #include "common.h"
 
-int main()
+int main(void)
 {
     system_init();
 

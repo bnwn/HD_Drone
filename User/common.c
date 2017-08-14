@@ -1,7 +1,7 @@
 #include "PN020Series.h"
 #include "common.h"
 
-void system_init()
+void system_init(void)
 {
    /*---------------------------------------------------------------------------------------------------------*/
     /* Init System Clock                                                                                       */
@@ -38,7 +38,7 @@ void system_init()
     SYS_LockReg();
 }
 
-void peripheral_init()
+void peripheral_init(void)
 {
     /* I2C Bus device init */
     I2C_Init(I2C0, 100000);

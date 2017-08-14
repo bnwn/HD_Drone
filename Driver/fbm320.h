@@ -33,13 +33,13 @@
  * @brief fbm320 init
  * @return
  */
-bool fbm320_init();
+bool fbm320_init(void);
 
 /**
  * @brief read data register from fbm320
  * @return 3 byte data
  */
-int32_t fbm320_read_long_data();
+int32_t fbm320_read_long_data(void);
 
 /**
  * @brief timer procedure, call in 100us

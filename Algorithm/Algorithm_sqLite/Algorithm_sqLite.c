@@ -67,7 +67,7 @@ static void EE_READ_MAG_OFFSET(void)
 /*====================================================================================================*/
 void EE_SAVE_MAG_OFFSET(void)
 {
-	u8 cy;
+    uint8_t cy;
 	for(cy=0;cy<6;cy++)
     EE_WriteVariable(VirtAddVarTab[3+cy],*(mag_limt+cy));
 }
@@ -82,7 +82,7 @@ void EE_SAVE_MAG_OFFSET(void)
 /*====================================================================================================*/
 void EE_SAVE_Attitude_PID(void)
 {
-	u16 _temp;
+    uint16_t _temp;
 	
 	if(flag.ParamSave){
 		flag.ParamSave=0;
@@ -207,7 +207,7 @@ static void EE_READ_Attitude_PID(void)
 **±¸×¢ : None
 **====================================================================================================*/
 /*====================================================================================================*/
-void Data_Parser(u16 *rxBuffer)
+void Data_Parser(uint16_t *rxBuffer)
 {
 //	// Ñ°ÕÒÖ¡Í·
 //	if(*rxBuffer==0xA5 && *(rxBuffer+1)==0x5A && *(rxBuffer+2)==0x0A)	{

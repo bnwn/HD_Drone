@@ -1,6 +1,7 @@
 #include "PN020Series.h"
 #include "bmi160.h"
 #include "../AHRS/inertial_sensor.h"
+#include "../Algorithm/Algorithm_math/Algorithm_math.h"
 
 /* variance define */
 float _accel_scale;
@@ -22,15 +23,14 @@ struct RawData {
 /**
  * @brief bmi160 init
  */
-bool bmi160_init()
+bool bmi160_init(void)
 {
     bool ret = false;
     uint8_t tmp;
     uint8_t tries_times = 0;
 
-
     // delay_ms(BMI160_POWERUP_DELAY_MSEC);
-    for (; tries_times < BMI160_HARDWARE_INIT_MAX_TRIES; i++) {
+    for (; tries_times < BMI160_HARDWARE_INIT_MAX_TRIES; tries_times++) {
 
         /* reset bmi160 */
         I2C_WriteByte(BMI160_SLAVE_ADDRESS, BMI160_REG_CMD, BMI160_CMD_SOFTRESET);
@@ -78,7 +78,7 @@ void bmi160_read_raw(Inertial_Sensor *_sensor)
     read_fifo(_sensor);
 }
 
-bool configure_accel()
+bool configure_accel(void)
 {
     // bool ret = false;
 
@@ -87,14 +87,13 @@ bool configure_accel()
 
     I2C_WriteByte(BMI160_SLAVE_ADDRESS, BMI160_REG_ACC_RANGE, BMI160_ACC_RANGE_BITS);
     delay_ms(1);
-    r = _dev->write_register(BMI160_REG_ACC_RANGE, BMI160_ACC_RANGE_BITS);
 
     _accel_scale = GRAVITY_MSS / (1 << (14 - BMI160_ACC_RANGE));
 
     return true;
 }
 
-bool configure_gyro()
+bool configure_gyro(void)
 {
     // bool ret = false;
 
@@ -107,13 +106,13 @@ bool configure_gyro()
     /* The sensitivity in LSb/degrees/s a gyro range i can be calculated with:
      *     2 ^ 16 / (2 * 2000 / 2 ^ i) = 2 ^ (14 + i) / 1000
      * The scale is the inverse of that. */
-    _gyro_scale = radians(1000.f / (1 << (14 + BMI160_GYR_RANGE)));
+    _gyro_scale = Rad(1000.f / (1 << (14 + BMI160_GYR_RANGE)));
 
     return true;
 }
 
 
-bool configure_fifo()
+bool configure_fifo(void)
 {
     // bool ret = false;
 
@@ -125,7 +124,7 @@ bool configure_fifo()
     return true;
 }
 
-void read_fifo(Inertial_Sensor *_sensor)
+bool read_fifo(Inertial_Sensor *_sensor)
 {
     struct RawData raw_data[BMI160_MAX_FIFO_SAMPLES];
     uint32_t sum_acc[3] = {0}, sum_gyro[3] = {0};
@@ -193,8 +192,12 @@ read_fifo_read_data:
         goto read_fifo_read_data;
     }
 
-    _sensor->accel.latest = raw_data[sample_index - 1].accel;
-    _sensor->gyro.latest = raw_data[sample_index - 1].gyro;
+    _sensor->accel.latest.x = raw_data[sample_index - 1].accel.x;
+    _sensor->accel.latest.y = raw_data[sample_index - 1].accel.y;
+    _sensor->accel.latest.z = raw_data[sample_index - 1].accel.z;
+    _sensor->gyro.latest.x = raw_data[sample_index - 1].gyro.x;
+    _sensor->gyro.latest.y = raw_data[sample_index - 1].gyro.y;
+    _sensor->gyro.latest.z = raw_data[sample_index - 1].gyro.z;
     _sensor->accel.average.x = sum_acc[0] / fifo_num;
     _sensor->accel.average.y = sum_acc[1] / fifo_num;
     _sensor->accel.average.z = sum_acc[2] / fifo_num;

@@ -54,7 +54,7 @@ void inertial_sensor_read()
 **สนำร : Hto_Gyro_Calculateoffest();
 **====================================================================================================*/
 /*====================================================================================================*/
-void gyro_caloffest(float x,float y,float z,u16 amount)
+void gyro_caloffest(float x,float y,float z,uint16_t amount)
 {
    inertial_sensor.gyro.quiet.x = x / amount;
      inertial_sensor.gyro.quiet.y = y / amount;
@@ -72,8 +72,8 @@ void gyro_caloffest(float x,float y,float z,u16 amount)
 /*====================================================================================================*/
 void gyro_offset(void)
 {
-    static u8 over_flag=0;
-    u8  i,cnt_g = 0;
+    static uint8_t over_flag=0;
+    uint8_t  i,cnt_g = 0;
 
   int16_t gx_last=0,gy_last=0,gz_last=0;
     int16_t Integral[3] = {0,0,0};

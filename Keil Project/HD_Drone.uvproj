@@ -73,10 +73,10 @@
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
           </BeforeMake>
           <AfterMake>
-            <RunUserProg1>0</RunUserProg1>
-            <RunUserProg2>0</RunUserProg2>
-            <UserProg1Name></UserProg1Name>
-            <UserProg2Name></UserProg2Name>
+            <RunUserProg1>1</RunUserProg1>
+            <RunUserProg2>1</RunUserProg2>
+            <UserProg1Name>fromelf --bin ".\obj\@L.axf" --output ".\obj\@L.bin"</UserProg1Name>
+            <UserProg2Name>fromelf --text -c ".\obj\@L.axf" --output ".\obj\@L.txt"</UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
           </AfterMake>
@@ -158,15 +158,15 @@
         </DebugOption>
         <Utilities>
           <Flash1>
-            <UseTargetDll>0</UseTargetDll>
+            <UseTargetDll>1</UseTargetDll>
             <UseExternalTool>0</UseExternalTool>
             <RunIndependent>0</RunIndependent>
-            <UpdateFlashBeforeDebugging>0</UpdateFlashBeforeDebugging>
-            <Capability>0</Capability>
-            <DriverSelection>-1</DriverSelection>
+            <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
+            <Capability>1</Capability>
+            <DriverSelection>4099</DriverSelection>
           </Flash1>
           <bUseTDR>0</bUseTDR>
-          <Flash2></Flash2>
+          <Flash2>Segger\JL2CM3.dll</Flash2>
           <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
         </Utilities>
@@ -211,14 +211,14 @@
             <RvdsVP>0</RvdsVP>
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
-            <StupSel>0</StupSel>
-            <useUlib>0</useUlib>
+            <StupSel>8</StupSel>
+            <useUlib>1</useUlib>
             <EndSel>1</EndSel>
             <uLtcg>0</uLtcg>
             <RoSelD>0</RoSelD>
             <RwSelD>5</RwSelD>
             <CodeSel>0</CodeSel>
-            <OptFeed>0</OptFeed>
+            <OptFeed>1</OptFeed>
             <NoZi1>0</NoZi1>
             <NoZi2>0</NoZi2>
             <NoZi3>0</NoZi3>
@@ -227,12 +227,12 @@
             <Ro1Chk>0</Ro1Chk>
             <Ro2Chk>0</Ro2Chk>
             <Ro3Chk>0</Ro3Chk>
-            <Ir1Chk>0</Ir1Chk>
+            <Ir1Chk>1</Ir1Chk>
             <Ir2Chk>0</Ir2Chk>
             <Ra1Chk>0</Ra1Chk>
             <Ra2Chk>0</Ra2Chk>
             <Ra3Chk>0</Ra3Chk>
-            <Im1Chk>0</Im1Chk>
+            <Im1Chk>1</Im1Chk>
             <Im2Chk>0</Im2Chk>
             <OnChipMemories>
               <Ocm1>
@@ -298,7 +298,7 @@
               <OCR_RVCT4>
                 <Type>1</Type>
                 <StartAddress>0x0</StartAddress>
-                <Size>0x0</Size>
+                <Size>0x8000</Size>
               </OCR_RVCT4>
               <OCR_RVCT5>
                 <Type>1</Type>
@@ -322,8 +322,8 @@
               </OCR_RVCT8>
               <OCR_RVCT9>
                 <Type>0</Type>
-                <StartAddress>0x0</StartAddress>
-                <Size>0x0</Size>
+                <StartAddress>0x20000000</StartAddress>
+                <Size>0x1000</Size>
               </OCR_RVCT9>
               <OCR_RVCT10>
                 <Type>0</Type>
@@ -335,7 +335,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>1</Optim>
+            <Optim>3</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>0</OneElfS>
@@ -344,21 +344,21 @@
             <PlainCh>0</PlainCh>
             <Ropi>0</Ropi>
             <Rwpi>0</Rwpi>
-            <wLevel>0</wLevel>
+            <wLevel>2</wLevel>
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>.\Driver;.\Module;.\Library\Device\Panchip\PN020Series\Source\ARM;.\Library\Device\Panchip\PN020Series\Include;.\Library\StdDriver\inc;..\AHRS;..\Algorithm\Algorithm_filter;..\Algorithm\Algorithm_math;..\Algorithm\Algorithm_pid;..\Algorithm\Algorithm_quaternion;..\Algorithm\Algorithm_sqLite;..\Control;..\Driver;..\Driver\bsp;..\Scheduler;..\User</IncludePath>
+              <IncludePath>..\Library\CMSIS\Include;..\Library\Device\Panchip\PN020Series\Include;..\Library\StdDriver\inc;..\Driver;..\AHRS;..\Algorithm\Algorithm_filter;..\Algorithm\Algorithm_pid;..\Algorithm\Algorithm_math;..\Algorithm\Algorithm_quaternion;..\Algorithm\Algorithm_sqLite;..\Control;..\Driver;..\Driver\bsp;..\Scheduler;..\User</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
             <interw>1</interw>
             <Ropi>0</Ropi>
             <Rwpi>0</Rwpi>
-            <thumb>0</thumb>
+            <thumb>1</thumb>
             <SplitLS>0</SplitLS>
             <SwStkChk>0</SwStkChk>
             <NoWarn>0</NoWarn>

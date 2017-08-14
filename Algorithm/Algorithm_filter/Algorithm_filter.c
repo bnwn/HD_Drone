@@ -97,9 +97,9 @@ float LPF_1st(float oldData, float newData, float lpf_factor)
 // #define WIDTH_NUM 101
 // #define FIL_ITEM  10
 
-void Moving_Average(float in,float moavarray[],u16 len ,u16 fil_cnt[2],float *out)
+void Moving_Average(float in,float moavarray[],uint16_t len ,uint16_t fil_cnt[2],float *out)
 {
-	u16 width_num;
+    uint16_t width_num;
 	
 	width_num = len ;
 	
@@ -124,11 +124,11 @@ void Moving_Average(float in,float moavarray[],u16 len ,u16 fil_cnt[2],float *ou
 float med_filter_tmp[MED_FIL_ITEM][MED_WIDTH_NUM ];
 float med_filter_out[MED_FIL_ITEM];
 
-u8 med_fil_cnt[MED_FIL_ITEM];
+uint8_t med_fil_cnt[MED_FIL_ITEM];
 
-float Moving_Median(u8 item,u8 width_num,float in)
+float Moving_Median(uint8_t item,uint8_t width_num,float in)
 {
-	u8 i,j;
+    uint8_t i,j;
 	float t;
 	float tmp[MED_WIDTH_NUM];
 	
@@ -162,7 +162,7 @@ float Moving_Median(u8 item,u8 width_num,float in)
 				}
 			}
 		}		
-		return ( tmp[(u16)width_num/2] );
+        return ( tmp[(uint16_t)width_num/2] );
 	}
 }
 

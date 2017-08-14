@@ -32,9 +32,9 @@ float Q_rsqrt(float number)
 *             value      
 输出参数：    无
 *******************************************************************************/
-void array_astrict(s16 *array,s16 lower,s16 upper)
+void array_astrict(int16_t *array,int16_t lower,int16_t upper)
 {
-   s16 length = sizeof(array); 
+   int16_t length = sizeof(array);
    for(uint16_t i=0;i<length;i++)
    {
      if(*(array+i)<lower)  *(array+i) = lower;
@@ -49,7 +49,7 @@ void array_astrict(s16 *array,s16 lower,s16 upper)
 *             value      
 输出参数：    无
 *******************************************************************************/
-void array_assign(u16 *array,s16 value,u16 length)
+void array_assign(uint16_t *array,int16_t value,uint16_t length)
 {
    for(uint16_t i=0;i<length;i++)
    {

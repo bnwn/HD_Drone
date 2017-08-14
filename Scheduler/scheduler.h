@@ -7,21 +7,21 @@
 #define MAIN_LOOP_FREQ 400 // uint(Hz)
 #define MAIN_LOOP_TIME 25 // uint(0.1ms) (MAIN_ISR_FREQ / MAIN_LOOP_FREQ)
 
-void scheduler_init();
-void fast_loop();
-void scheduler_run();
-void time_slice();
+void scheduler_init(void);
+void fast_loop(void);
+void scheduler_run(void);
+void time_slice(void);
 
 typedef struct {
-    bool loop_1Hz = false;
-    bool loop_5Hz = false;
-    bool loop_10Hz = false;
-    bool loop_20Hz = false;
-    bool loop_50Hz = false;
-    bool loop_100Hz = false;
-    bool loop_200Hz = false;
-    bool loop_400Hz = false;
-    bool fast_loop = false;
+    bool loop_1Hz;
+    bool loop_5Hz;
+    bool loop_10Hz;
+    bool loop_20Hz;
+    bool loop_50Hz;
+    bool loop_100Hz;
+    bool loop_200Hz;
+    bool loop_400Hze;
+    bool fast_loop;
 } Slice_Flag;
 
 extern Slice_Flag slice_flag;

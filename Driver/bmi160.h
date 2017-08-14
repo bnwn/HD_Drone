@@ -3,6 +3,7 @@
 
 #include "bsp/bsp_i2c.h"
 #include "bsp/timer_delay.h"
+#include "../AHRS/inertial_sensor.h"
 
 #define BMI160_SLAVE_ADDRESS 0xD0 // SDO connect to GND, slave address is 0x68
 //#define BMI160_SLAVE_ADDRESS // 0x69
@@ -83,11 +84,14 @@
 #define BMI160_READ_FLAG 0x80
 #define BMI160_HARDWARE_INIT_MAX_TRIES 5
 
+// acceleration due to gravity in m/s/s
+#define GRAVITY_MSS     9.80665f
+
 /**
  * @brief bmi160 configuration
  * @return
  */
-bool bmi160_init();
+bool bmi160_init(void);
 
 /**
  * @brief read accel and gyro raw from bmi160
@@ -102,7 +106,7 @@ void bmi160_read_raw(Inertial_Sensor *_sensor);
  *
  * @return true on success, false otherwise.
  */
-bool configure_accel();
+bool configure_accel(void);
 
 /**
  * Configure gyroscope sensor. The device semaphore must already be
@@ -110,19 +114,19 @@ bool configure_accel();
  *
  * @return true on success, false otherwise.
  */
-bool configure_gyro();
+bool configure_gyro(void);
 
 /**
  * Configure FIFO.
  *
  * @return true on success, false otherwise.
  */
-bool configure_fifo();
+bool configure_fifo(void);
 
 /**
  * Read samples from fifo.
  */
-void read_fifo(Inertial_Sensor *_sensor);
+bool read_fifo(Inertial_Sensor *_sensor);
 
 /* variance define */
 extern float _accel_scale;
