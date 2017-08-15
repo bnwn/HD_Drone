@@ -1,3 +1,4 @@
+#include "PN020Series.h"
 #include "Algorithm_filter.h"
 
 /*====================================================================================================*/
@@ -162,7 +163,7 @@ float Moving_Median(uint8_t item,uint8_t width_num,float in)
 				}
 			}
 		}		
-        return ( tmp[(uint16_t)width_num/2] );
+        return (tmp[(uint16_t)width_num/2]);
 	}
 }
 

@@ -35,7 +35,8 @@ float Q_rsqrt(float number)
 void array_astrict(int16_t *array,int16_t lower,int16_t upper)
 {
    int16_t length = sizeof(array);
-   for(uint16_t i=0;i<length;i++)
+   uint16_t i=0;
+   for(;i<length;i++)
    {
      if(*(array+i)<lower)  *(array+i) = lower;
      else if(*(array+i)>upper)  *(array+i) = upper;
@@ -51,10 +52,11 @@ void array_astrict(int16_t *array,int16_t lower,int16_t upper)
 *******************************************************************************/
 void array_assign(uint16_t *array,int16_t value,uint16_t length)
 {
-   for(uint16_t i=0;i<length;i++)
-   {
+    uint16_t i=0;
+    for(;i<length;i++)
+    {
      *(array+i) = value;
-   } 
+    }
 }
 
 /**************************ÊµÏÖº¯Êı********************************************

@@ -8,7 +8,9 @@ void system_init(void)
     /*---------------------------------------------------------------------------------------------------------*/
     /* Unlock protected registers */
     SYS_UnlockReg();
-    CLK_InitHXTPLL();
+		CLK_InitHIRC();
+		//CLK_InitHXT();
+    //CLK_InitHXTPLL();
     SystemCoreClockUpdate();
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init I/O Multi-function                                                                                 */
@@ -24,11 +26,17 @@ void system_init(void)
     /* timer delay configure */
     CLK_EnableModuleClock(TMR0_MODULE);
     CLK_SetModuleClock(TMR0_MODULE, CLK_CLKSEL1_TMR0SEL_HCLK);
-    NVIC_SetPriority(TMR0_IRQn, 3);
+//    NVIC_SetPriority(TMR0_IRQn, 3);
     /* timer perioic configure */
     CLK_EnableModuleClock(TMR1_MODULE);
     CLK_SetModuleClock(TMR1_MODULE, CLK_CLKSEL1_TMR1SEL_HCLK);
-
+		
+		/* Set P2 multi-function pin for PWM Channel 0  */
+    CLK_EnableModuleClock(PWMCH01_MODULE);
+		CLK_EnableModuleClock(PWMCH23_MODULE);
+		CLK_EnableModuleClock(PWMCH67_MODULE);
+    SYS->P2_MFP = SYS_MFP_P22_PWM0_CH0 | SYS_MFP_P23_PWM0_CH1 | SYS_MFP_P24_PWM0_CH2 | SYS_MFP_P25_PWM0_CH3;
+		SYS->P5_MFP = SYS_MFP_P57_PWM0_CH7;
 
     /* Set P5.7 and P5.6 for I2C SDA and SCL */
     CLK_EnableModuleClock(I2C0_MODULE);
@@ -40,20 +48,23 @@ void system_init(void)
 
 void peripheral_init(void)
 {
+    /* uart device setting */
+    uart_console_init(UART0, CONSOLE_BAUDRATE);
+		printf("console init success!\n");
+	
     /* I2C Bus device init */
     I2C_Init(I2C0, 100000);
-    if (!bmi160_init()) {
-
-    }
     if (!fbm320_init()) {
 
     }
+		printf("fbm320 init success!\n");
+    if (!bmi160_init()) {
+				
+    }
+		printf("bmi160 init success!\n");
 
     /* servo output init */
     motor_init();
-
-    /* uart device setting */
-    uart_console_init(UART0, CONSOLE_BAUDRATE);
 
     /* task scheduler timer init */
     scheduler_init();

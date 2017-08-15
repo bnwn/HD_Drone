@@ -214,7 +214,7 @@ double mx_sin(double rad)
 
 double my_sin(double rad)
 {
-	s8 flag = 1;
+    int8_t flag = 1;
 
 	if (rad >= ONE_PI)
 	{
@@ -226,7 +226,7 @@ double my_sin(double rad)
 
 float my_cos(double rad)
 {
-	s8 flag = 1;
+    int8_t flag = 1;
 	rad += ONE_PI/2.0;
 
 	if (rad >= ONE_PI)

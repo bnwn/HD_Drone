@@ -1,5 +1,7 @@
 AHRS/ahrs.c
 AHRS/ahrs.h
+AHRS/inertial_sensor.c
+AHRS/inertial_sensor.h
 Algorithm/Algorithm_filter/Algorithm_filter.c
 Algorithm/Algorithm_filter/Algorithm_filter.h
 Algorithm/Algorithm_math/Algorithm_math.c
@@ -14,6 +16,10 @@ Algorithm/Algorithm_sqLite/Algorithm_sqLite.c
 Algorithm/Algorithm_sqLite/Algorithm_sqLite.h
 Control/attitude_control.c
 Control/attitude_control.h
+Control/flight_mode_control.c
+Control/flight_mode_control.h
+Control/motor_control.c
+Control/motor_control.h
 Control/position_control.c
 Control/position_control.h
 Driver/bsp/bsp_i2c.c
@@ -74,11 +80,3 @@ Scheduler/scheduler.h
 User/common.c
 User/common.h
 User/main.c
-Control/flight_mode.c
-AHRS/inertial_sensor.c
-AHRS/inertial_sensor.h
-Control/attitude_control.c
-Control/flight_mode_control.c
-Control/flight_mode_control.h
-Control/motor_control.c
-Control/motor_control.h

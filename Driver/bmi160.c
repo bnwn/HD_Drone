@@ -33,8 +33,8 @@ bool bmi160_init(void)
     for (; tries_times < BMI160_HARDWARE_INIT_MAX_TRIES; tries_times++) {
 
         /* reset bmi160 */
-        I2C_WriteByte(BMI160_SLAVE_ADDRESS, BMI160_REG_CMD, BMI160_CMD_SOFTRESET);
-        delay_ms(BMI160_SOFTRESET_DELAY_MSEC);
+//        I2C_WriteByte(BMI160_SLAVE_ADDRESS, BMI160_REG_CMD, BMI160_CMD_SOFTRESET);
+//        delay_ms(BMI160_SOFTRESET_DELAY_MSEC);
 
         /* read chip ID */
         tmp = I2C_ReadByte(BMI160_SLAVE_ADDRESS, BMI160_REG_CHIPID);;

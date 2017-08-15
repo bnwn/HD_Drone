@@ -1,5 +1,5 @@
-#include "bsp_i2c.h"
 #include "PN020Series.h"
+#include "bsp_i2c.h"
 #include <stdio.h>
 
 /**
@@ -41,7 +41,7 @@ void I2C_WriteByte(uint8_t _slave_addr, uint32_t _addr, uint8_t _data)
 
              I2C_SET_DATA(I2C, _addr & 0xFFUL); // address
             I2C_SET_CONTROL_REG(I2C, I2C_SI);
-            I2C_WAIT_READY(I2C);
+            I2C_WAIT_READY(I2C){};
 
                if(I2C_GET_STATUS(I2C) == 0x28) {
                     /* ACK */
@@ -100,7 +100,9 @@ uint8_t I2C_ReadByte(uint8_t _slave_addr, uint32_t _addr)
     int32_t i32Err;
     uint8_t u8Data;
 
+	  uint8_t status;
     u8Data = 0;
+	
     do {
         i32Err = 0;
         TIMER_Delay(TIMER0,100);
@@ -113,12 +115,14 @@ uint8_t I2C_ReadByte(uint8_t _slave_addr, uint32_t _addr)
         I2C_SET_DATA(I2C, _slave_addr);
         I2C_SET_CONTROL_REG(I2C, I2C_SI);
         I2C_WAIT_READY(I2C);
-        if(I2C_GET_STATUS(I2C) == 0x18) {
+			  status = I2C_GET_STATUS(I2C);
+				if (status == 0x18) {
+        //if(I2C_GET_STATUS(I2C) == 0x18) {
             /* ACK */
             /* Send address */
              I2C_SET_DATA(I2C, _addr & 0xFFUL); //  address
             I2C_SET_CONTROL_REG(I2C, I2C_SI);
-            I2C_WAIT_READY(I2C);
+            I2C_WAIT_READY(I2C){};
 
 
                 if(I2C_GET_STATUS(I2C) == 0x28) {
@@ -178,6 +182,7 @@ uint8_t I2C_ReadByte(uint8_t _slave_addr, uint32_t _addr)
         }
 
         if(i32Err) {
+					printf("Error: %d£¬ I2C status:%X, %X\n", i32Err, status, I2C_GET_STATUS(I2C));
             /* Send stop */
             I2C_SET_CONTROL_REG(I2C, I2C_STO | I2C_SI);
 
@@ -218,7 +223,7 @@ uint32_t I2C_SequentialRead(uint8_t _slave_addr, uint32_t _addr, uint8_t *_buf, 
             /* Send  address */
               I2C_SET_DATA(I2C, _addr & 0xFFUL); // address
             I2C_SET_CONTROL_REG(I2C, I2C_SI);
-            I2C_WAIT_READY(I2C);
+            I2C_WAIT_READY(I2C){};
 
                 if(I2C_GET_STATUS(I2C) == 0x28) {
                     /* ACK */
@@ -313,7 +318,7 @@ void I2C_PageWrite(uint8_t _slave_addr, uint32_t _addr, uint8_t *_buf)
             /* Send  address */
               I2C_SET_DATA(I2C, _addr & 0xFFUL); // address
             I2C_SET_CONTROL_REG(I2C, I2C_SI);
-            I2C_WAIT_READY(I2C);
+            I2C_WAIT_READY(I2C){};
 
                 if(I2C_GET_STATUS(I2C) == 0x28) {
                     /* ACK */

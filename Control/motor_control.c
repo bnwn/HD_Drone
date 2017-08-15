@@ -1,7 +1,8 @@
+#include "PN020Series.h"
 #include "motor_control.h"
 
-Thrust thrust;
-float target_throttle;
+Thrust thrust = {0};
+float target_throttle = 0;
 
 /*====================================================================================================*/
 /*====================================================================================================*
@@ -14,7 +15,7 @@ float target_throttle;
 /*====================================================================================================*/
 void motors_output(void)
 {
-    throttle_control();
+    throttle_control(0.025f);
 
 #if VEHICLE_FRAME == QUAD
     motor_duty[0] = thrust.throttle - thrust.pitch - thrust.roll + thrust.yaw;
@@ -25,7 +26,10 @@ void motors_output(void)
 #endif
 
     motor_update(motor_duty);
-
+		PWM_ConfigOutputChannel(PWM, 0, MOTOR_PWM_FREQ, 10);
+    PWM_ConfigOutputChannel(PWM, 1, MOTOR_PWM_FREQ, 10);
+    PWM_ConfigOutputChannel(PWM, 2, MOTOR_PWM_FREQ, 10);
+    PWM_ConfigOutputChannel(PWM, 3, MOTOR_PWM_FREQ, 10);
 #if 0
     if(flag.FlightMode==ULTRASONIC_High || flag.FlightMode==AUTO_High || flag.FlightMode==ACC_High  || flag.FlightMode==ATMOSPHERE_High){
             Moto[0] = thr_value - pitch - roll + yaw;
@@ -110,6 +114,7 @@ void throttle_control(float dt)
     #endif
 
     thr_value = LIMIT(thr_value,0,10 *MAX_THR *MAX_PWM/100);//限制油门最大为800，留200余地给姿态控制
+#endif
 }
 
 void set_motor_roll(float _thrust)
@@ -131,3 +136,4 @@ void set_motor_throttle(float _thrust)
 {
     thrust.throttle = _thrust;
 }
+

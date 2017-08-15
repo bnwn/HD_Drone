@@ -1,6 +1,7 @@
 #ifndef __SCHEDULER_H
 #define __SCHEDULER_H
 
+#include "PN020Series.h"
 #include "timer.h"
 
 #define MAIN_ISR_FREQ 10000 // uint(Hz)
@@ -20,7 +21,7 @@ typedef struct {
     bool loop_50Hz;
     bool loop_100Hz;
     bool loop_200Hz;
-    bool loop_400Hze;
+    bool loop_400Hz;
     bool fast_loop;
 } Slice_Flag;
 

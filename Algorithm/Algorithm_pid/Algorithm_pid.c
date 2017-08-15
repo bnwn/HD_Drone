@@ -1,7 +1,7 @@
+#include "PN020Series.h"
 #include "Algorithm_pid.h"
 #include "../Algorithm_math/Algorithm_math.h"
 #include "../Algorithm_math/mymath.h"
-#include "PN020Series.h"
 
 void set_pid_param(Pid_t *_pid, float _kp, float _ki, float _kd, float _imax, float _filt_hz, float dt)
 {
@@ -9,7 +9,7 @@ void set_pid_param(Pid_t *_pid, float _kp, float _ki, float _kd, float _imax, fl
     _pid->ki = _ki;
     _pid->kd = _kd;
     _pid->imax = _imax;
-    _pid->dt = _pid->dt;
+    _pid->dt = dt;
     _pid->integrator = 0;
     _pid->derivative = 0;
 
@@ -28,9 +28,9 @@ void set_pid_filt_hz(Pid_t *_pid, float _hz)
 void set_pid_input(Pid_t *_pid, float _input)
 {
     // update filter and calculate derivative
-    if (_dt > 0.0f) {
+    if (_pid->dt > 0.0f) {
         float derivative = (_input - _pid->input) / _pid->dt;
-        _pid->derivative = _pid->derivative + get_filt_alpha() * (derivative - _pid->derivative);
+        _pid->derivative = _pid->derivative + get_filt_alpha(_pid) * (derivative - _pid->derivative);
     }
 
     _pid->input = _input;
@@ -44,7 +44,7 @@ void set_pid_input(Pid_t *_pid, float _input)
 void set_input_filter_all(Pid_t *_pid, float _input)
 {
     // update filter and calculate derivative
-    float input_filt_change = get_filt_alpha() * (_input - _pid->input);
+    float input_filt_change = get_filt_alpha(_pid) * (_input - _pid->input);
     _pid->input = _pid->input +input_filt_change;
     if (_pid->dt > 0.0f) {
         _pid->derivative = input_filt_change / _pid->dt;
@@ -88,13 +88,14 @@ float get_integrator(Pid_t *_pid)
 }
 
 // calc_filt_alpha - recalculate the input filter alpha
-float get_filt_alpha(Pid_t _pid) const
+float get_filt_alpha(Pid_t *_pid)
 {
-    if (_pid.filt_hz == 0) {
+    float rc;
+    if (_pid->filt_hz == 0.0f) {
         return 1.0f;
     }
 
     // calculate alpha
-    float rc = 1/(M_2PI*_pid.filt_hz);
-    return _pid.dt / (_pid.dt + rc);
+    rc = 1 / (M_2PI * _pid->filt_hz);
+    return (float)(_pid->dt / (_pid->dt + rc));
 }

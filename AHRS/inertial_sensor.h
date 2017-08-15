@@ -5,6 +5,9 @@
 
 #define SENSOR_TYPE SENSOR_BMI160
 
+/*----------------ÍÓÂÝÒÇ²É¼¯ÏÞ·ù--------------------*/
+#define GYRO_GATHER   30
+
 void inertial_sensor_read(void);
 void gyro_caloffest(float x,float y,float z,uint16_t amount);
 void gyro_offset(void);

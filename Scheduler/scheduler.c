@@ -3,6 +3,7 @@
 #include "../User/common.h"
 
 uint32_t micro_100_counter = 0;
+Slice_Flag slice_flag;
 
 void scheduler_init(void)
 {
@@ -61,7 +62,9 @@ void fast_loop(void)
 void scheduler_run(void)
 {
     if (slice_flag.loop_1Hz) {
-
+			printf("1Hz running\n");
+			
+			slice_flag.loop_1Hz = false;
     }
     if (slice_flag.loop_5Hz) {
 

@@ -1,7 +1,8 @@
-#include "inertial_sensor.h"
 #include "PN020Series.h"
+#include "inertial_sensor.h"
 #include "../Driver/bmi160.h"
 #include "../Algorithm/Algorithm_filter/Algorithm_filter.h"
+#include "../Algorithm/Algorithm_math/Algorithm_math.h"
 
 #define  IIR_ORDER     4      //使用IIR滤波器的阶数
 double b_IIR[IIR_ORDER+1] ={0.0008f, 0.0032f, 0.0048f, 0.0032f, 0.0008f};  //系数b
@@ -11,7 +12,7 @@ double OutPut_IIR[3][IIR_ORDER+1] = {0};
 
 Inertial_Sensor inertial_sensor;
 
-void inertial_sensor_read()
+void inertial_sensor_read(void)
 {
     static _Vector_Int16 last_gyro;
 
@@ -119,13 +120,13 @@ void gyro_offset(void)
             else{
                    gyro_caloffest(tempg[0],tempg[1],tempg[2],200);
                    over_flag = 1;
-                   flag.calibratingG = 0;//成功后清楚校准标记
+                   // flag.calibratingG = 0;//成功后清楚校准标记
             }
         }
         cnt_g++;
     }
-    if(flag.calibratingA)
-      accel_offset();
+//    if(flag.calibratingA)
+//      accel_offset();
 }
 
 /*====================================================================================================*
@@ -155,7 +156,7 @@ void accel_offset(void)
     inertial_sensor.accel.quiet.y = tempay/cnt_a;
     inertial_sensor.accel.quiet.z = tempaz/cnt_a;
     cnt_a = 0;
-    flag.calibratingA = 0;
+    //flag.calibratingA = 0;
     //EE_SAVE_ACC_OFFSET();//保存数据
 }
 

@@ -1,3 +1,4 @@
+#include "PN020Series.h"
 #include "flight_mode_control.h"
 #include "motor_control.h"
 #include "attitude_control.h"
@@ -13,7 +14,7 @@ bool set_flight_mode(enum Flight_Mode _mode)
 
     if (_mode == control_mode) {
         prev_control_mode = control_mode;
-        return;
+        return true;
     }
 
     switch (_mode) {
@@ -21,7 +22,7 @@ bool set_flight_mode(enum Flight_Mode _mode)
             success = stabilize_init(ignore_checks);
             break;
         case AltHold:
-            success = althold_init(ignore_checks);
+            //success = althold_init(ignore_checks);
             break;
         case OneKeyFlip:
             break;
@@ -42,6 +43,8 @@ bool set_flight_mode(enum Flight_Mode _mode)
         control_mode = _mode;
         prev_control_mode = control_mode;
     }
+		
+		return success;
 }
 
 void update_flight_mode(void)
@@ -51,7 +54,7 @@ void update_flight_mode(void)
             stabilize_run();
             break;
         case AltHold:
-            althold_run();
+            //althold_run();
             break;
         case OneKeyFlip:
             break;
@@ -140,8 +143,9 @@ void stabilize_run(void)
 #endif
 }
 
+#if 0
 // althold_init - initialise althold controller
-bool Copter::althold_init(bool ignore_checks)
+bool althold_init(bool ignore_checks)
 {
 #if FRAME_CONFIG == HELI_FRAME
     // do not allow helis to enter Alt Hold if the Rotor Runup is not complete
@@ -168,7 +172,7 @@ bool Copter::althold_init(bool ignore_checks)
 
 // althold_run - runs the althold controller
 // should be called at 100hz or more
-void Copter::althold_run(void)
+void althold_run(void)
 {
     AltHoldModeState althold_state;
     float takeoff_climb_rate = 0.0f;
@@ -296,6 +300,7 @@ void Copter::althold_run(void)
         break;
     }
 }
+#endif
 
 float get_smoothing_gain(void)
 {

@@ -21,8 +21,8 @@ float get_smoothing_gain(void);
 /* each flight mode control */
 bool stabilize_init(bool ignore_checks);
 void stabilize_run(void);
-bool althold_init(bool ignore_checks);
-void althold_run(void);
+//bool althold_init(bool ignore_checks);
+//void althold_run(void);
 
 extern enum Flight_Mode control_mode;
 

@@ -36,7 +36,7 @@ void AHRS_Update(void)
     float sin_pitch,sin_roll,cos_roll,cos_pitch;
 
     // 获取四元数
-    AHRS_GetQ(&NumQ);
+    AHRS_GetQ();
 
     // 四元数转欧拉角
     Quaternion_ToAngE(&NumQ, &AngE);
@@ -85,7 +85,7 @@ void AHRS_Update(void)
 **使用 : AHRS_GetQ();
 **====================================================================================================*/
 /*====================================================================================================*/
-void AHRS_GetQ( Quaternion *pNumQ )
+void AHRS_GetQ(void)
 {
     float ErrX, ErrY, ErrZ;
     float AccX, AccY, AccZ;

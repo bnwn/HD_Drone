@@ -1,6 +1,7 @@
 #ifndef __UART_CONSOLE_H
 #define __UART_CONSOLE_H
 
+#include "PN020Series.h"
 #include "uart.h"
 
 #define CONSOLE_BAUDRATE 115200
