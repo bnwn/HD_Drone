@@ -93,7 +93,10 @@ void AHRS_GetQ(void)
     float Normalize;
     static float exInt = 0.0f, eyInt = 0.0f, ezInt = 0.0f;
 
+		printf(" filter : acc.x:%.3f, acc.y:%.3f, acc.z:%.3f \n", inertial_sensor.accel.filter.x, inertial_sensor.accel.filter.y, inertial_sensor.accel.filter.z);
+		printf(" filter : gyro.x:%.3f, gyro.y:%.3f, gyro.z:%.3f \n", inertial_sensor.gyro.filter.x, inertial_sensor.gyro.filter.y, inertial_sensor.gyro.filter.z);
 
+	
     // 加速度归一化
     Normalize = Q_rsqrt(squa(inertial_sensor.accel.filter.x) + squa(inertial_sensor.accel.filter.y) + squa(inertial_sensor.accel.filter.z));
     AccX = inertial_sensor.accel.filter.x * Normalize;

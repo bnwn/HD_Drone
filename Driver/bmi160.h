@@ -14,6 +14,7 @@
 #define BMI160_CHIPID 0xD1
 #define BMI160_REG_ERR_REG 0x02
 #define BMI160_REG_FIFO_LENGTH 0x22
+#define BMI160_FIFO_MSB_MASK 0x07
 #define BMI160_REG_FIFO_DATA 0x24
 #define BMI160_REG_ACC_CONF 0x40
 #define BMI160_REG_ACC_RANGE 0x41
@@ -78,7 +79,7 @@
 
 /* This number of samples should provide only one read burst operation on the
  * FIFO most of the time (99.99%). */
-#define BMI160_MAX_FIFO_SAMPLES 8
+#define BMI160_MAX_FIFO_SAMPLES 20
 #define BMI160_MAX_FIFO_FRAME 1024
 
 #define BMI160_READ_FLAG 0x80

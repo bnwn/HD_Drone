@@ -77,7 +77,7 @@ void I2C_WriteByte(uint8_t _slave_addr, uint32_t _addr, uint8_t _data)
         }
 
         if(i32Err) {
-
+						printf("Error: %d£¬ I2C status: %X\n", i32Err, I2C_GET_STATUS(I2C));
             /* Send stop */
             I2C_SET_CONTROL_REG(I2C, I2C_STO | I2C_SI);
 
@@ -100,7 +100,6 @@ uint8_t I2C_ReadByte(uint8_t _slave_addr, uint32_t _addr)
     int32_t i32Err;
     uint8_t u8Data;
 
-	  uint8_t status;
     u8Data = 0;
 	
     do {
@@ -115,8 +114,7 @@ uint8_t I2C_ReadByte(uint8_t _slave_addr, uint32_t _addr)
         I2C_SET_DATA(I2C, _slave_addr);
         I2C_SET_CONTROL_REG(I2C, I2C_SI);
         I2C_WAIT_READY(I2C);
-			  status = I2C_GET_STATUS(I2C);
-				if (status == 0x18) {
+				if (I2C_GET_STATUS(I2C) == 0x18) {
         //if(I2C_GET_STATUS(I2C) == 0x18) {
             /* ACK */
             /* Send address */
@@ -182,7 +180,7 @@ uint8_t I2C_ReadByte(uint8_t _slave_addr, uint32_t _addr)
         }
 
         if(i32Err) {
-					printf("Error: %d£¬ I2C status:%X, %X\n", i32Err, status, I2C_GET_STATUS(I2C));
+					printf("Error: %d£¬ I2C status: %X\n", i32Err, I2C_GET_STATUS(I2C));
             /* Send stop */
             I2C_SET_CONTROL_REG(I2C, I2C_STO | I2C_SI);
 

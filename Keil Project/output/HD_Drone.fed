@@ -1,0 +1,291 @@
+;#<FEEDBACK># ARM Linker, 5060183: Last Updated: Tue Aug 15 21:21:23 2017
+;VERSION 0.2
+;FILE acmp.o
+ACMP_Close <= USED 0
+ACMP_Open <= USED 0
+__asm___6_acmp_c_3ee57136____REV16 <= USED 0
+__asm___6_acmp_c_3ee57136____REVSH <= USED 0
+;FILE adc.o
+ADC_Close <= USED 0
+ADC_Disable <= USED 0
+ADC_DisableHWTrigger <= USED 0
+ADC_DisableInt <= USED 0
+ADC_Enable <= USED 0
+ADC_EnableHWTrigger <= USED 0
+ADC_EnableInt <= USED 0
+ADC_Open <= USED 0
+ADC_SeqModeEnable <= USED 0
+ADC_SeqModeTriggerSrc <= USED 0
+ADC_SetExtraSampleTime <= USED 0
+__asm___5_adc_c_26cd6614____REV16 <= USED 0
+__asm___5_adc_c_26cd6614____REVSH <= USED 0
+;FILE ahrs.o
+__asm___6_ahrs_c_NumQ____REV16 <= USED 0
+__asm___6_ahrs_c_NumQ____REVSH <= USED 0
+;FILE algorithm_filter.o
+KalmanFilter <= USED 0
+Moving_Average <= USED 0
+Moving_Median <= USED 0
+__asm___18_Algorithm_filter_c_41f50fa6____REV16 <= USED 0
+__asm___18_Algorithm_filter_c_41f50fa6____REVSH <= USED 0
+kalmanUpdate <= USED 0
+;FILE algorithm_math.o
+__asm___16_Algorithm_math_c_Q_rsqrt____REV16 <= USED 0
+__asm___16_Algorithm_math_c_Q_rsqrt____REVSH <= USED 0
+applyDeadband <= USED 0
+array_assign <= USED 0
+array_astrict <= USED 0
+constrain <= USED 0
+data_limit <= USED 0
+;FILE algorithm_pid.o
+__asm___15_Algorithm_pid_c_61a19061____REV16 <= USED 0
+__asm___15_Algorithm_pid_c_61a19061____REVSH <= USED 0
+get_filt_alpha <= USED 0
+get_integrator <= USED 0
+get_pid_output <= USED 0
+reset_pid_D <= USED 0
+reset_pid_I <= USED 0
+set_input_filter_all <= USED 0
+set_pid_filt_hz <= USED 0
+set_pid_input <= USED 0
+set_pid_param <= USED 0
+;FILE algorithm_quaternion.o
+Quaternion_Multiply <= USED 0
+Quaternion_ToNumQ <= USED 0
+__asm___22_Algorithm_quaternion_c_fdc3695e____REV16 <= USED 0
+__asm___22_Algorithm_quaternion_c_fdc3695e____REVSH <= USED 0
+;FILE attitude_control.o
+__asm___18_attitude_control_c_9564a26e____REV16 <= USED 0
+__asm___18_attitude_control_c_9564a26e____REVSH <= USED 0
+attitude_angle_euler_controller <= USED 0
+attitude_angle_rate_controller <= USED 0
+attitude_throttle_controller <= USED 0
+axis_target_pid_cal <= USED 0
+;FILE bmi160.o
+__asm___8_bmi160_c_6c3b817e____REV16 <= USED 0
+__asm___8_bmi160_c_6c3b817e____REVSH <= USED 0
+;FILE bsp_i2c.o
+I2C_PageWrite <= USED 0
+__asm___9_bsp_i2c_c_I2C_Init____REV16 <= USED 0
+__asm___9_bsp_i2c_c_I2C_Init____REVSH <= USED 0
+;FILE clk.o
+CLK_DisableModuleClock <= USED 0
+CLK_DisablePLL <= USED 0
+CLK_DisableSysTick <= USED 0
+CLK_GetCPUFreq <= USED 0
+CLK_GetEXTFreq <= USED 0
+CLK_GetHXTFreq <= USED 0
+CLK_Idle <= USED 0
+CLK_InitExtOSC4MPLL <= USED 0
+CLK_InitExtOSC8MPLL <= USED 0
+CLK_InitHXT <= USED 0
+CLK_InitHXTPLL <= USED 0
+CLK_InitLIRC <= USED 0
+CLK_PowerDown <= USED 0
+CLK_SetHCLK <= USED 0
+CLK_WaitClockReady <= USED 0
+__asm___5_clk_c_93d8d263____REV16 <= USED 0
+__asm___5_clk_c_93d8d263____REVSH <= USED 0
+;FILE common.o
+__asm___8_common_c_d7b85782____REV16 <= USED 0
+__asm___8_common_c_d7b85782____REVSH <= USED 0
+;FILE fbm320.o
+__asm___8_fbm320_c_8c0545fd____REV16 <= USED 0
+__asm___8_fbm320_c_8c0545fd____REVSH <= USED 0
+;FILE flight_mode_control.o
+__asm___21_flight_mode_control_c_815d2a39____REV16 <= USED 0
+__asm___21_flight_mode_control_c_815d2a39____REVSH <= USED 0
+exit_mode <= USED 0
+get_smoothing_gain <= USED 0
+stabilize_run <= USED 0
+update_flight_mode <= USED 0
+;FILE fmc.o
+FMC_Close <= USED 0
+FMC_Erase <= USED 0
+FMC_GetBootSource <= USED 0
+FMC_GetCRC32Sum <= USED 0
+FMC_GetVectorPageAddr <= USED 0
+FMC_Open <= USED 0
+FMC_Read <= USED 0
+FMC_ReadCID <= USED 0
+FMC_ReadConfig <= USED 0
+FMC_ReadDataFlashBaseAddr <= USED 0
+FMC_ReadPID <= USED 0
+FMC_ReadUCID <= USED 0
+FMC_ReadUID <= USED 0
+FMC_SetVectorPageAddr <= USED 0
+FMC_Write <= USED 0
+FMC_WriteConfig <= USED 0
+__asm___5_fmc_c_65c03504____REV16 <= USED 0
+__asm___5_fmc_c_65c03504____REVSH <= USED 0
+;FILE gpio.o
+GPIO_DisableInt <= USED 0
+GPIO_EnableInt <= USED 0
+GPIO_SetMode <= USED 0
+__asm___6_gpio_c_f8f858a7____REV16 <= USED 0
+__asm___6_gpio_c_f8f858a7____REVSH <= USED 0
+;FILE i2c.o
+I2C_ClearTimeoutFlag <= USED 0
+I2C_Close <= USED 0
+I2C_DisableInt <= USED 0
+I2C_DisableTimeout <= USED 0
+I2C_DisableWakeup <= USED 0
+I2C_EnableInt <= USED 0
+I2C_EnableTimeout <= USED 0
+I2C_EnableWakeup <= USED 0
+I2C_GetBusClockFreq <= USED 0
+I2C_GetData <= USED 0
+I2C_GetIntFlag <= USED 0
+I2C_GetStatus <= USED 0
+I2C_SetBusClockFreq <= USED 0
+I2C_SetData <= USED 0
+I2C_SetSlaveAddr <= USED 0
+I2C_SetSlaveAddrMask <= USED 0
+I2C_Trigger <= USED 0
+__asm___5_i2c_c_I2C_Open____REV16 <= USED 0
+__asm___5_i2c_c_I2C_Open____REVSH <= USED 0
+;FILE inertial_sensor.o
+__asm___17_inertial_sensor_c_b_IIR____REV16 <= USED 0
+__asm___17_inertial_sensor_c_b_IIR____REVSH <= USED 0
+;FILE main.o
+__asm___6_main_c_main____REV16 <= USED 0
+__asm___6_main_c_main____REVSH <= USED 0
+;FILE motor.o
+__asm___7_motor_c_d71f47f0____REV16 <= USED 0
+__asm___7_motor_c_d71f47f0____REVSH <= USED 0
+motor_update <= USED 0
+;FILE motor_control.o
+__asm___15_motor_control_c_thrust____REV16 <= USED 0
+__asm___15_motor_control_c_thrust____REVSH <= USED 0
+motors_output <= USED 0
+set_motor_pitch <= USED 0
+set_motor_roll <= USED 0
+set_motor_throttle <= USED 0
+set_motor_yaw <= USED 0
+throttle_control <= USED 0
+;FILE mymath.o
+To_180_degrees <= USED 0
+__asm___8_mymath_c_f480d7f9____REV16 <= USED 0
+__asm___8_mymath_c_f480d7f9____REVSH <= USED 0
+fast_atan2 <= USED 0
+mx_sin <= USED 0
+my_abs <= USED 0
+my_atan <= USED 0
+my_cos <= USED 0
+my_deathzoom <= USED 0
+my_deathzoom_2 <= USED 0
+my_pow <= USED 0
+my_pow_2_curve <= USED 0
+my_sin <= USED 0
+my_sqrt <= USED 0
+;FILE pwm.o
+PWM_ClearADCTriggerFlag <= USED 0
+PWM_ClearCMPDIntFlag <= USED 0
+PWM_ClearCMPUIntFlag <= USED 0
+PWM_ClearCenterIntFlag <= USED 0
+PWM_ClearPeriodIntFlag <= USED 0
+PWM_ClearZeroIntFlag <= USED 0
+PWM_DisableADCTrigger <= USED 0
+PWM_DisableCMPDInt <= USED 0
+PWM_DisableCMPUInt <= USED 0
+PWM_DisableCenterInt <= USED 0
+PWM_DisableDeadZone <= USED 0
+PWM_DisableOutput <= USED 0
+PWM_DisablePeriodInt <= USED 0
+PWM_DisableZeroInt <= USED 0
+PWM_EnableADCTrigger <= USED 0
+PWM_EnableCMPDInt <= USED 0
+PWM_EnableCMPUInt <= USED 0
+PWM_EnableCenterInt <= USED 0
+PWM_EnableDeadZone <= USED 0
+PWM_EnablePeriodInt <= USED 0
+PWM_EnableZeroInt <= USED 0
+PWM_ForceStop <= USED 0
+PWM_GetADCTriggerFlag <= USED 0
+PWM_GetCMPDIntFlag <= USED 0
+PWM_GetCMPUIntFlag <= USED 0
+PWM_GetCenterIntFlag <= USED 0
+PWM_GetPeriodIntFlag <= USED 0
+PWM_GetZeroIntFlag <= USED 0
+PWM_Stop <= USED 0
+__asm___5_pwm_c_03ee09af____REV16 <= USED 0
+__asm___5_pwm_c_03ee09af____REVSH <= USED 0
+;FILE retarget.o
+GetChar <= USED 0
+IsDebugFifoEmpty <= USED 0
+SendChar <= USED 0
+__asm___10_retarget_c_8c64092a____REV16 <= USED 0
+__asm___10_retarget_c_8c64092a____REVSH <= USED 0
+_ttywrch <= USED 0
+ferror <= USED 0
+fgetc <= USED 0
+kbhit <= USED 0
+;FILE scheduler.o
+__asm___11_scheduler_c_0cce68c6____REV16 <= USED 0
+__asm___11_scheduler_c_0cce68c6____REVSH <= USED 0
+;FILE spi.o
+SPI_Close <= USED 0
+SPI_DisableAutoSS <= USED 0
+SPI_DisableInt <= USED 0
+SPI_EnableAutoSS <= USED 0
+SPI_EnableInt <= USED 0
+SPI_GetBusClock <= USED 0
+SPI_Open <= USED 0
+SPI_SetBusClock <= USED 0
+__asm___5_spi_c_SPI_Open____REV16 <= USED 0
+__asm___5_spi_c_SPI_Open____REVSH <= USED 0
+;FILE startup_pn020series.o
+;FILE sys.o
+SYS_ClearResetSrc <= USED 0
+SYS_DisableBOD <= USED 0
+SYS_EnableBOD <= USED 0
+SYS_GetBODStatus <= USED 0
+SYS_GetResetSrc <= USED 0
+SYS_IsRegLocked <= USED 0
+SYS_ResetCPU <= USED 0
+SYS_ResetChip <= USED 0
+SYS_ResetModule <= USED 0
+SYS_delay_10nop <= USED 0
+__asm___5_sys_c_527b799b____REV16 <= USED 0
+__asm___5_sys_c_527b799b____REVSH <= USED 0
+;FILE system_pn020series.o
+SystemInit <= USED 0
+__asm___20_system_PN020Series_c___HSI____REV16 <= USED 0
+__asm___20_system_PN020Series_c___HSI____REVSH <= USED 0
+;FILE timer.o
+TIMER_Close <= USED 0
+TIMER_DisableCapture <= USED 0
+TIMER_DisableEventCounter <= USED 0
+TIMER_EnableCapture <= USED 0
+TIMER_EnableEventCounter <= USED 0
+__asm___7_timer_c_5bec749a____REV16 <= USED 0
+__asm___7_timer_c_5bec749a____REVSH <= USED 0
+;FILE timer_delay.o
+__asm___13_timer_delay_c____REV16 <= USED 0
+__asm___13_timer_delay_c____REVSH <= USED 0
+;FILE uart.o
+UART_ClearIntFlag <= USED 0
+UART_Close <= USED 0
+UART_DisableInt <= USED 0
+UART_EnableInt <= USED 0
+UART_Read <= USED 0
+UART_SetLine_Config <= USED 0
+UART_SetTimeoutCnt <= USED 0
+UART_Write <= USED 0
+__asm___6_uart_c_f12f5b44____REV16 <= USED 0
+__asm___6_uart_c_f12f5b44____REVSH <= USED 0
+;FILE uart_console.o
+__asm___14_uart_console_c_674804bb____REV16 <= USED 0
+__asm___14_uart_console_c_674804bb____REVSH <= USED 0
+;FILE wdt.o
+WDT_Close <= USED 0
+WDT_DisableInt <= USED 0
+WDT_EnableInt <= USED 0
+WDT_Open <= USED 0
+__asm___5_wdt_c_WDT_Open____REV16 <= USED 0
+__asm___5_wdt_c_WDT_Open____REVSH <= USED 0
+;FILE wwdt.o
+WWDT_Close <= USED 0
+WWDT_Open <= USED 0
+__asm___6_wwdt_c_17c772d9____REV16 <= USED 0
+__asm___6_wwdt_c_17c772d9____REVSH <= USED 0

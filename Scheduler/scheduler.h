@@ -8,6 +8,8 @@
 #define MAIN_LOOP_FREQ 400 // uint(Hz)
 #define MAIN_LOOP_TIME 25 // uint(0.1ms) (MAIN_ISR_FREQ / MAIN_LOOP_FREQ)
 
+#define SCHEDULER_RUN  TIMER_Start(TIMER1)
+
 void scheduler_init(void);
 void fast_loop(void);
 void scheduler_run(void);

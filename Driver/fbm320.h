@@ -5,7 +5,7 @@
 #include "bsp/timer_delay.h"
 
 /* Register define */
-#define FBM320_SLAVE_ADDRESS 0x6C
+#define FBM320_SLAVE_ADDRESS 0xD8
 #define FBM320_REG_CHIPID 0x6B
 #define FBM320_CHIPID 0x42
 #define FBM320_REG_CMD 0xF4

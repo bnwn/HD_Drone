@@ -1,0 +1,6 @@
+-c --cpu Cortex-M0 -D__EVAL -D__MICROLIB --li -g -O2 --apcs=interwork -I ..\Library\CMSIS\Include -I ..\Library\Device\Panchip\PN020Series\Include -I ..\Library\StdDriver\inc -I ..\Driver -I ..\AHRS -I ..\Algorithm\Algorithm_filter -I ..\Algorithm\Algorithm_pid -I ..\Algorithm\Algorithm_math -I ..\Algorithm\Algorithm_quaternion -I ..\Algorithm\Algorithm_sqLite -I ..\Control -I ..\Driver -I ..\Driver\bsp -I ..\Scheduler -I ..\User
+-I "C:\Users\Administrator.DESKTOP-ZXM\Desktop\workspace\HD_Drone\HD_Drone_Firmware\Keil Project\RTE"
+-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\CMSIS\Include
+-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\Device\ARM\ARMCM0\Include
+-D__UVISION_VERSION="520" -D_RTE_ -DARMCM0
+-o .\output\inertial_sensor.o --omf_browse .\output\inertial_sensor.crf --depend .\output\inertial_sensor.d --feedback ".\output\HD_Drone.fed" "..\AHRS\inertial_sensor.c"

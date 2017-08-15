@@ -53,7 +53,7 @@ void peripheral_init(void)
 		printf("console init success!\n");
 	
     /* I2C Bus device init */
-    I2C_Init(I2C0, 100000);
+    I2C_Init(I2C0, 1000000);
     if (!fbm320_init()) {
 
     }

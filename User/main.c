@@ -4,19 +4,16 @@
 int main(void)
 {
     system_init();
-
-	  PWM_ConfigOutputChannel(PWM, 0, MOTOR_PWM_FREQ, 10);
-    PWM_ConfigOutputChannel(PWM, 1, MOTOR_PWM_FREQ, 10);
-    PWM_ConfigOutputChannel(PWM, 2, MOTOR_PWM_FREQ, 10);
-    PWM_ConfigOutputChannel(PWM, 3, MOTOR_PWM_FREQ, 10);
-		PWM_ConfigOutputChannel(PWM, 7, MOTOR_PWM_FREQ, 10);
-    PWM_EnableOutput(PWM, 0xFF);
-    PWM_Start(PWM, 0xFF);
 	
     peripheral_init();
 
     printf("HD_Drone init success!\n");
-
+	
+		printf("sensor collect offset...\n");
+		gyro_offset();
+		accel_offset();
+		printf("collect complete\n");
+		SCHEDULER_RUN;
     while(1) {
         /* low priority task scheduler */
         scheduler_run();

@@ -21,9 +21,10 @@ void scheduler_init(void)
 
     /* enable timer1 interrupt */
     TIMER_EnableInt(TIMER1);
+		NVIC_EnableIRQ(TMR1_IRQn);
     NVIC_SetPriority(TMR1_IRQn, 0);
 
-    TIMER_Start(TIMER1);
+    TIMER_Stop(TIMER1);
 }
 
 void TMR1_IRQHandler(void)
@@ -34,7 +35,7 @@ void TMR1_IRQHandler(void)
     fast_loop();
 
     // clear timer interrupt flag
-    TIMER_ClearIntFlag(TIMER0);
+    TIMER_ClearIntFlag(TIMER1);
 }
 
 void fast_loop(void)
@@ -47,13 +48,13 @@ void fast_loop(void)
         inertial_sensor_read();
 
         /* run attitude angle rate control in 400Hz, first call in loop ensure attitude stable */
-        attitude_angle_rate_controller();
+//        attitude_angle_rate_controller();
 
-        motors_output();
+//        motors_output();
 
         AHRS_Update();
 
-        update_flight_mode();
+//        update_flight_mode();
 
         slice_flag.fast_loop = false;
     }
@@ -61,21 +62,42 @@ void fast_loop(void)
 
 void scheduler_run(void)
 {
+	  static uint32_t test = 0;
+	
     if (slice_flag.loop_1Hz) {
-			printf("1Hz running\n");
+			test ++;
 			
+			//printf("acc.x:%d, acc.y:%d, acc.z:%d \n", inertial_sensor.accel.average.x, inertial_sensor.accel.average.y, inertial_sensor.accel.average.z);
+			if (test == 60) test = 0;
+//	  PWM_ConfigOutputChannel(PWM, 0, MOTOR_PWM_FREQ, 10);
+//    PWM_ConfigOutputChannel(PWM, 1, MOTOR_PWM_FREQ, 10);
+//    PWM_ConfigOutputChannel(PWM, 2, MOTOR_PWM_FREQ, 10);
+//    PWM_ConfigOutputChannel(PWM, 3, MOTOR_PWM_FREQ, 10);
+//		PWM_ConfigOutputChannel(PWM, 7, MOTOR_PWM_FREQ, 10);
+//    PWM_EnableOutput(PWM, 0xFF);
+//    PWM_Start(PWM, 0xFF);
 			slice_flag.loop_1Hz = false;
     }
     if (slice_flag.loop_5Hz) {
 
     }
     if (slice_flag.loop_10Hz) {
-
+//			printf("altitude: %d cm %d\n", fbm320_packet.Altitude, test);
+//			printf("\n***************************\n origin  : acc.x:%d, acc.y:%d, acc.z:%d \n", inertial_sensor.accel.latest.x, inertial_sensor.accel.latest.y, inertial_sensor.accel.latest.z);
+//			printf(" average : acc.x:%d, acc.y:%d, acc.z:%d \n", inertial_sensor.accel.average.x, inertial_sensor.accel.average.y, inertial_sensor.accel.average.z);
+//			printf("\n*************************\n origin  : gyro.x:%d, gyro.y:%d, gyro.z:%d \n", inertial_sensor.gyro.latest.x, inertial_sensor.gyro.latest.y, inertial_sensor.gyro.latest.z);
+//			printf(" average : gyro.x:%d, gyro.y:%d, gyro.z:%d \n", inertial_sensor.gyro.average.x, inertial_sensor.gyro.average.y, inertial_sensor.gyro.average.z);
+			
+			slice_flag.loop_10Hz = false;
     }
     if (slice_flag.loop_50Hz) {
         set_flight_mode(Stabilize);
 
         slice_flag.loop_50Hz = false;
+    }
+		if (slice_flag.loop_400Hz) {
+				//printf("attitude:%.3f, %.3f, %.3f\n", ahrs.Roll, ahrs.Pitch, ahrs.Yaw);
+        slice_flag.loop_400Hz = false;
     }
 }
 
@@ -85,7 +107,8 @@ void time_slice(void)
     static uint16_t count_1Hz = 9997, count_5Hz = 1995, count_10Hz = 993, count_20Hz = 491,\
             count_50Hz = 189, count_100Hz = 87, count_200Hz = 35, count_400Hz = 8, count_fast_loop = 49;
 
-    if (!slice_flag.loop_1Hz) count_1Hz++;
+//    if (!slice_flag.loop_1Hz) count_1Hz++;
+		count_1Hz++;
     if (!slice_flag.loop_5Hz) count_5Hz++;
     if (!slice_flag.loop_10Hz) count_10Hz++;
     if (!slice_flag.loop_20Hz) count_20Hz++;

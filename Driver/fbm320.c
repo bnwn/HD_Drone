@@ -66,6 +66,7 @@ void fbm320_timer_procedure(void)
 
         calculate(fbm320_packet.UP, fbm320_packet.UT);
         fbm320_packet.Altitude = abs_altitude(fbm320_packet.RP) / 10;
+				//printf("altitude: %d cm\n", fbm320_packet.Altitude);
     default:
         break;
     }

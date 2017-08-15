@@ -44,6 +44,7 @@ void inertial_sensor_read(void)
     last_gyro.y = inertial_sensor.gyro.filter.y;
     inertial_sensor.gyro.filter.z = LPF_1st(last_gyro.z, inertial_sensor.gyro.relative.z * _gyro_scale, 0.386f);
     last_gyro.z = inertial_sensor.gyro.filter.z;//
+		
 }
 
 /*====================================================================================================*/
@@ -86,7 +87,7 @@ void gyro_offset(void)
 
     while(!over_flag)	//此循环是确保四轴处于完全静止状态
     {
-        if(cnt_g < 200)
+        if(cnt_g < 30)
         {
             switch (SENSOR_TYPE) {
                 case SENSOR_BMI160:
@@ -103,6 +104,8 @@ void gyro_offset(void)
             Integral[0] += absu16(gx_last - inertial_sensor.gyro.average.x);
             Integral[1] += absu16(gy_last - inertial_sensor.gyro.average.y);
             Integral[2] += absu16(gz_last - inertial_sensor.gyro.average.z);
+
+					//printf(" average : gyro.x:%d, gyro.y:%d, gyro.z:%d \n", inertial_sensor.gyro.average.x, inertial_sensor.gyro.average.y, inertial_sensor.gyro.average.z);
 
             gx_last = inertial_sensor.gyro.average.x;
             gy_last = inertial_sensor.gyro.average.y;
@@ -147,6 +150,13 @@ void accel_offset(void)
 
     for(cnt_a=0;cnt_a<200;cnt_a++)
     {
+				switch (SENSOR_TYPE) {
+						case SENSOR_BMI160:
+								bmi160_read_raw(&inertial_sensor);
+						break;
+				default:
+						break;
+				}
         tempax+= inertial_sensor.accel.average.x;
         tempay+= inertial_sensor.accel.average.y;
         tempaz+= inertial_sensor.accel.average.z;
