@@ -2,7 +2,7 @@
 #include "motor_control.h"
 
 Thrust thrust = {0};
-float target_throttle = 0;
+float target_throttle = 0, trace_throttle = 0;
 
 /*====================================================================================================*/
 /*====================================================================================================*
@@ -18,18 +18,21 @@ void motors_output(void)
     throttle_control(0.025f);
 
 #if VEHICLE_FRAME == QUAD
-    motor_duty[0] = thrust.throttle - thrust.pitch - thrust.roll + thrust.yaw;
-    motor_duty[1] = thrust.throttle - thrust.pitch + thrust.roll - thrust.yaw;
-    motor_duty[2] = thrust.throttle + thrust.pitch + thrust.roll + thrust.yaw;
-    motor_duty[3] = thrust.throttle + thrust.pitch - thrust.roll - thrust.yaw;
+    motor_duty[MOTOR1_INDEX] = thrust.throttle + thrust.pitch + thrust.roll + thrust.yaw;
+    motor_duty[MOTOR2_INDEX] = thrust.throttle - thrust.pitch - thrust.roll + thrust.yaw;
+    motor_duty[MOTOR3_INDEX] = thrust.throttle + thrust.pitch - thrust.roll - thrust.yaw;
+    motor_duty[MOTOR4_INDEX] = thrust.throttle - thrust.pitch + thrust.roll - thrust.yaw;
+	
+		printf ("%d, %d, %d, %d\n", (int16_t)(motor_duty[MOTOR1_INDEX]*1000), (int16_t)(motor_duty[MOTOR2_INDEX]*1000), (int16_t)(motor_duty[MOTOR3_INDEX]*1000), \
+																														(int16_t)(motor_duty[MOTOR4_INDEX]*1000));
 #elif VEHICLE_FRAME == HEXA
 #endif
 
     motor_update(motor_duty);
-		PWM_ConfigOutputChannel(PWM, 0, MOTOR_PWM_FREQ, 10);
-    PWM_ConfigOutputChannel(PWM, 1, MOTOR_PWM_FREQ, 10);
-    PWM_ConfigOutputChannel(PWM, 2, MOTOR_PWM_FREQ, 10);
-    PWM_ConfigOutputChannel(PWM, 3, MOTOR_PWM_FREQ, 10);
+//		PWM_ConfigOutputChannel(PWM, 0, MOTOR_PWM_FREQ, 10);
+//    PWM_ConfigOutputChannel(PWM, 1, MOTOR_PWM_FREQ, 10);
+//    PWM_ConfigOutputChannel(PWM, 2, MOTOR_PWM_FREQ, 10);
+//    PWM_ConfigOutputChannel(PWM, 3, MOTOR_PWM_FREQ, 10);
 #if 0
     if(flag.FlightMode==ULTRASONIC_High || flag.FlightMode==AUTO_High || flag.FlightMode==ACC_High  || flag.FlightMode==ATMOSPHERE_High){
             Moto[0] = thr_value - pitch - roll + yaw;
@@ -82,7 +85,9 @@ void motors_output(void)
 
 void throttle_control(float dt)
 {
-    thrust.throttle	= (target_throttle - 1000)/cos(ahrs.Roll/RtA)/cos(ahrs.Pitch/RtA);
+    //thrust.throttle	= (target_throttle - 1000)/cos(ahrs.Roll/RtA)/cos(ahrs.Pitch/RtA);
+		//thrust.throttle = target_throttle; 
+		thrust.throttle = trace_throttle;
 #if 0
 ///////////////////////////////////////////////////////////////////////////
     static float thr;
@@ -135,5 +140,13 @@ void set_motor_yaw(float _thrust)
 void set_motor_throttle(float _thrust)
 {
     thrust.throttle = _thrust;
+		//thrust.throttle = trace_throttle;
+}
+
+void set_trace_throttle(float _thr)
+{
+		trace_throttle = _thr;
+		
+	printf("trace throttle: %.3f\n", trace_throttle);
 }
 

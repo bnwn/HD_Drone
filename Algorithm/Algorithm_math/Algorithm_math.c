@@ -81,8 +81,9 @@ float data_limit(float data,float toplimit,float lowerlimit)
   * @retval None
 ************************************************/
 float VariableParameter(float error)
-{
+{	
 	float  result = 0;
+	return 1.0f;
 	
 	if(error < 0)
 	{

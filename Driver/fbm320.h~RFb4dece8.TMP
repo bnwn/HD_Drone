@@ -42,7 +42,7 @@ bool fbm320_init(void);
 int32_t fbm320_read_long_data(void);
 
 /**
- * @brief timer procedure, call in 50Hz
+ * @brief timer procedure, call in 100us
  */
 void fbm320_timer_procedure(void);
 

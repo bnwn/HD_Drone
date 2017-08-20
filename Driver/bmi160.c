@@ -106,7 +106,7 @@ bool configure_gyro(void)
     /* The sensitivity in LSb/degrees/s a gyro range i can be calculated with:
      *     2 ^ 16 / (2 * 2000 / 2 ^ i) = 2 ^ (14 + i) / 1000
      * The scale is the inverse of that. */
-    _gyro_scale = Rad(1000.f / (1 << (14 + BMI160_GYR_RANGE)));
+    _gyro_scale = 1000.f / (1 << (14 + BMI160_GYR_RANGE));
 
     return true;
 }

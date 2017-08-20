@@ -53,7 +53,7 @@ void peripheral_init(void)
 		printf("console init success!\n");
 	
     /* I2C Bus device init */
-    I2C_Init(I2C0, 1000000);
+    I2C_Init(I2C0, I2C_CLOCK_FREQ);
     if (!fbm320_init()) {
 
     }
@@ -68,4 +68,27 @@ void peripheral_init(void)
 
     /* task scheduler timer init */
     scheduler_init();
+		
+		param_load();
+}
+
+void param_load(void)
+{
+		set_pid_param(&ctrl_loop.angle.pitch, CONTROL_ANGLE_LOOP_PITCH_KP, CONTROL_ANGLE_LOOP_PITCH_KI, \
+																					CONTROL_ANGLE_LOOP_PITCH_KD, OONTROL_ANGLE_LOOP_PITCH_INTEGRATOR_MAX, 0, 0.01f);
+	
+		set_pid_param(&ctrl_loop.angle.roll, CONTROL_ANGLE_LOOP_ROLL_KP, CONTROL_ANGLE_LOOP_ROLL_KI, \
+																					CONTROL_ANGLE_LOOP_ROLL_KD, OONTROL_ANGLE_LOOP_ROLL_INTEGRATOR_MAX, 0, 0.01f);
+	
+		set_pid_param(&ctrl_loop.angle.yaw, CONTROL_ANGLE_LOOP_YAW_KP, CONTROL_ANGLE_LOOP_YAW_KI, \
+																					CONTROL_ANGLE_LOOP_YAW_KD, OONTROL_ANGLE_LOOP_YAW_INTEGRATOR_MAX, 0, 0.01f);
+	
+		set_pid_param(&ctrl_loop.rate.pitch, CONTROL_RATE_LOOP_PITCH_KP, CONTROL_RATE_LOOP_PITCH_KI, \
+																					CONTROL_RATE_LOOP_PITCH_KD, OONTROL_RATE_LOOP_PITCH_INTEGRATOR_MAX, 20, 0.01f);
+	
+		set_pid_param(&ctrl_loop.rate.roll, CONTROL_RATE_LOOP_ROLL_KP, CONTROL_RATE_LOOP_ROLL_KI, \
+																					CONTROL_RATE_LOOP_ROLL_KD, OONTROL_RATE_LOOP_ROLL_INTEGRATOR_MAX, 20, 0.01f);
+	
+		set_pid_param(&ctrl_loop.rate.yaw, CONTROL_RATE_LOOP_YAW_KP, CONTROL_RATE_LOOP_YAW_KI, \
+																					CONTROL_RATE_LOOP_YAW_KD, OONTROL_RATE_LOOP_YAW_INTEGRATOR_MAX, 0.5, 0.01f);
 }

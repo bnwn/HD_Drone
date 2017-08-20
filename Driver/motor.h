@@ -10,6 +10,10 @@
 
 #if VEHICLE_FRAME == QUAD
 #define MOTOR_MAX_NUM 4
+#define MOTOR1_INDEX 3
+#define MOTOR2_INDEX 2
+#define MOTOR3_INDEX 1
+#define MOTOR4_INDEX 0
 #elif VEHICLE_FRAME == HEXA
 #define MOTOR_MAX_MUM 6
 #else
@@ -25,7 +29,7 @@
 #elif MOTOR_TYPE == DC
 #define MOTOR_PWM_FREQ 20000 // uint(20KHz)
 #define MOTOR_MIN_PWM 0
-#define MOTOR_MIN_PWM_DUTY 0
+#define MOTOR_MIN_PWM_DUTY 1
 #endif
 
 #define MOTOR_DISARMED PWM_Stop(PWM, 0xff);
@@ -45,9 +49,9 @@ void motor_init(void);
  * @brief update motor pwm output
  * @param _duty
  */
-void motor_update(int32_t *_duty);
+void motor_update(float *_duty);
 
 
-extern int32_t motor_duty[MOTOR_MAX_NUM];
+extern float motor_duty[MOTOR_MAX_NUM];
 
 #endif

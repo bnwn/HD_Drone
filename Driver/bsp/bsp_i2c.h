@@ -5,6 +5,7 @@
 #include "i2c.h"
 
 #define PAGE_SIZE 1024
+#define I2C_CLOCK_FREQ 1000000
 
 /*
  * Define functions prototype

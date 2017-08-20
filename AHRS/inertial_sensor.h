@@ -1,12 +1,12 @@
 #ifndef __INERTIAL_SENSOR_H
 #define __INERTIAL_SENSOR_H
 
-#define SENSOR_BMI160 0
+ #define SENSOR_BMI160 0
 
 #define SENSOR_TYPE SENSOR_BMI160
 
 /*----------------ÍÓÂÝÒÇ²É¼¯ÏÞ·ù--------------------*/
-#define GYRO_GATHER   50
+#define GYRO_GATHER   70
 
 void inertial_sensor_read(void);
 void gyro_caloffest(float x,float y,float z,uint16_t amount);

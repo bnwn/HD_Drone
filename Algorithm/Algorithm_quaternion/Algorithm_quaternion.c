@@ -75,8 +75,8 @@ void Quaternion_ToAngE( Quaternion *pNumQ, EulerAngle *pAngE )
   float NumQ_T33 = pNumQ->q0*pNumQ->q0 - pNumQ->q1*pNumQ->q1 - pNumQ->q2*pNumQ->q2 + pNumQ->q3*pNumQ->q3;
 
   pAngE->Pitch = -asinf(NumQ_T13);
-  pAngE->Roll    = atan2f(NumQ_T23, NumQ_T33);
-	pAngE->Yaw    = atan2f(NumQ_T12, NumQ_T11);
+  pAngE->Roll    = -atan2f(NumQ_T23, NumQ_T33);
+	pAngE->Yaw    = -atan2f(NumQ_T12, NumQ_T11);
 #if 0
 	if(flag.MagIssue || !flag.MagExist)
 		pAngE->Yaw    = atan2f(NumQ_T12, NumQ_T11);

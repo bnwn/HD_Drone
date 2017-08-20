@@ -16,6 +16,24 @@ void set_pid_param(Pid_t *_pid, float _kp, float _ki, float _kd, float _imax, fl
     set_pid_filt_hz(_pid, _filt_hz);
 }
 
+void set_pid_param_p(Pid_t *_pid, float _kp)
+{
+    _pid->kp = _kp;
+}
+
+void set_pid_param_i(Pid_t *_pid, float _ki)
+{
+    _pid->ki = _ki;
+    _pid->integrator = 0;
+}
+
+void set_pid_param_d(Pid_t *_pid, float _kd)
+{
+    _pid->kd = _kd;
+    _pid->derivative = 0;
+}
+
+
 // filt_hz - set input filter hz
 void set_pid_filt_hz(Pid_t *_pid, float _hz)
 {

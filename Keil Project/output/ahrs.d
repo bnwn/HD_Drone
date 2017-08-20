@@ -25,3 +25,4 @@
 .\output\ahrs.o: ..\AHRS\../Algorithm/Algorithm_math/Algorithm_math.h
 .\output\ahrs.o: ..\AHRS\../Algorithm/Algorithm_math/mymath.h
 .\output\ahrs.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\output\ahrs.o: ..\Scheduler\scheduler.h

@@ -40,8 +40,8 @@ bool set_flight_mode(enum Flight_Mode _mode)
 
     if (success) {
         exit_mode(control_mode);
-        control_mode = _mode;
         prev_control_mode = control_mode;
+        control_mode = _mode;
     }
 		
 		return success;
@@ -101,11 +101,17 @@ bool stabilize_init(bool _ignore_checks)
 void stabilize_run(void)
 {
     float target_roll, target_pitch;
-    float target_yaw_rate, throttle;
+    float target_yaw_rate, target_throttle;
     float pilot_throttle_scaled;
 
-    attitude_angle_euler_controller(target_roll, target_pitch, target_yaw_rate, get_smoothing_gain(), 0.025f);
-    attitude_throttle_controller(throttle);
+    //attitude_angle_euler_controller(target_roll, target_pitch, target_yaw_rate, get_smoothing_gain(), 0.025f);
+    //attitude_throttle_controller(throttle);
+	
+		target_throttle = trace_throttle;
+		//printf("target throttle:%d \n", (int16_t)(target_throttle * 100));
+//		printf("target angle roll:%d\n", (int16_t)(trace_attitude_ang.roll * 100));
+	  attitude_angle_euler_controller(trace_attitude_ang.roll, trace_attitude_ang.pitch, trace_attitude_ang.yaw, get_smoothing_gain(), 0.025f);
+    attitude_throttle_controller(target_throttle);
 
 #if 0
     // if not armed set throttle to zero and exit immediately

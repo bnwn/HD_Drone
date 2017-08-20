@@ -8,6 +8,33 @@
 #include "../Algorithm/Algorithm_pid/Algorithm_pid.h"
 #include "motor_control.h"
 
+#define CONTROL_ANGLE_LOOP_ROLL_KP 0.0f
+#define CONTROL_ANGLE_LOOP_ROLL_KI 0.0f
+#define OONTROL_ANGLE_LOOP_ROLL_INTEGRATOR_MAX 0.0f
+#define CONTROL_ANGLE_LOOP_ROLL_KD 0.0f
+#define CONTROL_ANGLE_LOOP_PITCH_KP 0.0f
+#define OONTROL_ANGLE_LOOP_PITCH_INTEGRATOR_MAX 0.0f
+#define CONTROL_ANGLE_LOOP_PITCH_KI 0.0f
+#define CONTROL_ANGLE_LOOP_PITCH_KD 0.0f
+#define CONTROL_ANGLE_LOOP_YAW_KP 0.0f
+#define CONTROL_ANGLE_LOOP_YAW_KI 0.0f
+#define OONTROL_ANGLE_LOOP_YAW_INTEGRATOR_MAX 0.0f
+#define CONTROL_ANGLE_LOOP_YAW_KD 0.0f
+#define CONTROL_RATE_LOOP_ROLL_KP 0.008f
+#define CONTROL_RATE_LOOP_ROLL_KI 0.008f
+#define OONTROL_RATE_LOOP_ROLL_INTEGRATOR_MAX 0.1f
+#define CONTROL_RATE_LOOP_ROLL_KD 0.0008f
+#define CONTROL_RATE_LOOP_PITCH_KP 0.008f
+#define CONTROL_RATE_LOOP_PITCH_KI 0.008f
+#define OONTROL_RATE_LOOP_PITCH_INTEGRATOR_MAX 0.1f
+#define CONTROL_RATE_LOOP_PITCH_KD 0.0008f
+#define CONTROL_RATE_LOOP_YAW_KP 0.0f
+#define CONTROL_RATE_LOOP_YAW_KI 0.0f
+#define OONTROL_RATE_LOOP_YAW_INTEGRATOR_MAX 0.1f
+#define CONTROL_RATE_LOOP_YAW_KD 0.0f
+
+
+
 /* function prototype */
 void attitude_angle_rate_controller(void);
 float axis_target_pid_cal(Pid_t *_pid, float _target, float _current);
@@ -34,5 +61,7 @@ typedef struct {
 extern _Ctrl ctrl_loop;
 extern _Target_Attitude attitude_target_ang_vel;
 extern _Target_Attitude attitude_target_ang;
+extern _Target_Attitude trace_attitude_ang;
+extern _Target_Attitude trace_attituce_ang_vel;
 
 #endif

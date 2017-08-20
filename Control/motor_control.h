@@ -19,7 +19,9 @@ void set_motor_roll(float _thrust);
 void set_motor_pitch(float _thrust);
 void set_motor_yaw(float _thrust);
 void set_motor_throttle(float _thrust);
+void set_trace_throttle(float _thr);
 
 extern Thrust thrust;
 extern float target_throttle;
+extern float trace_throttle;
 #endif

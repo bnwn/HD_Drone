@@ -20,6 +20,9 @@ typedef struct {
 
 /* function prototype */
 void set_pid_param(Pid_t *_pid, float _kp, float _ki, float _kd, float _imax, float _filt_hz, float dt);
+void set_pid_param_p(Pid_t *_pid, float _kp);
+void set_pid_param_i(Pid_t *_pid, float _ki);
+void set_pid_param_d(Pid_t *_pid, float _kd);
 void set_pid_filt_hz(Pid_t *_pid, float _hz);
 void set_pid_input(Pid_t *_pid, float _input);
 void set_input_filter_all(Pid_t *_pid, float _input);

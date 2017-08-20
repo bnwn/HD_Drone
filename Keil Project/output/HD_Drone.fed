@@ -1,4 +1,4 @@
-;#<FEEDBACK># ARM Linker, 5060183: Last Updated: Tue Aug 15 21:21:23 2017
+;#<FEEDBACK># ARM Linker, 5060183: Last Updated: Sun Aug 20 21:43:15 2017
 ;VERSION 0.2
 ;FILE acmp.o
 ACMP_Close <= USED 0
@@ -20,6 +20,7 @@ ADC_SetExtraSampleTime <= USED 0
 __asm___5_adc_c_26cd6614____REV16 <= USED 0
 __asm___5_adc_c_26cd6614____REVSH <= USED 0
 ;FILE ahrs.o
+AHRS_Read_Attitude <= USED 0
 __asm___6_ahrs_c_NumQ____REV16 <= USED 0
 __asm___6_ahrs_c_NumQ____REVSH <= USED 0
 ;FILE algorithm_filter.o
@@ -40,15 +41,10 @@ data_limit <= USED 0
 ;FILE algorithm_pid.o
 __asm___15_Algorithm_pid_c_61a19061____REV16 <= USED 0
 __asm___15_Algorithm_pid_c_61a19061____REVSH <= USED 0
-get_filt_alpha <= USED 0
 get_integrator <= USED 0
-get_pid_output <= USED 0
 reset_pid_D <= USED 0
 reset_pid_I <= USED 0
 set_input_filter_all <= USED 0
-set_pid_filt_hz <= USED 0
-set_pid_input <= USED 0
-set_pid_param <= USED 0
 ;FILE algorithm_quaternion.o
 Quaternion_Multiply <= USED 0
 Quaternion_ToNumQ <= USED 0
@@ -57,10 +53,6 @@ __asm___22_Algorithm_quaternion_c_fdc3695e____REVSH <= USED 0
 ;FILE attitude_control.o
 __asm___18_attitude_control_c_9564a26e____REV16 <= USED 0
 __asm___18_attitude_control_c_9564a26e____REVSH <= USED 0
-attitude_angle_euler_controller <= USED 0
-attitude_angle_rate_controller <= USED 0
-attitude_throttle_controller <= USED 0
-axis_target_pid_cal <= USED 0
 ;FILE bmi160.o
 __asm___8_bmi160_c_6c3b817e____REV16 <= USED 0
 __asm___8_bmi160_c_6c3b817e____REVSH <= USED 0
@@ -96,9 +88,6 @@ __asm___8_fbm320_c_8c0545fd____REVSH <= USED 0
 __asm___21_flight_mode_control_c_815d2a39____REV16 <= USED 0
 __asm___21_flight_mode_control_c_815d2a39____REVSH <= USED 0
 exit_mode <= USED 0
-get_smoothing_gain <= USED 0
-stabilize_run <= USED 0
-update_flight_mode <= USED 0
 ;FILE fmc.o
 FMC_Close <= USED 0
 FMC_Erase <= USED 0
@@ -153,16 +142,9 @@ __asm___6_main_c_main____REVSH <= USED 0
 ;FILE motor.o
 __asm___7_motor_c_d71f47f0____REV16 <= USED 0
 __asm___7_motor_c_d71f47f0____REVSH <= USED 0
-motor_update <= USED 0
 ;FILE motor_control.o
 __asm___15_motor_control_c_thrust____REV16 <= USED 0
 __asm___15_motor_control_c_thrust____REVSH <= USED 0
-motors_output <= USED 0
-set_motor_pitch <= USED 0
-set_motor_roll <= USED 0
-set_motor_throttle <= USED 0
-set_motor_yaw <= USED 0
-throttle_control <= USED 0
 ;FILE mymath.o
 To_180_degrees <= USED 0
 __asm___8_mymath_c_f480d7f9____REV16 <= USED 0
@@ -221,8 +203,8 @@ ferror <= USED 0
 fgetc <= USED 0
 kbhit <= USED 0
 ;FILE scheduler.o
-__asm___11_scheduler_c_0cce68c6____REV16 <= USED 0
-__asm___11_scheduler_c_0cce68c6____REVSH <= USED 0
+__asm___11_scheduler_c_1163d568____REV16 <= USED 0
+__asm___11_scheduler_c_1163d568____REVSH <= USED 0
 ;FILE spi.o
 SPI_Close <= USED 0
 SPI_DisableAutoSS <= USED 0
@@ -268,7 +250,6 @@ UART_ClearIntFlag <= USED 0
 UART_Close <= USED 0
 UART_DisableInt <= USED 0
 UART_EnableInt <= USED 0
-UART_Read <= USED 0
 UART_SetLine_Config <= USED 0
 UART_SetTimeoutCnt <= USED 0
 UART_Write <= USED 0

@@ -31,6 +31,8 @@ void inertial_sensor_read(void)
     inertial_sensor.gyro.relative.x = inertial_sensor.gyro.average.x - inertial_sensor.gyro.quiet.x;
     inertial_sensor.gyro.relative.y = inertial_sensor.gyro.average.y - inertial_sensor.gyro.quiet.y;
     inertial_sensor.gyro.relative.z = inertial_sensor.gyro.average.z - inertial_sensor.gyro.quiet.z;
+		
+		//printf("relative:%d, average:%d, quiet：%d\n", inertial_sensor.accel.relative.x, inertial_sensor.accel.average.x, inertial_sensor.accel.quiet.x);
 
     // 加速度计IIR滤波
     inertial_sensor.accel.filter.x = IIR_I_Filter(inertial_sensor.accel.relative.x, InPut_IIR[0], OutPut_IIR[0], b_IIR, IIR_ORDER+1, a_IIR, IIR_ORDER+1);
@@ -45,6 +47,10 @@ void inertial_sensor_read(void)
     inertial_sensor.gyro.filter.z = LPF_1st(last_gyro.z, inertial_sensor.gyro.relative.z * _gyro_scale, 0.386f);
     last_gyro.z = inertial_sensor.gyro.filter.z;//
 		
+		//printf("filter. %.3f %.3f %.3f, average. %d %d %d\n", inertial_sensor.accel.filter.x, inertial_sensor.accel.filter.y, inertial_sensor.accel.filter.z, \
+																													inertial_sensor.accel.average.x, inertial_sensor.accel.average.y, inertial_sensor.accel.average.z);
+		//printf("filter. %.3f %.3f %.3f, average. %d %d %d\n", inertial_sensor.gyro.filter.x, inertial_sensor.gyro.filter.y, inertial_sensor.gyro.filter.z, \
+																													inertial_sensor.gyro.average.x, inertial_sensor.gyro.average.y, inertial_sensor.gyro.average.z);
 }
 
 /*====================================================================================================*/
@@ -87,7 +93,7 @@ void gyro_offset(void)
 
     while(!over_flag)	//此循环是确保四轴处于完全静止状态
     {
-        if(cnt_g < 30)
+        if(cnt_g < 100)
         {
             switch (SENSOR_TYPE) {
                 case SENSOR_BMI160:
@@ -157,10 +163,10 @@ void accel_offset(void)
 				default:
 						break;
 				}
+				delay_ms(1);
         tempax+= inertial_sensor.accel.average.x;
         tempay+= inertial_sensor.accel.average.y;
         tempaz+= inertial_sensor.accel.average.z;
-        cnt_a++;
     }
     inertial_sensor.accel.quiet.x = tempax/cnt_a;
     inertial_sensor.accel.quiet.y = tempay/cnt_a;

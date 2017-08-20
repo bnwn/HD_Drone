@@ -24,4 +24,6 @@ void system_init(void);
 
 void peripheral_init(void);
 
+void param_load(void);
+
 #endif

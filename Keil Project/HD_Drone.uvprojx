@@ -473,14 +473,14 @@
               <FilePath>..\Control\flight_mode_control.c</FilePath>
             </File>
             <File>
-              <FileName>position_control.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Control\position_control.c</FilePath>
-            </File>
-            <File>
               <FileName>motor_control.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Control\motor_control.c</FilePath>
+            </File>
+            <File>
+              <FileName>position_control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Control\position_control.c</FilePath>
             </File>
           </Files>
         </Group>

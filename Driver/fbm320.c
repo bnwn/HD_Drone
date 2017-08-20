@@ -46,7 +46,7 @@ int32_t fbm320_read_long_data(void)
 }
 
 /**
- * @brief timer procedure, call in 100us
+ * @brief timer procedure, call in 50Hz
  */
 void fbm320_timer_procedure(void)
 {
@@ -56,11 +56,11 @@ void fbm320_timer_procedure(void)
     case 0:
         I2C_WriteByte(FBM320_SLAVE_ADDRESS, FBM320_REG_CMD, FBM320_READ_PRESSURE);
         break;
-    case 107: // 10.7ms
+    case 1: // (20)10.7ms
         fbm320_packet.UP = fbm320_read_long_data();
         I2C_WriteByte(FBM320_SLAVE_ADDRESS, FBM320_REG_CMD, FBM320_READ_TEMPERATURE);
         break;
-    case 132: // delay 2.5ms
+    case 2: // (40)delay 2.5ms
         fbm320_packet.UT = fbm320_read_long_data();
         I2C_WriteByte(FBM320_SLAVE_ADDRESS, FBM320_REG_CMD, FBM320_READ_PRESSURE);
 
@@ -71,7 +71,7 @@ void fbm320_timer_procedure(void)
         break;
     }
 
-    if (timer_count < 133)
+    if (timer_count < 3)
         timer_count++;
     else
         timer_count = 1;

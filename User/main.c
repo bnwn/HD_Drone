@@ -13,9 +13,10 @@ int main(void)
 		gyro_offset();
 		accel_offset();
 		printf("collect complete\n");
-		SCHEDULER_RUN;
+		SCHEDULER_RUN;	
+	
     while(1) {
-        /* low priority task scheduler */
+        /* task scheduler */
         scheduler_run();
     }
 
