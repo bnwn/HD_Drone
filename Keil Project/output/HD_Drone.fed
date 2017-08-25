@@ -1,4 +1,4 @@
-;#<FEEDBACK># ARM Linker, 5060183: Last Updated: Sun Aug 20 21:43:15 2017
+;#<FEEDBACK># ARM Linker, 5060183: Last Updated: Fri Aug 25 17:02:49 2017
 ;VERSION 0.2
 ;FILE acmp.o
 ACMP_Close <= USED 0
@@ -37,7 +37,6 @@ applyDeadband <= USED 0
 array_assign <= USED 0
 array_astrict <= USED 0
 constrain <= USED 0
-data_limit <= USED 0
 ;FILE algorithm_pid.o
 __asm___15_Algorithm_pid_c_61a19061____REV16 <= USED 0
 __asm___15_Algorithm_pid_c_61a19061____REVSH <= USED 0
@@ -60,6 +59,9 @@ __asm___8_bmi160_c_6c3b817e____REVSH <= USED 0
 I2C_PageWrite <= USED 0
 __asm___9_bsp_i2c_c_I2C_Init____REV16 <= USED 0
 __asm___9_bsp_i2c_c_I2C_Init____REVSH <= USED 0
+;FILE bsp_spi.o
+__asm___9_bsp_spi_c_1b04b235____REV16 <= USED 0
+__asm___9_bsp_spi_c_1b04b235____REVSH <= USED 0
 ;FILE clk.o
 CLK_DisableModuleClock <= USED 0
 CLK_DisablePLL <= USED 0
@@ -88,6 +90,8 @@ __asm___8_fbm320_c_8c0545fd____REVSH <= USED 0
 __asm___21_flight_mode_control_c_815d2a39____REV16 <= USED 0
 __asm___21_flight_mode_control_c_815d2a39____REVSH <= USED 0
 exit_mode <= USED 0
+set_flight_mode <= USED 0
+stabilize_init <= USED 0
 ;FILE fmc.o
 FMC_Close <= USED 0
 FMC_Erase <= USED 0
@@ -192,6 +196,11 @@ PWM_GetZeroIntFlag <= USED 0
 PWM_Stop <= USED 0
 __asm___5_pwm_c_03ee09af____REV16 <= USED 0
 __asm___5_pwm_c_03ee09af____REVSH <= USED 0
+;FILE rc_channel.o
+__asm___12_rc_channel_c_ccc456d5____REV16 <= USED 0
+__asm___12_rc_channel_c_ccc456d5____REVSH <= USED 0
+norm_input <= USED 0
+norm_input_dz <= USED 0
 ;FILE retarget.o
 GetChar <= USED 0
 IsDebugFifoEmpty <= USED 0
@@ -202,9 +211,20 @@ _ttywrch <= USED 0
 ferror <= USED 0
 fgetc <= USED 0
 kbhit <= USED 0
+;FILE rf.o
+RF_Carrier <= USED 0
+RF_SetChannel <= USED 0
+RF_TxMode <= USED 0
+RF_Tx_CheckResult <= USED 0
+RF_Tx_TransmintData <= USED 0
+__asm___4_rf_c_f3462bf4____REV16 <= USED 0
+__asm___4_rf_c_f3462bf4____REVSH <= USED 0
+ucRF_GetRSSI <= USED 0
 ;FILE scheduler.o
 __asm___11_scheduler_c_1163d568____REV16 <= USED 0
 __asm___11_scheduler_c_1163d568____REVSH <= USED 0
+sched_200Hzloop <= USED 0
+sched_5Hzloop <= USED 0
 ;FILE spi.o
 SPI_Close <= USED 0
 SPI_DisableAutoSS <= USED 0
@@ -212,8 +232,6 @@ SPI_DisableInt <= USED 0
 SPI_EnableAutoSS <= USED 0
 SPI_EnableInt <= USED 0
 SPI_GetBusClock <= USED 0
-SPI_Open <= USED 0
-SPI_SetBusClock <= USED 0
 __asm___5_spi_c_SPI_Open____REV16 <= USED 0
 __asm___5_spi_c_SPI_Open____REVSH <= USED 0
 ;FILE startup_pn020series.o

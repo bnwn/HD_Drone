@@ -46,7 +46,10 @@ void scheduler_run(void)
 		/* main loop */
 		fast_loop();
 		//test = micro_ticker - test;
-		//printf("using time:%d\n", test); 
+		
+//		test = micro_ticker;
+//		test = micro_ticker - test;
+//		printf("using time:%d\n", test); 
 	
 		/* low priority task call in 200Hz, 100Hz, 50Hz, 20Hz, 10Hz, 5Hz, 1Hz */
 		low_priority_loop();
@@ -68,18 +71,18 @@ void fast_loop(void)
 		AHRS_Update();
 		
 		update_flight_mode();
-
+			
 		slice_flag.main_loop = false;
 }
 
 void low_priority_loop(void)
 {
-		sched_200Hzloop();
+//		sched_200Hzloop();
 		sched_100Hzloop();
 		sched_50Hzloop();
 		sched_20Hzloop();
 		sched_10Hzloop();
-		sched_5Hzloop();
+//		sched_5Hzloop();
 		sched_1Hzloop();
 }
 
@@ -99,6 +102,7 @@ void sched_100Hzloop(void)
 				return;
 		}
 		
+		
 		slice_flag.loop_100Hz = false;
 }
 
@@ -107,7 +111,8 @@ void sched_50Hzloop(void)
 		if (!slice_flag.loop_50Hz) {
 				return;
 		}
-		
+				
+		rc_channel_read();
 		fbm320_timer_procedure();  // update absolute altitude about 16.7Hz
 		
 		slice_flag.loop_50Hz = false;
@@ -120,13 +125,19 @@ void sched_20Hzloop(void)
 				return;
 		}
 		
-		set_flight_mode(Stabilize);
 		//AHRS_Read_Attitude(&_ahrs);
 		//printf("attitude:%d, %d, %d\n", (int16_t)(100*_ahrs.Roll), (int16_t)(100*_ahrs.Pitch), (int16_t)(100*_ahrs.Yaw));
 		//printf("roll:%3.3f, pitch:%3.3f, yaw:%3.3f\n", (float)(_ahrs.Roll), (float)(_ahrs.Pitch), (float)(_ahrs.Yaw));
-//				printf("%d, %d, %d, %d, %d, %d \n", (int16_t)inertial_sensor.accel.filter.x, (int16_t)inertial_sensor.accel.filter.y, (int16_t)inertial_sensor.accel.filter.z, \
-//																	(int16_t)inertial_sensor.gyro.filter.x, (int16_t)inertial_sensor.gyro.filter.y, (int16_t)inertial_sensor.gyro.filter.z);
-		//printf("attitude:%d, %d, %d\n", (int16_t)(100*ahrs.Roll), (int16_t)(100*ahrs.Pitch), (int16_t)(100*ahrs.Yaw));
+//		printf("%d, %d, %d \n", (int16_t)inertial_sensor.accel.filter.x, (int16_t)inertial_sensor.accel.filter.y, (int16_t)inertial_sensor.accel.filter.z);
+//		printf("%d, %d, %d \n", (int16_t)inertial_sensor.gyro.filter.x, (int16_t)inertial_sensor.gyro.filter.y, (int16_t)inertial_sensor.gyro.filter.z);
+//		printf("attitude:%d, %d, %d\n", (int16_t)(100*ahrs.Roll), (int16_t)(100*ahrs.Pitch), (int16_t)(100*ahrs.Yaw));
+//		printf ("%d, %d, %d, %d\n", (int16_t)(motor_duty[MOTOR1_INDEX]*1000), (int16_t)(motor_duty[MOTOR2_INDEX]*1000), (int16_t)(motor_duty[MOTOR3_INDEX]*1000), \
+																														(int16_t)(motor_duty[MOTOR4_INDEX]*1000));
+		
+//		printf("ch1:%d, ch2:%d, ch3:%d, ch4:%d, ch5:%d, ch6:%d, ch7:%d, ch8:%d, ch9:%d, ch10:%d, ch11:%d, ch12:%d\n", rc_channels[0].rc_in, rc_channels[1].rc_in, rc_channels[2].rc_in, \
+//																																			rc_channels[3].rc_in, rc_channels[4].rc_in, rc_channels[5].rc_in, rc_channels[6].rc_in, rc_channels[7].rc_in, \
+//																																			rc_channels[8].rc_in, rc_channels[9].rc_in, rc_channels[10].rc_in, rc_channels[11].rc_in);
+		printf("altitude: %d cm\n", fbm320_packet.Altitude);
 		
 		slice_flag.loop_20Hz = false;
 }

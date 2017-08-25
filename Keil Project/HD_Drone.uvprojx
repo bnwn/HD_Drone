@@ -334,7 +334,7 @@
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>..\Library\CMSIS\Include;..\Library\Device\Panchip\PN020Series\Include;..\Library\StdDriver\inc;..\Driver;..\AHRS;..\Algorithm\Algorithm_filter;..\Algorithm\Algorithm_pid;..\Algorithm\Algorithm_math;..\Algorithm\Algorithm_quaternion;..\Algorithm\Algorithm_sqLite;..\Control;..\Driver;..\Driver\bsp;..\Scheduler;..\User</IncludePath>
+              <IncludePath>..\Library\CMSIS\Include;..\Library\Device\Panchip\PN020Series\Include;..\Library\StdDriver\inc;..\Driver;..\AHRS;..\Algorithm\Algorithm_filter;..\Algorithm\Algorithm_pid;..\Algorithm\Algorithm_math;..\Algorithm\Algorithm_quaternion;..\Algorithm\Algorithm_sqLite;..\Control;..\Driver;..\Driver\bsp;..\Scheduler;..\User;..\RC</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -527,6 +527,11 @@
               <FileType>1</FileType>
               <FilePath>..\Driver\bsp\uart_console.c</FilePath>
             </File>
+            <File>
+              <FileName>bsp_spi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Driver\bsp\bsp_spi.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -601,6 +606,21 @@
               <FileName>wwdt.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Library\StdDriver\src\wwdt.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>RC</GroupName>
+          <Files>
+            <File>
+              <FileName>rc_channel.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\RC\rc_channel.c</FilePath>
+            </File>
+            <File>
+              <FileName>rf.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\RC\rf.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -176,3 +176,17 @@ void accel_offset(void)
     //EE_SAVE_ACC_OFFSET();//±£´æÊý¾Ý
 }
 
+_Vector_Float get_inertial_vel(void)
+{
+		_Vector_Float _vel = {0};
+		
+		/* rotation */
+		_vel.x = inertial_sensor.gyro.filter.x * -1;
+		_vel.y = inertial_sensor.gyro.filter.y;
+		_vel.z = inertial_sensor.gyro.filter.z * -1;
+		
+		return _vel;
+}
+
+
+

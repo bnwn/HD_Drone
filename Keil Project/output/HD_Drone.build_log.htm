@@ -22,7 +22,7 @@ Dialog DLL:      TARMCM1.DLL V1.10.0.0
  
 <h2>Project:</h2>
 C:\Users\Administrator.DESKTOP-ZXM\Desktop\workspace\HD_Drone\HD_Drone_Firmware\Keil Project\HD_Drone.uvprojx
-Project File Date:  08/15/2017
+Project File Date:  08/20/2017
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 2 (build 183)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
@@ -34,7 +34,7 @@ compiling fbm320.c...
 compiling motor.c...
 ..\Driver\motor.c(33): warning:  #223-D: function "printf" declared implicitly
                 printf("period0:%d, period1:%d, period2:%d, period3:%d, motor_duty_range:%d\n", PWM->PERIOD0, PWM->PERIOD1, PWM->PERIOD2, PWM->PERIOD3, motor_duty_range);
-..\Driver\motor.c(62): warning:  #29-D: expected an expression
+..\Driver\motor.c(63): warning:  #29-D: expected an expression
   #elif
 ..\Driver\motor.c: 2 warnings, 0 errors
 compiling common.c...
@@ -65,16 +65,14 @@ compiling flight_mode_control.c...
       float pilot_throttle_scaled;
 ..\Control\flight_mode_control.c: 4 warnings, 0 errors
 compiling motor_control.c...
-..\Control\motor_control.c(26): warning:  #223-D: function "printf" declared implicitly
-                printf ("%d, %d, %d, %d\n", (int16_t)(motor_duty[MOTOR1_INDEX]*1000), (int16_t)(motor_duty[MOTOR2_INDEX]*1000), (int16_t)(motor_duty[MOTOR3_INDEX]*1000), \
 ..\Control\motor_control.c(150): warning:  #223-D: function "printf" declared implicitly
         printf("trace throttle: %.3f\n", trace_throttle);
-..\Control\motor_control.c: 2 warnings, 0 errors
+..\Control\motor_control.c: 1 warning, 0 errors
 compiling position_control.c...
 compiling scheduler.c...
 ..\Scheduler\scheduler.c(43): warning:  #177-D: variable "test" was declared but never referenced
           static uint32_t test = 0;
-..\Scheduler\scheduler.c(118): warning:  #177-D: variable "_ahrs" was declared but never referenced
+..\Scheduler\scheduler.c(123): warning:  #177-D: variable "_ahrs" was declared but never referenced
                 EulerAngle _ahrs;
 ..\Scheduler\scheduler.c: 2 warnings, 0 errors
 compiling ahrs.c...
@@ -164,6 +162,7 @@ compiling uart_console.c...
 ..\Driver\bsp\uart_console.c(387): warning:  #223-D: function "printf" declared implicitly
                                                 printf("set throttle thrust: %.6f\n", _data);
 ..\Driver\bsp\uart_console.c: 32 warnings, 0 errors
+compiling bsp_spi.c...
 compiling acmp.c...
 compiling adc.c...
 compiling clk.c...
@@ -178,9 +177,30 @@ compiling timer.c...
 compiling uart.c...
 compiling wdt.c...
 compiling wwdt.c...
+compiling rc_channel.c...
+..\RC\rc_channel.c(17): warning:  #223-D: function "printf" declared implicitly
+                printf("rf xns104 init success\n");
+..\RC\rc_channel.c(24): warning:  #177-D: variable "data_buf_index" was declared but never referenced
+                static uint8_t buf_index = 0, data_buf_index = 0, rc_data_len = 0;
+..\RC\rc_channel.c(24): warning:  #177-D: variable "rc_data_len" was declared but never referenced
+                static uint8_t buf_index = 0, data_buf_index = 0, rc_data_len = 0;
+..\RC\rc_channel.c(25): warning:  #177-D: variable "step" was declared but never referenced
+                static uint8_t step = RC_START;
+..\RC\rc_channel.c(26): warning:  #177-D: variable "rc_data_update" was declared but never referenced
+                static bool rc_data_update = false;
+..\RC\rc_channel.c(28): warning:  #177-D: variable "current_index" was declared but never referenced
+                uint8_t current_index = 0;
+..\RC\rc_channel.c(29): warning:  #177-D: variable "j" was declared but never referenced
+                uint8_t j = 0;
+..\RC\rc_channel.c(129): warning:  #177-D: function "packet_parse" was declared but never referenced
+  static void packet_parse(void)
+..\RC\rc_channel.c(8): warning:  #177-D: variable "pre_switch" was declared but never referenced
+  static uint8_t pre_switch = 0;
+..\RC\rc_channel.c: 9 warnings, 0 errors
+compiling rf.c...
 linking...
-Program Size: Code=24456 RO-data=616 RW-data=284 ZI-data=2028  
-".\output\HD_Drone.axf" - 0 Error(s), 52 Warning(s).
+Program Size: Code=26080 RO-data=624 RW-data=288 ZI-data=2196  
+".\output\HD_Drone.axf" - 0 Error(s), 60 Warning(s).
 
 *** Performing Cross-Module-Optimization:
 compiling bmi160.c...
@@ -188,7 +208,7 @@ compiling fbm320.c...
 compiling motor.c...
 ..\Driver\motor.c(33): warning:  #223-D: function "printf" declared implicitly
                 printf("period0:%d, period1:%d, period2:%d, period3:%d, motor_duty_range:%d\n", PWM->PERIOD0, PWM->PERIOD1, PWM->PERIOD2, PWM->PERIOD3, motor_duty_range);
-..\Driver\motor.c(62): warning:  #29-D: expected an expression
+..\Driver\motor.c(63): warning:  #29-D: expected an expression
   #elif
 ..\Driver\motor.c: 2 warnings, 0 errors
 compiling common.c...
@@ -217,15 +237,13 @@ compiling flight_mode_control.c...
       float pilot_throttle_scaled;
 ..\Control\flight_mode_control.c: 4 warnings, 0 errors
 compiling motor_control.c...
-..\Control\motor_control.c(26): warning:  #223-D: function "printf" declared implicitly
-                printf ("%d, %d, %d, %d\n", (int16_t)(motor_duty[MOTOR1_INDEX]*1000), (int16_t)(motor_duty[MOTOR2_INDEX]*1000), (int16_t)(motor_duty[MOTOR3_INDEX]*1000), \
 ..\Control\motor_control.c(150): warning:  #223-D: function "printf" declared implicitly
         printf("trace throttle: %.3f\n", trace_throttle);
-..\Control\motor_control.c: 2 warnings, 0 errors
+..\Control\motor_control.c: 1 warning, 0 errors
 compiling scheduler.c...
 ..\Scheduler\scheduler.c(43): warning:  #177-D: variable "test" was declared but never referenced
           static uint32_t test = 0;
-..\Scheduler\scheduler.c(118): warning:  #177-D: variable "_ahrs" was declared but never referenced
+..\Scheduler\scheduler.c(123): warning:  #177-D: variable "_ahrs" was declared but never referenced
                 EulerAngle _ahrs;
 ..\Scheduler\scheduler.c: 2 warnings, 0 errors
 compiling ahrs.c...
@@ -315,6 +333,7 @@ compiling uart_console.c...
 ..\Driver\bsp\uart_console.c(387): warning:  #223-D: function "printf" declared implicitly
                                                 printf("set throttle thrust: %.6f\n", _data);
 ..\Driver\bsp\uart_console.c: 32 warnings, 0 errors
+compiling bsp_spi.c...
 compiling acmp.c...
 compiling adc.c...
 compiling clk.c...
@@ -329,14 +348,35 @@ compiling timer.c...
 compiling uart.c...
 compiling wdt.c...
 compiling wwdt.c...
+compiling rc_channel.c...
+..\RC\rc_channel.c(17): warning:  #223-D: function "printf" declared implicitly
+                printf("rf xns104 init success\n");
+..\RC\rc_channel.c(24): warning:  #177-D: variable "data_buf_index" was declared but never referenced
+                static uint8_t buf_index = 0, data_buf_index = 0, rc_data_len = 0;
+..\RC\rc_channel.c(24): warning:  #177-D: variable "rc_data_len" was declared but never referenced
+                static uint8_t buf_index = 0, data_buf_index = 0, rc_data_len = 0;
+..\RC\rc_channel.c(25): warning:  #177-D: variable "step" was declared but never referenced
+                static uint8_t step = RC_START;
+..\RC\rc_channel.c(26): warning:  #177-D: variable "rc_data_update" was declared but never referenced
+                static bool rc_data_update = false;
+..\RC\rc_channel.c(28): warning:  #177-D: variable "current_index" was declared but never referenced
+                uint8_t current_index = 0;
+..\RC\rc_channel.c(29): warning:  #177-D: variable "j" was declared but never referenced
+                uint8_t j = 0;
+..\RC\rc_channel.c(129): warning:  #177-D: function "packet_parse" was declared but never referenced
+  static void packet_parse(void)
+..\RC\rc_channel.c(8): warning:  #177-D: variable "pre_switch" was declared but never referenced
+  static uint8_t pre_switch = 0;
+..\RC\rc_channel.c: 9 warnings, 0 errors
+compiling rf.c...
 linking...
-Program Size: Code=19744 RO-data=584 RW-data=196 ZI-data=1852  
+Program Size: Code=20604 RO-data=596 RW-data=200 ZI-data=2020  
 compiling bmi160.c...
 compiling fbm320.c...
 compiling motor.c...
 ..\Driver\motor.c(33): warning:  #223-D: function "printf" declared implicitly
                 printf("period0:%d, period1:%d, period2:%d, period3:%d, motor_duty_range:%d\n", PWM->PERIOD0, PWM->PERIOD1, PWM->PERIOD2, PWM->PERIOD3, motor_duty_range);
-..\Driver\motor.c(62): warning:  #29-D: expected an expression
+..\Driver\motor.c(63): warning:  #29-D: expected an expression
   #elif
 ..\Driver\motor.c: 2 warnings, 0 errors
 compiling common.c...
@@ -365,15 +405,13 @@ compiling flight_mode_control.c...
       float pilot_throttle_scaled;
 ..\Control\flight_mode_control.c: 4 warnings, 0 errors
 compiling motor_control.c...
-..\Control\motor_control.c(26): warning:  #223-D: function "printf" declared implicitly
-                printf ("%d, %d, %d, %d\n", (int16_t)(motor_duty[MOTOR1_INDEX]*1000), (int16_t)(motor_duty[MOTOR2_INDEX]*1000), (int16_t)(motor_duty[MOTOR3_INDEX]*1000), \
 ..\Control\motor_control.c(150): warning:  #223-D: function "printf" declared implicitly
         printf("trace throttle: %.3f\n", trace_throttle);
-..\Control\motor_control.c: 2 warnings, 0 errors
+..\Control\motor_control.c: 1 warning, 0 errors
 compiling scheduler.c...
 ..\Scheduler\scheduler.c(43): warning:  #177-D: variable "test" was declared but never referenced
           static uint32_t test = 0;
-..\Scheduler\scheduler.c(118): warning:  #177-D: variable "_ahrs" was declared but never referenced
+..\Scheduler\scheduler.c(123): warning:  #177-D: variable "_ahrs" was declared but never referenced
                 EulerAngle _ahrs;
 ..\Scheduler\scheduler.c: 2 warnings, 0 errors
 compiling ahrs.c...
@@ -463,6 +501,7 @@ compiling uart_console.c...
 ..\Driver\bsp\uart_console.c(387): warning:  #223-D: function "printf" declared implicitly
                                                 printf("set throttle thrust: %.6f\n", _data);
 ..\Driver\bsp\uart_console.c: 32 warnings, 0 errors
+compiling bsp_spi.c...
 compiling acmp.c...
 compiling adc.c...
 compiling clk.c...
@@ -477,11 +516,32 @@ compiling timer.c...
 compiling uart.c...
 compiling wdt.c...
 compiling wwdt.c...
+compiling rc_channel.c...
+..\RC\rc_channel.c(17): warning:  #223-D: function "printf" declared implicitly
+                printf("rf xns104 init success\n");
+..\RC\rc_channel.c(24): warning:  #177-D: variable "data_buf_index" was declared but never referenced
+                static uint8_t buf_index = 0, data_buf_index = 0, rc_data_len = 0;
+..\RC\rc_channel.c(24): warning:  #177-D: variable "rc_data_len" was declared but never referenced
+                static uint8_t buf_index = 0, data_buf_index = 0, rc_data_len = 0;
+..\RC\rc_channel.c(25): warning:  #177-D: variable "step" was declared but never referenced
+                static uint8_t step = RC_START;
+..\RC\rc_channel.c(26): warning:  #177-D: variable "rc_data_update" was declared but never referenced
+                static bool rc_data_update = false;
+..\RC\rc_channel.c(28): warning:  #177-D: variable "current_index" was declared but never referenced
+                uint8_t current_index = 0;
+..\RC\rc_channel.c(29): warning:  #177-D: variable "j" was declared but never referenced
+                uint8_t j = 0;
+..\RC\rc_channel.c(129): warning:  #177-D: function "packet_parse" was declared but never referenced
+  static void packet_parse(void)
+..\RC\rc_channel.c(8): warning:  #177-D: variable "pre_switch" was declared but never referenced
+  static uint8_t pre_switch = 0;
+..\RC\rc_channel.c: 9 warnings, 0 errors
+compiling rf.c...
 linking...
-Program Size: Code=19744 RO-data=584 RW-data=196 ZI-data=1852  
+Program Size: Code=20604 RO-data=596 RW-data=200 ZI-data=2020  
 After Build - User command #1: fromelf --bin ".\output\HD_Drone.axf" --output ".\output\HD_Drone.bin"
 After Build - User command #2: fromelf --text -c ".\output\HD_Drone.axf" --output ".\output\HD_Drone.txt"
-".\output\HD_Drone.axf" - 0 Error(s), 52 Warning(s).
+".\output\HD_Drone.axf" - 0 Error(s), 60 Warning(s).
 *** Completed Cross-Module-Optimization after 3 iteration(s).
 
 <h2>Software Packages used:</h2>
@@ -500,7 +560,7 @@ Package Vendor: ARM
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.0.2
-Build Time Elapsed:  00:00:35
+Build Time Elapsed:  00:00:40
 </pre>
 </body>
 </html>

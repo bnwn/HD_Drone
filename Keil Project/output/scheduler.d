@@ -39,3 +39,4 @@
 .\output\scheduler.o: ..\Scheduler\../User/../Driver/bmi160.h
 .\output\scheduler.o: ..\Scheduler\../User/../Driver/bsp/bsp_i2c.h
 .\output\scheduler.o: ..\Scheduler\../User/../Driver/fbm320.h
+.\output\scheduler.o: ..\Scheduler\../User/../RC/rc_channel.h

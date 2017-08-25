@@ -22,6 +22,7 @@
 ".\output\bsp_i2c.o"
 ".\output\timer_delay.o"
 ".\output\uart_console.o"
+".\output\bsp_spi.o"
 ".\output\acmp.o"
 ".\output\adc.o"
 ".\output\clk.o"
@@ -36,6 +37,8 @@
 ".\output\uart.o"
 ".\output\wdt.o"
 ".\output\wwdt.o"
+".\output\rc_channel.o"
+".\output\rf.o"
 --library_type=microlib --ro-base 0x00000000 --entry 0x00000000 --rw-base 0x20000000 --entry Reset_Handler --first __Vectors --strict
 --map --first='startup_PN020Series.o(RESET)' --datacompressor=off --info=inline --entry Reset_Handler --summary_stderr --info summarysizes --map --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

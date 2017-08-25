@@ -42,6 +42,15 @@ void system_init(void)
     CLK_EnableModuleClock(I2C0_MODULE);
     SYS->P3_MFP |=SYS_MFP_P35_I2C0_SCL|SYS_MFP_P34_I2C0_SDA;
     P3->DINOFF &= ~ ( GP_DINOFF_DINOFF4_Msk |GP_DINOFF_DINOFF5_Msk);
+		
+		/* spi gpio setting */
+		SYS->P0_MFP |= SYS_MFP_P03_SPI1_SS;  //SPI1SS
+    SYS->P1_MFP |= SYS_MFP_P11_SPI1_CLK | SYS_MFP_P16_SPI1_MOSI | SYS_MFP_P17_SPI1_MISO ;//SPI1 MOSI1 MISO1   
+		GPIO_ENABLE_DIGITAL_PATH(P0,(1<<3));
+		GPIO_ENABLE_DIGITAL_PATH(P1,(1<<1));   
+		GPIO_ENABLE_DIGITAL_PATH(P1,(1<<6));
+		GPIO_ENABLE_DIGITAL_PATH(P1,(1<<7));  
+    CLK_EnableModuleClock(SPI1_MODULE);  
 
     SYS_LockReg();
 }
@@ -68,6 +77,9 @@ void peripheral_init(void)
 
     /* task scheduler timer init */
     scheduler_init();
+		
+		/* rf init */
+		rc_channel_init();
 		
 		param_load();
 }

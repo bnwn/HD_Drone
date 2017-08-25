@@ -8,11 +8,6 @@
 /*----------------ÍÓÂÝÒÇ²É¼¯ÏÞ·ù--------------------*/
 #define GYRO_GATHER   70
 
-void inertial_sensor_read(void);
-void gyro_caloffest(float x,float y,float z,uint16_t amount);
-void gyro_offset(void);
-void accel_offset(void);
-
 typedef struct {
     float x;
     float y;
@@ -39,6 +34,13 @@ typedef struct {
     _Vector_Packet accel;
     _Vector_Packet gyro;
 }Inertial_Sensor;
+
+void inertial_sensor_read(void);
+void gyro_caloffest(float x,float y,float z,uint16_t amount);
+void gyro_offset(void);
+void accel_offset(void);
+_Vector_Float get_inertial_vel(void);
+
 
 extern Inertial_Sensor inertial_sensor;
 

@@ -11,7 +11,7 @@ _Target_Attitude trace_attituce_ang_vel = {0};
 
 void attitude_angle_rate_controller(void)
 {
-    _Vector_Float current_ang_vel = inertial_sensor.gyro.filter;
+    _Vector_Float current_ang_vel = get_inertial_vel();
 
 //	printf("velx:%d, vely:%d, velz:%d\n", (int16_t)(attitude_target_ang_vel.roll * 1000), (int16_t)(attitude_target_ang_vel.pitch * 1000), (int16_t)(attitude_target_ang_vel.yaw * 1000));
 //	printf("velx:%d, vely:%d, velz:%d\n", (int16_t)(trace_attituce_ang_vel.roll * 1000), (int16_t)(trace_attituce_ang_vel.pitch * 1000), (int16_t)(trace_attituce_ang_vel.yaw * 1000));

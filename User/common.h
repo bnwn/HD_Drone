@@ -19,6 +19,7 @@
 #include "../Driver/fbm320.h"
 #include "../Driver/motor.h"
 #include "../Scheduler/scheduler.h"
+#include "../RC/rc_channel.h"
 
 void system_init(void);
 

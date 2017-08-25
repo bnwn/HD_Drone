@@ -18,12 +18,12 @@ void motors_output(void)
     throttle_control(0.025f);
 
 #if VEHICLE_FRAME == QUAD
-    motor_duty[MOTOR1_INDEX] = thrust.throttle + thrust.pitch + thrust.roll + thrust.yaw;
-    motor_duty[MOTOR2_INDEX] = thrust.throttle - thrust.pitch - thrust.roll + thrust.yaw;
-    motor_duty[MOTOR3_INDEX] = thrust.throttle + thrust.pitch - thrust.roll - thrust.yaw;
-    motor_duty[MOTOR4_INDEX] = thrust.throttle - thrust.pitch + thrust.roll - thrust.yaw;
+    motor_duty[MOTOR1_INDEX] = thrust.throttle + thrust.pitch - thrust.roll + thrust.yaw;
+    motor_duty[MOTOR2_INDEX] = thrust.throttle - thrust.pitch + thrust.roll + thrust.yaw;
+    motor_duty[MOTOR3_INDEX] = thrust.throttle + thrust.pitch + thrust.roll - thrust.yaw;
+    motor_duty[MOTOR4_INDEX] = thrust.throttle - thrust.pitch - thrust.roll - thrust.yaw;
 	
-		printf ("%d, %d, %d, %d\n", (int16_t)(motor_duty[MOTOR1_INDEX]*1000), (int16_t)(motor_duty[MOTOR2_INDEX]*1000), (int16_t)(motor_duty[MOTOR3_INDEX]*1000), \
+//		printf ("%d, %d, %d, %d\n", (int16_t)(motor_duty[MOTOR1_INDEX]*1000), (int16_t)(motor_duty[MOTOR2_INDEX]*1000), (int16_t)(motor_duty[MOTOR3_INDEX]*1000), \
 																														(int16_t)(motor_duty[MOTOR4_INDEX]*1000));
 #elif VEHICLE_FRAME == HEXA
 #endif
@@ -41,7 +41,7 @@ void motors_output(void)
             Moto[3] = thr_value + pitch - roll - yaw;
     }
     else	if(RC_Data.THROTTLE > RC_MINCHECK) {
-          date_throttle	= (RC_Data.THROTTLE-MINRCVALUE)/cos(IMU.Roll/RtA)/cos(IMU.Pitch/RtA);
+          datej_throttle	= (RC_Data.THROTTLE-MINRCVALUE)/cos(IMU.Roll/RtA)/cos(IMU.Pitch/RtA);
 
         #ifdef QUADROTOR
             Moto[0] = date_throttle - pitch - roll + yaw + IDLING;
