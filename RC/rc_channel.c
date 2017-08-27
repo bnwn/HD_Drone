@@ -245,6 +245,11 @@ float norm_input_dz(Rc_Channel_t *_rc)
     return data_limit(ret, 1.0f, -1.0f);
 }
 
+float channel_input_to_target(Rc_Channel_t *_rc, float _max_range)
+{
+    return (float)(norm_input_dz(_rc) * _max_range);
+}
+
 void set_roll_code(uint8_t *_code)
 {
     uint8_t i = 0;
@@ -254,6 +259,44 @@ void set_roll_code(uint8_t *_code)
 #ifdef __DEVELOP__
     printf("roll code: 0x%X 0x%X 0x%X\n", roll_code[0], roll_code[1], roll_code[2]);
 #endif
+}
+
+void get_desired_leans_angles(_Target_Attitude *_target_att, float _leans_limit)
+{
+    float _roll, _pitch, _yaw_stick_angle, _squa_angle;
+
+    if (_leans_limit > ATT_ROLL_PITCH_YAW_MAX) {
+        _leans_limit = ATT_ROLL_PITCH_YAW_MAX;
+    }
+
+    _roll = channel_input_to_target(rc_channels[RC_EULER_ROLL_CH], _leans_limit);
+    _pitch = channel_input_to_target(rc_channels[RC_EULER_PITCH_CH], _leans_limit);
+    _squa_angle = squa(_roll) + squa(_pitch);
+
+    if (_squa_angle > squa(_leans_limit)) {
+        float _norm = Q_rsqrt(_squa_angle);
+        float _ratio = _leans_limit * _norm;
+        _roll *= _ratio;
+        _pitch *= _ratio;
+    }
+
+    _target_att->roll = (180/M_PI) * atanf(cosf(_pitch*(M_PI/180))*tanf(_roll*(M_PI/180)));
+    _target_att->pitch = _pitch;
+
+    _yaw_stick_angle = channel_input_to_target(rc_channels[RC_EULER_YAW_CH], _leans_limit);
+    // calculate yaw rate
+    _target_att->yaw = _yaw_stick_angle * ctrl_loop.acro_sensibility.yaw.kp;
+}
+
+float get_desired_throttle_expo(void)
+{
+    float throttle_out = (float)((norm_input_dz(rc_channels[RC_THROTTLE_CH]) + 1.0f) / 2.0f);
+
+    // calculate the output throttle using the given expo function
+    throttle_out = throttle_out * 0.6 + 0.4 * throttle_out * throttle_out * throttle_out;
+
+    throttle_out = data_limit(throttle_out, RC_THROTTLE_OUT_LIMIT, 0.0f);
+    return throttle_out;
 }
 
 void auto_code_matching(void)

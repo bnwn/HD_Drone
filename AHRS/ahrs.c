@@ -43,7 +43,7 @@ float exInt = 0.0f, eyInt = 0.0f, ezInt = 0.0f;
 /*====================================================================================================*/
 void AHRS_Update(void)
 {
-    float sin_pitch,sin_roll,cos_roll,cos_pitch;
+//    float sin_pitch,sin_roll,cos_roll,cos_pitch;
 
     // 获取四元数
     AHRS_GetQ();
@@ -52,10 +52,10 @@ void AHRS_Update(void)
     Quaternion_ToAngE(&NumQ, &AngE);
 
     // 计算欧拉角的三角函数值
-    sin_roll  = sin(AngE.Roll);
-    sin_pitch = sin(AngE.Pitch);
-    cos_roll  = cos(AngE.Roll);
-    cos_pitch = cos(AngE.Pitch);
+//    sin_roll  = sin(AngE.Roll);
+//    sin_pitch = sin(AngE.Pitch);
+//    cos_roll  = cos(AngE.Roll);
+//    cos_pitch = cos(AngE.Pitch);
 
     //  地磁不存在或地磁数据不正常则停用地磁数据
     //flag.MagIssue=0;//地磁存在问题，待调试解决

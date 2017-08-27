@@ -4,6 +4,7 @@
 #include "attitude_control.h"
 #include "position_control.h"
 #include "common.h"
+#include "rc_channel.h"
 
 enum Flight_Mode control_mode, prev_control_mode;
 
@@ -55,7 +56,7 @@ void update_flight_mode(void)
             stabilize_run();
             break;
         case AltHold:
-            //althold_run();
+            althold_run();
             break;
         case OneKeyFlip:
             break;
@@ -101,16 +102,17 @@ bool stabilize_init(bool _ignore_checks)
 // should be called at 100hz or more
 void stabilize_run(void)
 {
-    float target_roll, target_pitch;
-    float target_yaw_rate, target_throttle;
-    float pilot_throttle_scaled;
+    float target_throttle;
+    _Target_Attitude target_attitude;
 
-    //attitude_angle_euler_controller(target_roll, target_pitch, target_yaw_rate, get_smoothing_gain(), 0.025f);
-    //attitude_throttle_controller(throttle);
-	
-		target_throttle = trace_throttle;
-	  attitude_angle_euler_controller(trace_attitude_ang.roll, trace_attitude_ang.pitch, trace_attitude_ang.yaw, get_smoothing_gain(), 0.025f);
-    attitude_throttle_controller(target_throttle);
+    target_throttle = get_desired_throttle_expo();
+    get_desired_leans_angles(&target_attitude, CONTROL_LEANS_ANGLE_MAX_DEFAULT);
+
+//    target_throttle = trace_throttle;
+//    attitude_angle_euler_controller(trace_attitude_ang.roll, trace_attitude_ang.pitch, trace_attitude_ang.yaw, get_smoothing_gain(), 0.0025f);
+
+    attitude_angle_euler_controller(target_attitude.roll, target_attitude.pitch, target_attitude.yaw, get_smoothing_gain(), DT);
+    attitude_throttle_controller(target_throttle, true, 0.0f);
 
 #if 0
     // if not armed set throttle to zero and exit immediately
@@ -122,35 +124,13 @@ void stabilize_run(void)
 
     // clear landing flag
     set_land_complete(false);
-
-    motors->set_desired_spool_state(AP_Motors::DESIRED_THROTTLE_UNLIMITED);
-
     // apply SIMPLE mode transform to pilot inputs
     update_simple_mode();
-
-    // convert pilot input to lean angles
-    // To-Do: convert get_pilot_desired_lean_angles to return angles as floats
-    get_pilot_desired_lean_angles(channel_roll->get_control_in(), channel_pitch->get_control_in(), target_roll, target_pitch, aparm.angle_max);
-
-    // get pilot's desired yaw rate
-    target_yaw_rate = get_pilot_desired_yaw_rate(channel_yaw->get_control_in());
-
-    // get pilot's desired throttle
-    pilot_throttle_scaled = get_pilot_desired_throttle(channel_throttle->get_control_in());
-
-    // call attitude controller
-    attitude_control->input_euler_angle_roll_pitch_euler_rate_yaw(target_roll, target_pitch, target_yaw_rate, get_smoothing_gain());
-
-    // body-frame rate controller is run directly from 100hz loop
-
-    // output pilot's throttle
-    attitude_control->set_throttle_out(pilot_throttle_scaled, true, g.throttle_filt);
 #endif
 }
 
-#if 0
 // althold_init - initialise althold controller
-bool althold_init(bool ignore_checks)
+bool Copter::althold_init(bool ignore_checks)
 {
 #if FRAME_CONFIG == HELI_FRAME
     // do not allow helis to enter Alt Hold if the Rotor Runup is not complete
@@ -177,7 +157,7 @@ bool althold_init(bool ignore_checks)
 
 // althold_run - runs the althold controller
 // should be called at 100hz or more
-void althold_run(void)
+void Copter::althold_run()
 {
     AltHoldModeState althold_state;
     float takeoff_climb_rate = 0.0f;
@@ -305,7 +285,6 @@ void althold_run(void)
         break;
     }
 }
-#endif
 
 float get_smoothing_gain(void)
 {

@@ -4,6 +4,8 @@
 /* only develop debug output info through uart */
 #define __DEVELOP__
 
+#define DT 0.01f
+
 void system_init(void);
 
 void peripheral_init(void);

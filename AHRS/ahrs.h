@@ -17,7 +17,7 @@ void AHRS_Read_Attitude(EulerAngle *_attitude);
 void AHRS_set_complementary_filter_kp(float _kp);
 void AHRS_set_complementary_filter_ki(float _ki);
 
-extern EulerAngle AngE, ahrs;
+extern EulerAngle AngE, ahrs; // AngE:Rads  ahrs:Degree
 
 #endif
 

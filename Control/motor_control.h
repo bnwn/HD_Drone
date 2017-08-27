@@ -11,6 +11,7 @@ typedef struct {
     float pitch;
     float yaw;
     float throttle;
+    float thr_cutoff;
 }Thrust;
 
 void motors_output(void);
@@ -18,7 +19,7 @@ void throttle_control(float _dt);
 void set_motor_roll(float _thrust);
 void set_motor_pitch(float _thrust);
 void set_motor_yaw(float _thrust);
-void set_motor_throttle(float _thrust);
+void set_motor_throttle(float _thrust, float _cutoff);
 void set_trace_throttle(float _thr);
 
 extern Thrust thrust;

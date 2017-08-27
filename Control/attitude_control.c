@@ -1,6 +1,8 @@
 #include "PN020Series.h"
 #include "attitude_control.h"
+#include "rc_channel.h"
 #include "common.h"
+#include "Algorithm_filter.h"
 
 /* all control loop structure*/
 _Ctrl ctrl_loop = {0};
@@ -29,20 +31,10 @@ float axis_target_pid_cal(Pid_t *_pid, float _target, float _current)
 	
     set_pid_input(_pid, rate_error_rads);
 
-//    float integrator = get_integrator(_pid);
-
-//    // Ensure that integrator can only be reduced if the output is saturated
-//    // if (!_motors.limit.roll_pitch || ((integrator > 0 && rate_error_rads < 0) || (integrator < 0 && rate_error_rads > 0))) {
-//    if ((integrator > 0 && rate_error_rads < 0) || (integrator < 0 && rate_error_rads > 0))
-//        integrator = _pid->I_Item_Output;
-//    }
-
 //    // Compute output in range -1 ~ +1
 //    float output = get_rate_pitch_pid().get_p() + integrator + get_rate_pitch_pid().get_d() + get_rate_pitch_pid().get_ff(rate_target_rads);
     output = _pid->P_Item_Output + _pid->I_Item_Output + _pid->D_Item_Output;
 
-    // Constrain output
-    // return constrain_float(output, -1.0f, 1.0f);
     return output;
 }
 
@@ -50,12 +42,30 @@ void attitude_angle_euler_controller(float _target_roll, float _target_pitch, fl
 {
     float _target_yaw = ahrs.Yaw + _target_yaw_rate * _dt;
 
-    attitude_target_ang_vel.roll = axis_target_pid_cal(&ctrl_loop.angle.roll, _target_roll, ahrs.Roll);
-    attitude_target_ang_vel.pitch = axis_target_pid_cal(&ctrl_loop.angle.pitch, _target_pitch, ahrs.Pitch);
-    attitude_target_ang_vel.yaw = axis_target_pid_cal(&ctrl_loop.angle.yaw, _target_yaw, ahrs.Yaw);
+    attitude_target_ang_vel.roll = sense_level * axis_target_pid_cal(&ctrl_loop.angle.roll, _target_roll, ahrs.Roll);
+    attitude_target_ang_vel.pitch = sense_level * axis_target_pid_cal(&ctrl_loop.angle.pitch, _target_pitch, ahrs.Pitch);
+    attitude_target_ang_vel.yaw = sense_level * axis_target_pid_cal(&ctrl_loop.angle.yaw, _target_yaw, ahrs.Yaw);
 }
 
-void attitude_throttle_controller(float _throttle)
+void attitude_throttle_controller(float _throttle, bool _use_leans_tilt, float _cutoff)
 {
-    set_motor_throttle(_throttle);
+    if (_use_leans_tilt) {
+        // Apply angle boost
+        _throttle = get_throttle_boosted(_throttle);
+    }
+    set_motor_throttle(_throttle, _cutoff);
+}
+
+float get_throttle_boosted(float _throttle_in)
+{
+    // inverted_factor is 1 for tilt angles below 60 degrees
+    // inverted_factor reduces from 1 to 0 for tilt angles between 60 and 90 degrees
+
+    float cos_tilt = cos(AngE.Pitch) * cos(AngE.Roll);
+    float inverted_factor = data_limit(2.0f*cos_tilt, 1.0f, 0.0f);
+    float boost_factor = 1.0f / data_limit(cos_tilt, 1.0f, 0.5f);
+
+    float throttle_out = _throttle_in*inverted_factor*boost_factor;
+    data_limit(throttle_out, RC_THROTTLE_OUT_LIMIT, 0.0f);
+    return throttle_out;
 }

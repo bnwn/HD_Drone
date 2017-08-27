@@ -1,5 +1,6 @@
 #include "PN020Series.h"
 #include "motor_control.h"
+#include "Algorithm_filter.h"
 #include "common.h"
 
 Thrust thrust = {0};
@@ -16,8 +17,13 @@ float target_throttle = 0, trace_throttle = 0;
 /*====================================================================================================*/
 void motors_output(void)
 {
-    throttle_control(0.025f);
-
+    static float old_desired_throttle = 0;
+    if (thrust.thr_cutoff > 0.01f) {
+        thrust.throttle = LPF_1st(old_desired_throttle, thrust.throttle, thrust.thr_cutoff);
+        old_desired_throttle = thrust.throttle;
+    } else if (old_desired_throttle != 0.0f){
+        old_desired_throttle = 0.0f;
+    }
 #if VEHICLE_FRAME == QUAD
     motor_duty[MOTOR1_INDEX] = thrust.throttle + thrust.pitch - thrust.roll + thrust.yaw;
     motor_duty[MOTOR2_INDEX] = thrust.throttle - thrust.pitch + thrust.roll + thrust.yaw;
@@ -32,58 +38,6 @@ void motors_output(void)
 #endif
 
     motor_update(motor_duty);
-//		PWM_ConfigOutputChannel(PWM, 0, MOTOR_PWM_FREQ, 10);
-//    PWM_ConfigOutputChannel(PWM, 1, MOTOR_PWM_FREQ, 10);
-//    PWM_ConfigOutputChannel(PWM, 2, MOTOR_PWM_FREQ, 10);
-//    PWM_ConfigOutputChannel(PWM, 3, MOTOR_PWM_FREQ, 10);
-#if 0
-    if(flag.FlightMode==ULTRASONIC_High || flag.FlightMode==AUTO_High || flag.FlightMode==ACC_High  || flag.FlightMode==ATMOSPHERE_High){
-            Moto[0] = thr_value - pitch - roll + yaw;
-            Moto[1] = thr_value - pitch + roll - yaw;
-            Moto[2] = thr_value + pitch + roll + yaw;
-            Moto[3] = thr_value + pitch - roll - yaw;
-    }
-    else	if(RC_Data.THROTTLE > RC_MINCHECK) {
-          datej_throttle	= (RC_Data.THROTTLE-MINRCVALUE)/cos(IMU.Roll/RtA)/cos(IMU.Pitch/RtA);
-
-        #ifdef QUADROTOR
-            Moto[0] = date_throttle - pitch - roll + yaw + IDLING;
-            Moto[1] = date_throttle - pitch + roll - yaw + IDLING;
-            Moto[2] = date_throttle + pitch + roll + yaw + IDLING;
-            Moto[3] = date_throttle + pitch - roll - yaw + IDLING;
-        #elif defined HEXACOPTER
-            Moto[0] = date_throttle - pitch + 0.5*roll - yaw + IDLING;
-            Moto[1] = date_throttle         +     roll + yaw + IDLING;
-            Moto[2] = date_throttle + pitch + 0.5*roll - yaw + IDLING;
-            Moto[3] = date_throttle + pitch - 0.5*roll + yaw + IDLING;
-            Moto[4] = date_throttle         -     roll - yaw + IDLING;
-            Moto[5] = date_throttle - pitch - 0.5*roll + yaw + IDLING;
-        #endif
-        }
-        else
-        {
-            array_assign(&Moto[0],IDLING,MOTOR_NUM);//马达输出200
-            Reset_Integral();//内环pid全部输出置0
-        }
-
-        if(flag.ARMED)
-        {
-            #ifdef QUADROTOR
-                    Moto_duty[0]=Moto[0];
-                    Moto_duty[1]=Moto[1];
-                    Moto_duty[2]=Moto[2];
-                    Moto_duty[3]=Moto[3];
-
-            #elif defined HEXACOPTER
-                    Moto_duty[0]=Moto[0];
-                    Moto_duty[1]=Moto[1];
-                    Moto_duty[2]=Moto[2];
-                    Moto_duty[3]=Moto[3];
-                    Moto_duty[4]=Moto[4];
-                    Moto_duty[5]=Moto[5];
-
-            #endif
-#endif
 }
 
 void throttle_control(float dt)
@@ -140,10 +94,10 @@ void set_motor_yaw(float _thrust)
     thrust.yaw = _thrust;
 }
 
-void set_motor_throttle(float _thrust)
+void set_motor_throttle(float _thrust, float _cutoff)
 {
     thrust.throttle = _thrust;
-		//thrust.throttle = trace_throttle;
+    thrust.thr_cutoff = _cutoff;
 }
 
 void set_trace_throttle(float _thr)

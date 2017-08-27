@@ -39,7 +39,8 @@
 void attitude_angle_rate_controller(void);
 float axis_target_pid_cal(Pid_t *_pid, float _target, float _current);
 void attitude_angle_euler_controller(float _target_roll, float _target_pitch, float _target_yaw_rate, float sense_level, float _dt);
-void attitude_throttle_controller(float _throttle);
+void attitude_throttle_controller(float _throttle, bool _use_leans_tilt, float _cutoff);
+float get_throttle_boosted(float _throttle_in);
 
 typedef struct {
     float roll;
@@ -56,6 +57,7 @@ typedef struct {
 typedef struct {
     _Tache rate;
     _Tache angle;
+    _Tache acro_sensibility;
 }_Ctrl;
 
 extern _Ctrl ctrl_loop;
