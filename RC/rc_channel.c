@@ -183,7 +183,7 @@ static void switch_handle(void)
     }
 }
 
-static void switch_event_trigger(uint8_t _ch, bool _long_hold)
+static void switch_event_trigger(uint8_t _ch, bool _is_long_hold)
 {
     switch(_ch) {
         case 0:
@@ -267,7 +267,9 @@ void auto_code_matching(void)
             if (rc_buf[END_CODE_INDEX] == 0xCE && rc_buf[END_CODE_INDEX+1] == 0xED) {
                 //if () // setting roll code action
                 set_roll_code(rc_buf+ROLL_CODE_INDEX);
+                break;
             }
         }
+        delay_ms(10);
     }
 }
