@@ -8,8 +8,8 @@ void system_init(void)
     /*---------------------------------------------------------------------------------------------------------*/
     /* Unlock protected registers */
     SYS_UnlockReg();
-		CLK_InitHIRC();
-		//CLK_InitHXT();
+    CLK_InitHIRC();
+    //CLK_InitHXT();
     //CLK_InitHXTPLL();
     SystemCoreClockUpdate();
     /*---------------------------------------------------------------------------------------------------------*/
@@ -33,10 +33,10 @@ void system_init(void)
 		
 		/* Set P2 multi-function pin for PWM Channel 0  */
     CLK_EnableModuleClock(PWMCH01_MODULE);
-		CLK_EnableModuleClock(PWMCH23_MODULE);
-		CLK_EnableModuleClock(PWMCH67_MODULE);
+    CLK_EnableModuleClock(PWMCH23_MODULE);
+    CLK_EnableModuleClock(PWMCH67_MODULE);
     SYS->P2_MFP = SYS_MFP_P22_PWM0_CH0 | SYS_MFP_P23_PWM0_CH1 | SYS_MFP_P24_PWM0_CH2 | SYS_MFP_P25_PWM0_CH3;
-		SYS->P5_MFP = SYS_MFP_P57_PWM0_CH7;
+    SYS->P5_MFP = SYS_MFP_P57_PWM0_CH7;
 
     /* Set P5.7 and P5.6 for I2C SDA and SCL */
     CLK_EnableModuleClock(I2C0_MODULE);

@@ -4,6 +4,7 @@
 #define RF_XNS104 104
 #define RADIO RF_XNS104
 #define RC_CHANNEL_MAX 12
+#define RC_SWITCH_MAX 8
 #define DATA_BUF_MAX 9
 #define ROLL_CODE_NUM 3
 
@@ -29,11 +30,14 @@ typedef struct {
 }Rc_Channel_t;
 
 void rc_channel_init(void);
-void rc_channel_read(void);
+bool rc_channel_read(void);
 static void packet_parse(void);
 static void switch_handle(void);
+static void switch_event_trigger(uint8_t _ch, bool _long_hold);
 float norm_input(Rc_Channel_t *_rc);
 float norm_input_dz(Rc_Channel_t *_rc);
+void set_roll_code(uint8_t *_code);
+void code_matching(void);
 
 
 extern Rc_Channel_t rc_channels[RC_CHANNEL_MAX];
