@@ -1,5 +1,6 @@
 #include "PN020Series.h"
 #include "common.h"
+#include "scheduler.h"
 
 int main(void)
 {
@@ -7,12 +8,6 @@ int main(void)
 	
     peripheral_init();
 
-    printf("HD_Drone init success!\n");
-	
-    printf("sensor collect offset...\n");
-    gyro_offset();
-    accel_offset();
-    printf("collect complete\n");
     SCHEDULER_RUN;
 	
     while(1) {

@@ -1,5 +1,6 @@
 #include "bsp_spi.h"
 #include "timer_delay.h"
+#include "common.h"
 
 void SPI1_Init(void)
 {

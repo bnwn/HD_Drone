@@ -1,6 +1,7 @@
 #include "PN020Series.h"
 #include "motor.h"
 #include "../Algorithm/Algorithm_math/Algorithm_math.h"
+#include "common.h"
 
 float motor_duty[MOTOR_MAX_NUM];
 uint32_t motor_min_duty_cnt;
@@ -30,7 +31,9 @@ void motor_init(void)
     motor_duty_scale = (motor_min_duty_cnt + 1) / MOTOR_MIN_PWM;
 #elif MOTOR_TYPE == DC
     motor_duty_range = PWM->PERIOD0;
+#ifdef __DEBUG__
 		printf("period0:%d, period1:%d, period2:%d, period3:%d, motor_duty_range:%d\n", PWM->PERIOD0, PWM->PERIOD1, PWM->PERIOD2, PWM->PERIOD3, motor_duty_range);
+#endif
 		PWM_SET_CMR(PWM, 0, 0);
 		PWM_SET_CMR(PWM, 1, 0);
 		PWM_SET_CMR(PWM, 2, 0);
@@ -57,8 +60,7 @@ void motor_update(float *_duty)
 #if MOTOR_TYPE == DC
 				_duty_cycle = (uint32_t)(*(_duty + i) * motor_duty_range);
 				
-				if (_duty_cycle > 0) _duty_cycle -= 1;
-//				printf("motor num:%d , duty:%d, range:%d\n", i, _duty_cycle, motor_duty_range);
+                if (_duty_cycle > 0) _duty_cycle -= 1;
         PWM_SET_CMR(PWM, i, _duty_cycle);
 #elif
 		

@@ -2,6 +2,8 @@
 #include "rf.h"
 #include "rc_channel.h"
 #include "Algorithm_math.h"
+#include "timer_delay.h"
+#include "common.h"
 
 Rc_Channel_t rc_channels[RC_CHANNEL_MAX] = {0};
 uint8_t rc_buf[PAYLOAD_WIDTH] = {0}, data_buf[DATA_BUF_MAX] = {0}, roll_code[ROLL_CODE_NUM] = {0};
@@ -14,8 +16,10 @@ void rc_channel_init(void)
     SPI1_Init();
     RF_Init();
     RF_RxMode();
+#ifdef __DEBUG__
     printf("rf xns104 init success\n");
-    code_matching();
+#endif
+    auto_code_matching();
 #else
 #endif
 }
@@ -27,11 +31,14 @@ bool rc_channel_read(void)
     uint8_t j = 0;
 
     ucRF_DumpRxData(rc_buf + buf_index, rev_len);
+
+#ifdef __DEBUG__
 //		for(; j<PAYLOAD_WIDTH; j++)
 //		{
 //				printf("0x%X ", rc_buf[j]);
 //		}
 //		printf("\n");
+#endif
 	
 #if 1
     // if (roll_code eq)
@@ -59,6 +66,9 @@ bool rc_channel_read(void)
 
             switch_handle();
 
+    } else if (rc_buf[START_CODE_INDEX] == 0xAC && rc_buf[START_CODE_INDEX+1] == 0xCE \ // match code
+               && rc_buf[END_CODE_INDEX] == 0xCE && rc_buf[END_CODE_INDEX+1] == 0xED) { // end code
+            set_roll_code(rc_buf+ROLL_CODE_INDEX);
     } else {
         return false;
     }
@@ -241,16 +251,23 @@ void set_roll_code(uint8_t *_code)
     for (; i<ROLL_CODE_NUM; i++) {
         roll_code[i] = *(_code + i);
     }
+#ifdef __DEBUG__
     printf("roll code: 0x%X 0x%X 0x%X\n", roll_code[0], roll_code[1], roll_code[2]);
+#endif
 }
 
-void code_matching(void)
+void auto_code_matching(void)
 {
-    ucRF_DumpRxData(rc_buf, PAYLOAD_WIDTH);
+    uint8_t try_times = 5;
 
-    if (rc_buf[START_CODE_INDEX] == 0xAA && rc_buf[START_CODE_INDEX+1] == 0xAA) {
-        if (rc_buf[END_CODE_INDEX] == 0xCE && rc_buf[END_CODE_INDEX+1] == 0xED) {
-            set_roll_code(rc_buf+ROLL_CODE_INDEX);
+    for (; try_times>0; try_times--) {
+        ucRF_DumpRxData(rc_buf, PAYLOAD_WIDTH);
+
+        if (rc_buf[START_CODE_INDEX] == 0xAA && rc_buf[START_CODE_INDEX+1] == 0xAA) {
+            if (rc_buf[END_CODE_INDEX] == 0xCE && rc_buf[END_CODE_INDEX+1] == 0xED) {
+                //if () // setting roll code action
+                set_roll_code(rc_buf+ROLL_CODE_INDEX);
+            }
         }
     }
 }

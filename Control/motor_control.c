@@ -1,5 +1,6 @@
 #include "PN020Series.h"
 #include "motor_control.h"
+#include "common.h"
 
 Thrust thrust = {0};
 float target_throttle = 0, trace_throttle = 0;
@@ -22,9 +23,11 @@ void motors_output(void)
     motor_duty[MOTOR2_INDEX] = thrust.throttle - thrust.pitch + thrust.roll + thrust.yaw;
     motor_duty[MOTOR3_INDEX] = thrust.throttle + thrust.pitch + thrust.roll - thrust.yaw;
     motor_duty[MOTOR4_INDEX] = thrust.throttle - thrust.pitch - thrust.roll - thrust.yaw;
-	
+
+#ifdef __DEBUG__
 //		printf ("%d, %d, %d, %d\n", (int16_t)(motor_duty[MOTOR1_INDEX]*1000), (int16_t)(motor_duty[MOTOR2_INDEX]*1000), (int16_t)(motor_duty[MOTOR3_INDEX]*1000), \
 																														(int16_t)(motor_duty[MOTOR4_INDEX]*1000));
+#endif
 #elif VEHICLE_FRAME == HEXA
 #endif
 
@@ -146,7 +149,8 @@ void set_motor_throttle(float _thrust)
 void set_trace_throttle(float _thr)
 {
 		trace_throttle = _thr;
-		
+#ifdef __DEBUG__
 	printf("trace throttle: %.3f\n", trace_throttle);
+#endif
 }
 

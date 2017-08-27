@@ -1,6 +1,10 @@
 #ifndef __UART_CONSOLE_H
 #define __UART_CONSOLE_H
 
+#include "common.h"
+
+#ifdef __DEBUG__
+
 #include "PN020Series.h"
 #include "uart.h"
 
@@ -51,5 +55,7 @@
 void uart_console_init(UART_T* _uart, uint32_t _baudrate);
 float get_float(uint16_t _buf_index);
 bool console_input_handle(void);
+
+#endif
 
 #endif

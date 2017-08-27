@@ -3,6 +3,7 @@
 #include "../Driver/bmi160.h"
 #include "../Algorithm/Algorithm_filter/Algorithm_filter.h"
 #include "../Algorithm/Algorithm_math/Algorithm_math.h"
+#include "common.h"
 
 #define  IIR_ORDER     4      //使用IIR滤波器的阶数
 double b_IIR[IIR_ORDER+1] ={0.0008f, 0.0032f, 0.0048f, 0.0032f, 0.0008f};  //系数b
@@ -32,8 +33,6 @@ void inertial_sensor_read(void)
     inertial_sensor.gyro.relative.y = inertial_sensor.gyro.average.y - inertial_sensor.gyro.quiet.y;
     inertial_sensor.gyro.relative.z = inertial_sensor.gyro.average.z - inertial_sensor.gyro.quiet.z;
 		
-		//printf("relative:%d, average:%d, quiet：%d\n", inertial_sensor.accel.relative.x, inertial_sensor.accel.average.x, inertial_sensor.accel.quiet.x);
-
     // 加速度计IIR滤波
     inertial_sensor.accel.filter.x = IIR_I_Filter(inertial_sensor.accel.relative.x, InPut_IIR[0], OutPut_IIR[0], b_IIR, IIR_ORDER+1, a_IIR, IIR_ORDER+1);
     inertial_sensor.accel.filter.y = IIR_I_Filter(inertial_sensor.accel.relative.y, InPut_IIR[1], OutPut_IIR[1], b_IIR, IIR_ORDER+1, a_IIR, IIR_ORDER+1);
@@ -46,11 +45,6 @@ void inertial_sensor_read(void)
     last_gyro.y = inertial_sensor.gyro.filter.y;
     inertial_sensor.gyro.filter.z = LPF_1st(last_gyro.z, inertial_sensor.gyro.relative.z * _gyro_scale, 0.386f);
     last_gyro.z = inertial_sensor.gyro.filter.z;//
-		
-		//printf("filter. %.3f %.3f %.3f, average. %d %d %d\n", inertial_sensor.accel.filter.x, inertial_sensor.accel.filter.y, inertial_sensor.accel.filter.z, \
-																													inertial_sensor.accel.average.x, inertial_sensor.accel.average.y, inertial_sensor.accel.average.z);
-		//printf("filter. %.3f %.3f %.3f, average. %d %d %d\n", inertial_sensor.gyro.filter.x, inertial_sensor.gyro.filter.y, inertial_sensor.gyro.filter.z, \
-																													inertial_sensor.gyro.average.x, inertial_sensor.gyro.average.y, inertial_sensor.gyro.average.z);
 }
 
 /*====================================================================================================*/
@@ -110,8 +104,6 @@ void gyro_offset(void)
             Integral[0] += absu16(gx_last - inertial_sensor.gyro.average.x);
             Integral[1] += absu16(gy_last - inertial_sensor.gyro.average.y);
             Integral[2] += absu16(gz_last - inertial_sensor.gyro.average.z);
-
-					//printf(" average : gyro.x:%d, gyro.y:%d, gyro.z:%d \n", inertial_sensor.gyro.average.x, inertial_sensor.gyro.average.y, inertial_sensor.gyro.average.z);
 
             gx_last = inertial_sensor.gyro.average.x;
             gy_last = inertial_sensor.gyro.average.y;

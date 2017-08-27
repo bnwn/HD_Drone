@@ -2,6 +2,7 @@
 #include "bmi160.h"
 #include "../AHRS/inertial_sensor.h"
 #include "../Algorithm/Algorithm_math/Algorithm_math.h"
+#include "common.h"
 
 /* variance define */
 float _accel_scale;

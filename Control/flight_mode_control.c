@@ -3,6 +3,7 @@
 #include "motor_control.h"
 #include "attitude_control.h"
 #include "position_control.h"
+#include "common.h"
 
 enum Flight_Mode control_mode, prev_control_mode;
 
@@ -108,8 +109,6 @@ void stabilize_run(void)
     //attitude_throttle_controller(throttle);
 	
 		target_throttle = trace_throttle;
-		//printf("target throttle:%d \n", (int16_t)(target_throttle * 100));
-//		printf("target angle roll:%d\n", (int16_t)(trace_attitude_ang.roll * 100));
 	  attitude_angle_euler_controller(trace_attitude_ang.roll, trace_attitude_ang.pitch, trace_attitude_ang.yaw, get_smoothing_gain(), 0.025f);
     attitude_throttle_controller(target_throttle);
 

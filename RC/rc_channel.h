@@ -37,7 +37,7 @@ static void switch_event_trigger(uint8_t _ch, bool _long_hold);
 float norm_input(Rc_Channel_t *_rc);
 float norm_input_dz(Rc_Channel_t *_rc);
 void set_roll_code(uint8_t *_code);
-void code_matching(void);
+void auto_code_matching(void);
 
 
 extern Rc_Channel_t rc_channels[RC_CHANNEL_MAX];

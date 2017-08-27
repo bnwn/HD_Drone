@@ -1,6 +1,24 @@
 #include "PN020Series.h"
 #include "common.h"
-
+#include "stdio.h"
+#include "../AHRS/ahrs.h"
+#include "../AHRS/inertial_sensor.h"
+#include "../Algorithm/Algorithm_filter/Algorithm_filter.h"
+#include "../Algorithm/Algorithm_math/Algorithm_math.h"
+#include "../Algorithm/Algorithm_math/mymath.h"
+#include "../Algorithm/Algorithm_pid/Algorithm_pid.h"
+#include "../Algorithm/Algorithm_quaternion/Algorithm_quaternion.h"
+#include "../Control/attitude_control.h"
+#include "../Control/flight_mode_control.h"
+#include "../Control/motor_control.h"
+#include "../Control/position_control.h"
+#include "../Driver/bsp/timer_delay.h"
+#include "../Driver/bsp/uart_console.h"
+#include "../Driver/bmi160.h"
+#include "../Driver/fbm320.h"
+#include "../Driver/motor.h"
+#include "../Scheduler/scheduler.h"
+#include "../RC/rc_channel.h"
 void system_init(void)
 {
    /*---------------------------------------------------------------------------------------------------------*/
@@ -57,20 +75,26 @@ void system_init(void)
 
 void peripheral_init(void)
 {
-    /* uart device setting */
+    /* uart device setting */    
+#ifdef __DEBUG__
     uart_console_init(UART0, CONSOLE_BAUDRATE);
     printf("console init success!\n");
+#endif
 	
     /* I2C Bus device init */
     I2C_Init(I2C0, I2C_CLOCK_FREQ);
     if (!fbm320_init()) {
 
     }
-		printf("fbm320 init success!\n");
+#ifdef __DEBUG__
+    printf("fbm320 init success!\n");
+#endif
     if (!bmi160_init()) {
 				
     }
+#ifdef __DEBUG__
     printf("bmi160 init success!\n");
+#endif
 
     /* servo output init */
     motor_init();
@@ -82,6 +106,17 @@ void peripheral_init(void)
     rc_channel_init();
 
     param_load();
+
+#ifdef __DEBUG__
+    printf("HD_Drone init success!\n");
+
+    printf("sensor collect offset...\n");
+#endif
+    gyro_offset();
+    accel_offset();
+#ifdef __DEBUG__
+    printf("collect complete\n");
+#endif
 }
 
 void param_load(void)

@@ -2,6 +2,7 @@
 #include "PN020Series.h"
 #include "timer_delay.h"
 #include "rf.h"
+#include "common.h"
 
 //const uint8_t TX_ADDRESS_DEF[5] = {0xCC,0x6C,0x47,0x90,0x53};    		//RF 地址：接收端和发送端需一致 \u6c47\u9053"汇道"
 const uint8_t TX_ADDRESS_DEF[5] = {0xCC,0xCC,0xCC,0xCC,0xCC};    		//RF 地址：接收端和发送端需一致 \u6c47\u9053"汇道"

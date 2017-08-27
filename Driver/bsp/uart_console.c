@@ -3,6 +3,9 @@
 #include "ahrs.h"
 #include "attitude_control.h"
 #include "motor_control.h"
+#include "common.h"
+
+#ifdef __DEBUG__
 
 void uart_console_init(UART_T* _uart, uint32_t _baudrate)
 {
@@ -420,3 +423,5 @@ float get_float(uint16_t _buf_index)
 		
 		return tmp;
 }
+
+#endif

@@ -1,5 +1,6 @@
 #include "PN020Series.h"
 #include "fbm320.h"
+#include "common.h"
 
 uint8_t	Formula_Select = 0;
 
@@ -66,7 +67,6 @@ void fbm320_timer_procedure(void)
 
         calculate(fbm320_packet.UP, fbm320_packet.UT);
         fbm320_packet.Altitude = abs_altitude(fbm320_packet.RP) / 10;
-				//printf("altitude: %d cm\n", fbm320_packet.Altitude);
     default:
         break;
     }

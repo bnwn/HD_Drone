@@ -1,6 +1,7 @@
 #include "PN020Series.h"
 #include "bsp_i2c.h"
 #include <stdio.h>
+#include "common.h"
 
 /**
  * @brief I2C interface initial
@@ -77,7 +78,9 @@ void I2C_WriteByte(uint8_t _slave_addr, uint32_t _addr, uint8_t _data)
         }
 
         if(i32Err) {
+#ifdef __DEBUG__
 						printf("Error: %d£¬ I2C status: %X\n", i32Err, I2C_GET_STATUS(I2C));
+#endif
             /* Send stop */
             I2C_SET_CONTROL_REG(I2C, I2C_STO | I2C_SI);
 
@@ -180,7 +183,9 @@ uint8_t I2C_ReadByte(uint8_t _slave_addr, uint32_t _addr)
         }
 
         if(i32Err) {
+#ifdef __DEBUG__
 					printf("Error: %d£¬ I2C status: %X\n", i32Err, I2C_GET_STATUS(I2C));
+#endif
             /* Send stop */
             I2C_SET_CONTROL_REG(I2C, I2C_STO | I2C_SI);
 
