@@ -2,7 +2,7 @@
 #define __COMMON_H
 
 /* only develop debug output info through uart */
-#define __DEBUG__
+#define __DEVELOP__
 
 void system_init(void);
 

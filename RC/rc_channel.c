@@ -16,7 +16,7 @@ void rc_channel_init(void)
     SPI1_Init();
     RF_Init();
     RF_RxMode();
-#ifdef __DEBUG__
+#ifdef __DEVELOP__
     printf("rf xns104 init success\n");
 #endif
     auto_code_matching();
@@ -32,7 +32,7 @@ bool rc_channel_read(void)
 
     ucRF_DumpRxData(rc_buf + buf_index, rev_len);
 
-#ifdef __DEBUG__
+#ifdef __DEVELOP__
 //		for(; j<PAYLOAD_WIDTH; j++)
 //		{
 //				printf("0x%X ", rc_buf[j]);
@@ -251,7 +251,7 @@ void set_roll_code(uint8_t *_code)
     for (; i<ROLL_CODE_NUM; i++) {
         roll_code[i] = *(_code + i);
     }
-#ifdef __DEBUG__
+#ifdef __DEVELOP__
     printf("roll code: 0x%X 0x%X 0x%X\n", roll_code[0], roll_code[1], roll_code[2]);
 #endif
 }

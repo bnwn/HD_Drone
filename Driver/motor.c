@@ -31,7 +31,7 @@ void motor_init(void)
     motor_duty_scale = (motor_min_duty_cnt + 1) / MOTOR_MIN_PWM;
 #elif MOTOR_TYPE == DC
     motor_duty_range = PWM->PERIOD0;
-#ifdef __DEBUG__
+#ifdef __DEVELOP__
 		printf("period0:%d, period1:%d, period2:%d, period3:%d, motor_duty_range:%d\n", PWM->PERIOD0, PWM->PERIOD1, PWM->PERIOD2, PWM->PERIOD3, motor_duty_range);
 #endif
 		PWM_SET_CMR(PWM, 0, 0);

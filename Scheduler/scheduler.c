@@ -63,7 +63,7 @@ void scheduler_run(void)
 		//test = micro_ticker;
 		/* main loop */
 		fast_loop();
-#ifdef __DEBUG__
+#ifdef __DEVELOP__
 		//test = micro_ticker - test;
 		
 //		test = micro_ticker;
@@ -143,7 +143,7 @@ void sched_20Hzloop(void)
 		if (!slice_flag.loop_20Hz) {
 				return;
 		}
-#ifdef __DEBUG__
+#ifdef __DEVELOP__
 		//AHRS_Read_Attitude(&_ahrs);
 		//printf("attitude:%d, %d, %d\n", (int16_t)(100*_ahrs.Roll), (int16_t)(100*_ahrs.Pitch), (int16_t)(100*_ahrs.Yaw));
 		//printf("roll:%3.3f, pitch:%3.3f, yaw:%3.3f\n", (float)(_ahrs.Roll), (float)(_ahrs.Pitch), (float)(_ahrs.Yaw));
@@ -166,7 +166,7 @@ void sched_10Hzloop(void)
 		if (!slice_flag.loop_10Hz) {
 				return;
 		}
-#ifdef __DEBUG__
+#ifdef __DEVELOP__
 //		printf("%d, %d, %d, %d, %d, %d \n", (int16_t)inertial_sensor.accel.filter.x, (int16_t)inertial_sensor.accel.filter.y, (int16_t)inertial_sensor.accel.filter.z, \
 //																	(int16_t)inertial_sensor.gyro.filter.x, (int16_t)inertial_sensor.gyro.filter.y, (int16_t)inertial_sensor.gyro.filter.z);
 //		printf("altitude: %d cm\n", fbm320_packet.Altitude);

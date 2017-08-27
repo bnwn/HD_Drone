@@ -76,7 +76,7 @@ void system_init(void)
 void peripheral_init(void)
 {
     /* uart device setting */    
-#ifdef __DEBUG__
+#ifdef __DEVELOP__
     uart_console_init(UART0, CONSOLE_BAUDRATE);
     printf("console init success!\n");
 #endif
@@ -86,13 +86,13 @@ void peripheral_init(void)
     if (!fbm320_init()) {
 
     }
-#ifdef __DEBUG__
+#ifdef __DEVELOP__
     printf("fbm320 init success!\n");
 #endif
     if (!bmi160_init()) {
 				
     }
-#ifdef __DEBUG__
+#ifdef __DEVELOP__
     printf("bmi160 init success!\n");
 #endif
 
@@ -107,14 +107,14 @@ void peripheral_init(void)
 
     param_load();
 
-#ifdef __DEBUG__
+#ifdef __DEVELOP__
     printf("HD_Drone init success!\n");
 
     printf("sensor collect offset...\n");
 #endif
     gyro_offset();
     accel_offset();
-#ifdef __DEBUG__
+#ifdef __DEVELOP__
     printf("collect complete\n");
 #endif
 }

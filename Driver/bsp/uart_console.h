@@ -3,7 +3,7 @@
 
 #include "common.h"
 
-#ifdef __DEBUG__
+#ifdef __DEVELOP__
 
 #include "PN020Series.h"
 #include "uart.h"

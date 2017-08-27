@@ -5,7 +5,7 @@
 #include "motor_control.h"
 #include "common.h"
 
-#ifdef __DEBUG__
+#ifdef __DEVELOP__
 
 void uart_console_init(UART_T* _uart, uint32_t _baudrate)
 {
