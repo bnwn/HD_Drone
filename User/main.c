@@ -9,11 +9,11 @@ int main(void)
 
     printf("HD_Drone init success!\n");
 	
-		printf("sensor collect offset...\n");
-		gyro_offset();
-		accel_offset();
-		printf("collect complete\n");
-		SCHEDULER_RUN;	
+    printf("sensor collect offset...\n");
+    gyro_offset();
+    accel_offset();
+    printf("collect complete\n");
+    SCHEDULER_RUN;
 	
     while(1) {
         /* task scheduler */

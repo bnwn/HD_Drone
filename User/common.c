@@ -43,13 +43,13 @@ void system_init(void)
     SYS->P3_MFP |=SYS_MFP_P35_I2C0_SCL|SYS_MFP_P34_I2C0_SDA;
     P3->DINOFF &= ~ ( GP_DINOFF_DINOFF4_Msk |GP_DINOFF_DINOFF5_Msk);
 		
-		/* spi gpio setting */
-		SYS->P0_MFP |= SYS_MFP_P03_SPI1_SS;  //SPI1SS
+    /* spi gpio setting */
+    SYS->P0_MFP |= SYS_MFP_P03_SPI1_SS;  //SPI1SS
     SYS->P1_MFP |= SYS_MFP_P11_SPI1_CLK | SYS_MFP_P16_SPI1_MOSI | SYS_MFP_P17_SPI1_MISO ;//SPI1 MOSI1 MISO1   
-		GPIO_ENABLE_DIGITAL_PATH(P0,(1<<3));
-		GPIO_ENABLE_DIGITAL_PATH(P1,(1<<1));   
-		GPIO_ENABLE_DIGITAL_PATH(P1,(1<<6));
-		GPIO_ENABLE_DIGITAL_PATH(P1,(1<<7));  
+    GPIO_ENABLE_DIGITAL_PATH(P0,(1<<3));
+    GPIO_ENABLE_DIGITAL_PATH(P1,(1<<1));
+    GPIO_ENABLE_DIGITAL_PATH(P1,(1<<6));
+    GPIO_ENABLE_DIGITAL_PATH(P1,(1<<7));
     CLK_EnableModuleClock(SPI1_MODULE);  
 
     SYS_LockReg();
@@ -59,7 +59,7 @@ void peripheral_init(void)
 {
     /* uart device setting */
     uart_console_init(UART0, CONSOLE_BAUDRATE);
-		printf("console init success!\n");
+    printf("console init success!\n");
 	
     /* I2C Bus device init */
     I2C_Init(I2C0, I2C_CLOCK_FREQ);
@@ -70,7 +70,7 @@ void peripheral_init(void)
     if (!bmi160_init()) {
 				
     }
-		printf("bmi160 init success!\n");
+    printf("bmi160 init success!\n");
 
     /* servo output init */
     motor_init();
@@ -78,10 +78,10 @@ void peripheral_init(void)
     /* task scheduler timer init */
     scheduler_init();
 		
-		/* rf init */
-		rc_channel_init();
-		
-		param_load();
+    /* rf init */
+    rc_channel_init();
+
+    param_load();
 }
 
 void param_load(void)
