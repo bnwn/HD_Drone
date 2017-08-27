@@ -78,7 +78,7 @@ void I2C_WriteByte(uint8_t _slave_addr, uint32_t _addr, uint8_t _data)
         }
 
         if(i32Err) {
-#ifdef __DEBUG__
+#ifdef __DEVELOP__
 						printf("Error: %d£¬ I2C status: %X\n", i32Err, I2C_GET_STATUS(I2C));
 #endif
             /* Send stop */
@@ -183,7 +183,7 @@ uint8_t I2C_ReadByte(uint8_t _slave_addr, uint32_t _addr)
         }
 
         if(i32Err) {
-#ifdef __DEBUG__
+#ifdef __DEVELOP__
 					printf("Error: %d£¬ I2C status: %X\n", i32Err, I2C_GET_STATUS(I2C));
 #endif
             /* Send stop */

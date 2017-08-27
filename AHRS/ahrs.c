@@ -84,7 +84,7 @@ void AHRS_Update(void)
     ahrs.Yaw = (float)Degree((double)AngE.Yaw);
     ahrs.Roll = (float)Degree((double)AngE.Roll);  // roll
     ahrs.Pitch = (float)Degree((double)AngE.Pitch); // pitch
-#ifdef __DEBUG__
+#ifdef __DEVELOP__
 //		printf("attitude:%.3f, %.3f, %.3f\n", ahrs.Roll, ahrs.Pitch, ahrs.Yaw);
 #endif
 }
@@ -105,7 +105,7 @@ void AHRS_GetQ(void)
     float GyrX, GyrY, GyrZ;
     float Normalize;
 
-#ifdef __DEBUG__
+#ifdef __DEVELOP__
 		//printf(" filter : acc.x:%.3f, acc.y:%.3f, acc.z:%.3f \n", inertial_sensor.accel.filter.x, inertial_sensor.accel.filter.y, inertial_sensor.accel.filter.z);
 		//printf(" filter : gyro.x:%.3f, gyro.y:%.3f, gyro.z:%.3f \n", inertial_sensor.gyro.filter.x, inertial_sensor.gyro.filter.y, inertial_sensor.gyro.filter.z);
 #endif
@@ -152,7 +152,7 @@ void AHRS_set_complementary_filter_kp(float _kp)
 {
 		SCHEDULER_STOP;
 		cmp_kp = _kp;
-#ifdef __DEBUG__
+#ifdef __DEVELOP__
 		printf("kp: %.6f\n", cmp_kp);
 #endif
 		memset(&NumQ, 0, sizeof(Quaternion));
@@ -170,7 +170,7 @@ void AHRS_set_complementary_filter_ki(float _ki)
 {
 		SCHEDULER_STOP;
 		cmp_ki = _ki;
-#ifdef __DEBUG__
+#ifdef __DEVELOP__
 		printf("ki: %.6f\n", cmp_ki);
 #endif
 		memset(&NumQ, 0, sizeof(Quaternion));

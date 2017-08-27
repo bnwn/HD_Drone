@@ -10,7 +10,7 @@ float target_throttle = 0, trace_throttle = 0;
 **函数 : motors_output(void)
 **功能 : 电机控制
 **输入 : None
-**輸出 : None
+**?出 : None
 **备注 : None
 **====================================================================================================*/
 /*====================================================================================================*/
@@ -24,7 +24,7 @@ void motors_output(void)
     motor_duty[MOTOR3_INDEX] = thrust.throttle + thrust.pitch + thrust.roll - thrust.yaw;
     motor_duty[MOTOR4_INDEX] = thrust.throttle - thrust.pitch - thrust.roll - thrust.yaw;
 
-#ifdef __DEBUG__
+#ifdef __DEVELOP__
 //		printf ("%d, %d, %d, %d\n", (int16_t)(motor_duty[MOTOR1_INDEX]*1000), (int16_t)(motor_duty[MOTOR2_INDEX]*1000), (int16_t)(motor_duty[MOTOR3_INDEX]*1000), \
 																														(int16_t)(motor_duty[MOTOR4_INDEX]*1000));
 #endif
@@ -149,7 +149,7 @@ void set_motor_throttle(float _thrust)
 void set_trace_throttle(float _thr)
 {
 		trace_throttle = _thr;
-#ifdef __DEBUG__
+#ifdef __DEVELOP__
 	printf("trace throttle: %.3f\n", trace_throttle);
 #endif
 }
