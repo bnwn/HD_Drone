@@ -5,7 +5,7 @@
 void SPI1_Init(void)
 {
      SPI_Open(SPI1, SPI_MASTER, SPI_MODE_0, 8, SPI_CLOCK_FREQ);    
-     delay_ms(1000);
+     delay_ms(50);
 }
 
 __INLINE uint8_t SPI_RW(uint8_t R_REG)

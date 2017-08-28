@@ -37,7 +37,11 @@ void motors_output(void)
 #elif VEHICLE_FRAME == HEXA
 #endif
 
-    motor_update(motor_duty);
+	if (!fc_status.armed) {
+		motor_update(motor_duty);
+	} else {
+		motor_stop();
+	}
 }
 
 void throttle_control(float dt)

@@ -56,7 +56,7 @@ void update_flight_mode(void)
             stabilize_run();
             break;
         case AltHold:
-            althold_run();
+            //althold_run();
             break;
         case OneKeyFlip:
             break;
@@ -111,7 +111,7 @@ void stabilize_run(void)
 //    target_throttle = trace_throttle;
 //    attitude_angle_euler_controller(trace_attitude_ang.roll, trace_attitude_ang.pitch, trace_attitude_ang.yaw, get_smoothing_gain(), 0.0025f);
 
-    attitude_angle_euler_controller(target_attitude.roll, target_attitude.pitch, target_attitude.yaw, get_smoothing_gain(), DT);
+    attitude_angle_euler_controller(target_attitude.roll, target_attitude.pitch, target_attitude.yaw, get_smoothing_gain(), LOOP_DT);
     attitude_throttle_controller(target_throttle, true, 0.0f);
 
 #if 0
@@ -129,6 +129,7 @@ void stabilize_run(void)
 #endif
 }
 
+#if 0
 // althold_init - initialise althold controller
 bool Copter::althold_init(bool ignore_checks)
 {
@@ -285,7 +286,7 @@ void Copter::althold_run()
         break;
     }
 }
-
+#endif
 float get_smoothing_gain(void)
 {
     float sense_gain = 1;

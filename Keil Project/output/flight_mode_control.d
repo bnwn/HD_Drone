@@ -30,3 +30,5 @@
 .\output\flight_mode_control.o: ..\Control\../AHRS/inertial_sensor.h
 .\output\flight_mode_control.o: ..\Control\../Algorithm/Algorithm_pid/Algorithm_pid.h
 .\output\flight_mode_control.o: ..\Control\position_control.h
+.\output\flight_mode_control.o: ..\User\common.h
+.\output\flight_mode_control.o: ..\RC\rc_channel.h

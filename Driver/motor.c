@@ -10,7 +10,7 @@ uint32_t motor_duty_range;
 
 void motor_init(void)
 {
-		PWM_ConfigOutputChannel(PWM, 0, MOTOR_PWM_FREQ, MOTOR_MIN_PWM_DUTY);	
+	PWM_ConfigOutputChannel(PWM, 0, MOTOR_PWM_FREQ, MOTOR_MIN_PWM_DUTY);	
     PWM_ConfigOutputChannel(PWM, 1, MOTOR_PWM_FREQ, MOTOR_MIN_PWM_DUTY);
     PWM_ConfigOutputChannel(PWM, 2, MOTOR_PWM_FREQ, MOTOR_MIN_PWM_DUTY);
     PWM_ConfigOutputChannel(PWM, 3, MOTOR_PWM_FREQ, MOTOR_MIN_PWM_DUTY);
@@ -32,15 +32,15 @@ void motor_init(void)
 #elif MOTOR_TYPE == DC
     motor_duty_range = PWM->PERIOD0;
 #ifdef __DEVELOP__
-		printf("period0:%d, period1:%d, period2:%d, period3:%d, motor_duty_range:%d\n", PWM->PERIOD0, PWM->PERIOD1, PWM->PERIOD2, PWM->PERIOD3, motor_duty_range);
+	printf("period0:%d, period1:%d, period2:%d, period3:%d, motor_duty_range:%d\n", PWM->PERIOD0, PWM->PERIOD1, PWM->PERIOD2, PWM->PERIOD3, motor_duty_range);
 #endif
-		PWM_SET_CMR(PWM, 0, 0);
-		PWM_SET_CMR(PWM, 1, 0);
-		PWM_SET_CMR(PWM, 2, 0);
-		PWM_SET_CMR(PWM, 3, 0);
+	PWM_SET_CMR(PWM, 0, 0);
+	PWM_SET_CMR(PWM, 1, 0);
+	PWM_SET_CMR(PWM, 2, 0);
+	PWM_SET_CMR(PWM, 3, 0);
 #endif
 
-
+	fc_status.armed = true;
 }
 
 void motor_update(float *_duty)
@@ -55,16 +55,27 @@ void motor_update(float *_duty)
 //        } else if (*(_duty + i) > 1.0f) {
 //            *(_duty + i) = 1.0f;
 //        }
-				*(_duty + i) = data_limit(*(_duty + i), 1.0f, 0.0f);
+		*(_duty + i) = data_limit(*(_duty + i), 1.0f, 0.0f);
 				
 #if MOTOR_TYPE == DC
-				_duty_cycle = (uint32_t)(*(_duty + i) * motor_duty_range);
+		_duty_cycle = (uint32_t)(*(_duty + i) * motor_duty_range);
 				
-                if (_duty_cycle > 0) _duty_cycle -= 1;
-        PWM_SET_CMR(PWM, i, _duty_cycle);
-#elif
+		if (_duty_cycle > 0) _duty_cycle -= 1;
+		PWM_SET_CMR(PWM, i, _duty_cycle);
+#elif MOTOR_TYPE == BLDC
 		
 #endif
     }
+}
+
+void motor_stop(void)
+{
+#if VEHICLE_FRAME == QUAD
+	PWM_SET_CMR(PWM, 0, 0);
+	PWM_SET_CMR(PWM, 1, 0);
+	PWM_SET_CMR(PWM, 2, 0);
+	PWM_SET_CMR(PWM, 3, 0);
+#elif VEHICLE_FRAME == HEXA
+#endif
 }
 

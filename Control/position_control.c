@@ -1,6 +1,7 @@
 #include "PN020Series.h"
 #include "position_control.h"
 
+#if 0
 void position_z_control()
 {
     uint32_t now = AP_HAL::millis();
@@ -19,3 +20,4 @@ void position_z_control()
     // call position controller
     pos_to_rate_z();
 }
+#endif

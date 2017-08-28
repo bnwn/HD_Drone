@@ -22,7 +22,7 @@ Dialog DLL:      TARMCM1.DLL V1.10.0.0
  
 <h2>Project:</h2>
 C:\Users\Administrator.DESKTOP-ZXM\Desktop\workspace\HD_Drone\HD_Drone_Firmware\Keil Project\HD_Drone.uvprojx
-Project File Date:  08/20/2017
+Project File Date:  08/25/2017
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 2 (build 183)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
@@ -32,14 +32,12 @@ Clean started - Project: 'HD_Drone'
 compiling bmi160.c...
 compiling fbm320.c...
 compiling motor.c...
-..\Driver\motor.c(33): warning:  #223-D: function "printf" declared implicitly
-                printf("period0:%d, period1:%d, period2:%d, period3:%d, motor_duty_range:%d\n", PWM->PERIOD0, PWM->PERIOD1, PWM->PERIOD2, PWM->PERIOD3, motor_duty_range);
-..\Driver\motor.c(63): warning:  #29-D: expected an expression
-  #elif
-..\Driver\motor.c: 2 warnings, 0 errors
+..\Driver\motor.c(35): warning:  #223-D: function "printf" declared implicitly
+        printf("period0:%d, period1:%d, period2:%d, period3:%d, motor_duty_range:%d\n", PWM->PERIOD0, PWM->PERIOD1, PWM->PERIOD2, PWM->PERIOD3, motor_duty_range);
+..\Driver\motor.c: 1 warning, 0 errors
 compiling common.c...
 compiling main.c...
-..\User\main.c(23): warning:  #111-D: statement is unreachable
+..\User\main.c(18): warning:  #111-D: statement is unreachable
           return 0;
 ..\User\main.c: 1 warning, 0 errors
 compiling system_PN020Series.c...
@@ -47,7 +45,7 @@ assembling startup_PN020Series.s...
 compiling Algorithm_filter.c...
 compiling Algorithm_math.c...
 ..\Algorithm\Algorithm_math\Algorithm_math.c(88): warning:  #111-D: statement is unreachable
-        if(error < 0)
+        if(error < 0.0f)
 ..\Algorithm\Algorithm_math\Algorithm_math.c: 1 warning, 0 errors
 compiling mymath.c...
 compiling Algorithm_pid.c...
@@ -55,111 +53,94 @@ compiling Algorithm_quaternion.c...
 compiling Algorithm_sqLite.c...
 compiling attitude_control.c...
 compiling flight_mode_control.c...
-..\Control\flight_mode_control.c(103): warning:  #177-D: variable "target_roll" was declared but never referenced
-      float target_roll, target_pitch;
-..\Control\flight_mode_control.c(103): warning:  #177-D: variable "target_pitch" was declared but never referenced
-      float target_roll, target_pitch;
-..\Control\flight_mode_control.c(104): warning:  #177-D: variable "target_yaw_rate" was declared but never referenced
-      float target_yaw_rate, target_throttle;
-..\Control\flight_mode_control.c(105): warning:  #177-D: variable "pilot_throttle_scaled" was declared but never referenced
-      float pilot_throttle_scaled;
-..\Control\flight_mode_control.c: 4 warnings, 0 errors
 compiling motor_control.c...
-..\Control\motor_control.c(150): warning:  #223-D: function "printf" declared implicitly
+..\Control\motor_control.c(111): warning:  #223-D: function "printf" declared implicitly
         printf("trace throttle: %.3f\n", trace_throttle);
 ..\Control\motor_control.c: 1 warning, 0 errors
 compiling position_control.c...
 compiling scheduler.c...
-..\Scheduler\scheduler.c(43): warning:  #177-D: variable "test" was declared but never referenced
+..\Scheduler\scheduler.c(61): warning:  #177-D: variable "test" was declared but never referenced
           static uint32_t test = 0;
-..\Scheduler\scheduler.c(123): warning:  #177-D: variable "_ahrs" was declared but never referenced
+..\Scheduler\scheduler.c(142): warning:  #177-D: variable "_ahrs" was declared but never referenced
                 EulerAngle _ahrs;
 ..\Scheduler\scheduler.c: 2 warnings, 0 errors
 compiling ahrs.c...
-..\AHRS\ahrs.c(45): warning:  #550-D: variable "sin_pitch" was set but never used
-      float sin_pitch,sin_roll,cos_roll,cos_pitch;
-..\AHRS\ahrs.c(45): warning:  #550-D: variable "sin_roll" was set but never used
-      float sin_pitch,sin_roll,cos_roll,cos_pitch;
-..\AHRS\ahrs.c(45): warning:  #550-D: variable "cos_roll" was set but never used
-      float sin_pitch,sin_roll,cos_roll,cos_pitch;
-..\AHRS\ahrs.c(45): warning:  #550-D: variable "cos_pitch" was set but never used
-      float sin_pitch,sin_roll,cos_roll,cos_pitch;
-..\AHRS\ahrs.c(150): warning:  #223-D: function "printf" declared implicitly
+..\AHRS\ahrs.c(156): warning:  #223-D: function "printf" declared implicitly
                 printf("kp: %.6f\n", cmp_kp);
-..\AHRS\ahrs.c(151): warning:  #223-D: function "memset" declared implicitly
+..\AHRS\ahrs.c(158): warning:  #223-D: function "memset" declared implicitly
                 memset(&NumQ, 0, sizeof(Quaternion));
-..\AHRS\ahrs.c(166): warning:  #223-D: function "printf" declared implicitly
+..\AHRS\ahrs.c(174): warning:  #223-D: function "printf" declared implicitly
                 printf("ki: %.6f\n", cmp_ki);
-..\AHRS\ahrs.c(167): warning:  #223-D: function "memset" declared implicitly
+..\AHRS\ahrs.c(176): warning:  #223-D: function "memset" declared implicitly
                 memset(&NumQ, 0, sizeof(Quaternion));
-..\AHRS\ahrs.c: 8 warnings, 0 errors
+..\AHRS\ahrs.c: 4 warnings, 0 errors
 compiling inertial_sensor.c...
 compiling bsp_i2c.c...
 compiling timer_delay.c...
 compiling uart_console.c...
-..\Driver\bsp\uart_console.c(56): warning:  #223-D: function "memset" declared implicitly
+..\Driver\bsp\uart_console.c(59): warning:  #223-D: function "memset" declared implicitly
                                                                 memset(rev_buf, 0, CONSOLE_BUF_SIZE);
-..\Driver\bsp\uart_console.c(66): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(69): warning:  #223-D: function "printf" declared implicitly
                                                 printf ("unknow command!\n");
-..\Driver\bsp\uart_console.c(68): warning:  #223-D: function "memset" declared implicitly
+..\Driver\bsp\uart_console.c(71): warning:  #223-D: function "memset" declared implicitly
                                 memset(rev_buf, 0, CONSOLE_BUF_SIZE);
-..\Driver\bsp\uart_console.c(100): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(103): warning:  #223-D: function "printf" declared implicitly
                                                                 printf("set ahrs success.\n        kp: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(108): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(111): warning:  #223-D: function "printf" declared implicitly
                                                                 printf("set ahrs success.\n        ki: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(131): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(134): warning:  #223-D: function "printf" declared implicitly
                                                                                                                                 printf("set anlge loop roll kp: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(141): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(144): warning:  #223-D: function "printf" declared implicitly
                                                                                                                                 printf("set anlge loop roll ki: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(151): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(154): warning:  #223-D: function "printf" declared implicitly
                                                                                                                                 printf("set anlge loop roll kd: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(162): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(165): warning:  #223-D: function "printf" declared implicitly
                                                                                                                                 printf("set anlge loop pitch kp: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(171): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(174): warning:  #223-D: function "printf" declared implicitly
                                                                                                                                 printf("set anlge loop pitch ki: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(180): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(183): warning:  #223-D: function "printf" declared implicitly
                                                                                                                                 printf("set anlge loop pitch kd: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(191): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(194): warning:  #223-D: function "printf" declared implicitly
                                                                                                                                 printf("set anlge loop yaw kp: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(200): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(203): warning:  #223-D: function "printf" declared implicitly
                                                                                                                                 printf("set anlge loop yaw ki: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(209): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(212): warning:  #223-D: function "printf" declared implicitly
                                                                                                                                 printf("set anlge loop yaw kd: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(229): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(232): warning:  #223-D: function "printf" declared implicitly
                                                                                                                         printf("set rate loop roll kp: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(239): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(242): warning:  #223-D: function "printf" declared implicitly
                                                                                                                         printf("set rate loop roll ki: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(249): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(252): warning:  #223-D: function "printf" declared implicitly
                                                                                                                         printf("set rate loop roll kd: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(260): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(263): warning:  #223-D: function "printf" declared implicitly
                                                                                                                         printf("set rate loop pitch kp: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(269): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(272): warning:  #223-D: function "printf" declared implicitly
                                                                                                                         printf("set rate loop pitch ki: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(278): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(281): warning:  #223-D: function "printf" declared implicitly
                                                                                                                         printf("set rate loop pitch kd: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(289): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(292): warning:  #223-D: function "printf" declared implicitly
                                                                                                                         printf("set rate loop yaw kp: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(298): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(301): warning:  #223-D: function "printf" declared implicitly
                                                                                                                         printf("set rate loop yaw ki: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(307): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(310): warning:  #223-D: function "printf" declared implicitly
                                                                                                                         printf("set rate loop yaw kd: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(332): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(335): warning:  #223-D: function "printf" declared implicitly
                                                                                                                 printf("set roll angle : %.6f\n", _data);
-..\Driver\bsp\uart_console.c(334): warning:  #111-D: statement is unreachable
+..\Driver\bsp\uart_console.c(337): warning:  #111-D: statement is unreachable
                                                                                                                 break;
-..\Driver\bsp\uart_console.c(340): warning:  #111-D: statement is unreachable
+..\Driver\bsp\uart_console.c(343): warning:  #111-D: statement is unreachable
                                                                                                                 break;
-..\Driver\bsp\uart_console.c(346): warning:  #111-D: statement is unreachable
+..\Driver\bsp\uart_console.c(349): warning:  #111-D: statement is unreachable
                                                                                                                 break;
-..\Driver\bsp\uart_console.c(359): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(362): warning:  #223-D: function "printf" declared implicitly
                                                                                                                 printf("set roll rate : %.6f\n", _data);
-..\Driver\bsp\uart_console.c(361): warning:  #111-D: statement is unreachable
+..\Driver\bsp\uart_console.c(364): warning:  #111-D: statement is unreachable
                                                                                                                 break;
-..\Driver\bsp\uart_console.c(367): warning:  #111-D: statement is unreachable
+..\Driver\bsp\uart_console.c(370): warning:  #111-D: statement is unreachable
                                                                                                                 break;
-..\Driver\bsp\uart_console.c(373): warning:  #111-D: statement is unreachable
+..\Driver\bsp\uart_console.c(376): warning:  #111-D: statement is unreachable
                                                                                                                 break;
-..\Driver\bsp\uart_console.c(387): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(390): warning:  #223-D: function "printf" declared implicitly
                                                 printf("set throttle thrust: %.6f\n", _data);
 ..\Driver\bsp\uart_console.c: 32 warnings, 0 errors
 compiling bsp_spi.c...
@@ -178,159 +159,135 @@ compiling uart.c...
 compiling wdt.c...
 compiling wwdt.c...
 compiling rc_channel.c...
-..\RC\rc_channel.c(17): warning:  #223-D: function "printf" declared implicitly
-                printf("rf xns104 init success\n");
-..\RC\rc_channel.c(24): warning:  #177-D: variable "data_buf_index" was declared but never referenced
-                static uint8_t buf_index = 0, data_buf_index = 0, rc_data_len = 0;
-..\RC\rc_channel.c(24): warning:  #177-D: variable "rc_data_len" was declared but never referenced
-                static uint8_t buf_index = 0, data_buf_index = 0, rc_data_len = 0;
-..\RC\rc_channel.c(25): warning:  #177-D: variable "step" was declared but never referenced
-                static uint8_t step = RC_START;
-..\RC\rc_channel.c(26): warning:  #177-D: variable "rc_data_update" was declared but never referenced
-                static bool rc_data_update = false;
-..\RC\rc_channel.c(28): warning:  #177-D: variable "current_index" was declared but never referenced
-                uint8_t current_index = 0;
-..\RC\rc_channel.c(29): warning:  #177-D: variable "j" was declared but never referenced
-                uint8_t j = 0;
-..\RC\rc_channel.c(129): warning:  #177-D: function "packet_parse" was declared but never referenced
+..\RC\rc_channel.c(21): warning:  #223-D: function "printf" declared implicitly
+      printf("rf xns104 init success\n");
+..\RC\rc_channel.c(33): warning:  #177-D: variable "j" was declared but never referenced
+      uint8_t j = 0;
+..\RC\rc_channel.c(182): warning:  #188-D: enumerated type mixed with another type
+              switch_event_trigger(ch_index, (switch_on_tick[ch_index] >= 250));
+..\RC\rc_channel.c(262): warning:  #223-D: function "printf" declared implicitly
+      printf("roll code: 0x%X 0x%X 0x%X\n", roll_code[0], roll_code[1], roll_code[2]);
+..\RC\rc_channel.c(155): warning:  #177-D: function "packet_parse" was declared but never referenced
   static void packet_parse(void)
-..\RC\rc_channel.c(8): warning:  #177-D: variable "pre_switch" was declared but never referenced
+..\RC\rc_channel.c(11): warning:  #177-D: variable "pre_switch" was declared but never referenced
   static uint8_t pre_switch = 0;
-..\RC\rc_channel.c: 9 warnings, 0 errors
+..\RC\rc_channel.c: 6 warnings, 0 errors
 compiling rf.c...
 linking...
-Program Size: Code=26080 RO-data=624 RW-data=288 ZI-data=2196  
-".\output\HD_Drone.axf" - 0 Error(s), 60 Warning(s).
+Program Size: Code=27572 RO-data=728 RW-data=316 ZI-data=2248  
+".\output\HD_Drone.axf" - 0 Error(s), 48 Warning(s).
 
 *** Performing Cross-Module-Optimization:
 compiling bmi160.c...
 compiling fbm320.c...
 compiling motor.c...
-..\Driver\motor.c(33): warning:  #223-D: function "printf" declared implicitly
-                printf("period0:%d, period1:%d, period2:%d, period3:%d, motor_duty_range:%d\n", PWM->PERIOD0, PWM->PERIOD1, PWM->PERIOD2, PWM->PERIOD3, motor_duty_range);
-..\Driver\motor.c(63): warning:  #29-D: expected an expression
-  #elif
-..\Driver\motor.c: 2 warnings, 0 errors
+..\Driver\motor.c(35): warning:  #223-D: function "printf" declared implicitly
+        printf("period0:%d, period1:%d, period2:%d, period3:%d, motor_duty_range:%d\n", PWM->PERIOD0, PWM->PERIOD1, PWM->PERIOD2, PWM->PERIOD3, motor_duty_range);
+..\Driver\motor.c: 1 warning, 0 errors
 compiling common.c...
 compiling main.c...
-..\User\main.c(23): warning:  #111-D: statement is unreachable
+..\User\main.c(18): warning:  #111-D: statement is unreachable
           return 0;
 ..\User\main.c: 1 warning, 0 errors
 compiling system_PN020Series.c...
 compiling Algorithm_filter.c...
 compiling Algorithm_math.c...
 ..\Algorithm\Algorithm_math\Algorithm_math.c(88): warning:  #111-D: statement is unreachable
-        if(error < 0)
+        if(error < 0.0f)
 ..\Algorithm\Algorithm_math\Algorithm_math.c: 1 warning, 0 errors
 compiling mymath.c...
 compiling Algorithm_pid.c...
 compiling Algorithm_quaternion.c...
 compiling attitude_control.c...
 compiling flight_mode_control.c...
-..\Control\flight_mode_control.c(103): warning:  #177-D: variable "target_roll" was declared but never referenced
-      float target_roll, target_pitch;
-..\Control\flight_mode_control.c(103): warning:  #177-D: variable "target_pitch" was declared but never referenced
-      float target_roll, target_pitch;
-..\Control\flight_mode_control.c(104): warning:  #177-D: variable "target_yaw_rate" was declared but never referenced
-      float target_yaw_rate, target_throttle;
-..\Control\flight_mode_control.c(105): warning:  #177-D: variable "pilot_throttle_scaled" was declared but never referenced
-      float pilot_throttle_scaled;
-..\Control\flight_mode_control.c: 4 warnings, 0 errors
 compiling motor_control.c...
-..\Control\motor_control.c(150): warning:  #223-D: function "printf" declared implicitly
+..\Control\motor_control.c(111): warning:  #223-D: function "printf" declared implicitly
         printf("trace throttle: %.3f\n", trace_throttle);
 ..\Control\motor_control.c: 1 warning, 0 errors
+compiling position_control.c...
 compiling scheduler.c...
-..\Scheduler\scheduler.c(43): warning:  #177-D: variable "test" was declared but never referenced
+..\Scheduler\scheduler.c(61): warning:  #177-D: variable "test" was declared but never referenced
           static uint32_t test = 0;
-..\Scheduler\scheduler.c(123): warning:  #177-D: variable "_ahrs" was declared but never referenced
+..\Scheduler\scheduler.c(142): warning:  #177-D: variable "_ahrs" was declared but never referenced
                 EulerAngle _ahrs;
 ..\Scheduler\scheduler.c: 2 warnings, 0 errors
 compiling ahrs.c...
-..\AHRS\ahrs.c(45): warning:  #550-D: variable "sin_pitch" was set but never used
-      float sin_pitch,sin_roll,cos_roll,cos_pitch;
-..\AHRS\ahrs.c(45): warning:  #550-D: variable "sin_roll" was set but never used
-      float sin_pitch,sin_roll,cos_roll,cos_pitch;
-..\AHRS\ahrs.c(45): warning:  #550-D: variable "cos_roll" was set but never used
-      float sin_pitch,sin_roll,cos_roll,cos_pitch;
-..\AHRS\ahrs.c(45): warning:  #550-D: variable "cos_pitch" was set but never used
-      float sin_pitch,sin_roll,cos_roll,cos_pitch;
-..\AHRS\ahrs.c(150): warning:  #223-D: function "printf" declared implicitly
+..\AHRS\ahrs.c(156): warning:  #223-D: function "printf" declared implicitly
                 printf("kp: %.6f\n", cmp_kp);
-..\AHRS\ahrs.c(151): warning:  #223-D: function "memset" declared implicitly
+..\AHRS\ahrs.c(158): warning:  #223-D: function "memset" declared implicitly
                 memset(&NumQ, 0, sizeof(Quaternion));
-..\AHRS\ahrs.c(166): warning:  #223-D: function "printf" declared implicitly
+..\AHRS\ahrs.c(174): warning:  #223-D: function "printf" declared implicitly
                 printf("ki: %.6f\n", cmp_ki);
-..\AHRS\ahrs.c(167): warning:  #223-D: function "memset" declared implicitly
+..\AHRS\ahrs.c(176): warning:  #223-D: function "memset" declared implicitly
                 memset(&NumQ, 0, sizeof(Quaternion));
-..\AHRS\ahrs.c: 8 warnings, 0 errors
+..\AHRS\ahrs.c: 4 warnings, 0 errors
 compiling inertial_sensor.c...
 compiling bsp_i2c.c...
 compiling timer_delay.c...
 compiling uart_console.c...
-..\Driver\bsp\uart_console.c(56): warning:  #223-D: function "memset" declared implicitly
+..\Driver\bsp\uart_console.c(59): warning:  #223-D: function "memset" declared implicitly
                                                                 memset(rev_buf, 0, CONSOLE_BUF_SIZE);
-..\Driver\bsp\uart_console.c(66): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(69): warning:  #223-D: function "printf" declared implicitly
                                                 printf ("unknow command!\n");
-..\Driver\bsp\uart_console.c(68): warning:  #223-D: function "memset" declared implicitly
+..\Driver\bsp\uart_console.c(71): warning:  #223-D: function "memset" declared implicitly
                                 memset(rev_buf, 0, CONSOLE_BUF_SIZE);
-..\Driver\bsp\uart_console.c(100): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(103): warning:  #223-D: function "printf" declared implicitly
                                                                 printf("set ahrs success.\n        kp: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(108): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(111): warning:  #223-D: function "printf" declared implicitly
                                                                 printf("set ahrs success.\n        ki: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(131): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(134): warning:  #223-D: function "printf" declared implicitly
                                                                                                                                 printf("set anlge loop roll kp: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(141): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(144): warning:  #223-D: function "printf" declared implicitly
                                                                                                                                 printf("set anlge loop roll ki: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(151): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(154): warning:  #223-D: function "printf" declared implicitly
                                                                                                                                 printf("set anlge loop roll kd: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(162): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(165): warning:  #223-D: function "printf" declared implicitly
                                                                                                                                 printf("set anlge loop pitch kp: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(171): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(174): warning:  #223-D: function "printf" declared implicitly
                                                                                                                                 printf("set anlge loop pitch ki: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(180): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(183): warning:  #223-D: function "printf" declared implicitly
                                                                                                                                 printf("set anlge loop pitch kd: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(191): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(194): warning:  #223-D: function "printf" declared implicitly
                                                                                                                                 printf("set anlge loop yaw kp: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(200): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(203): warning:  #223-D: function "printf" declared implicitly
                                                                                                                                 printf("set anlge loop yaw ki: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(209): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(212): warning:  #223-D: function "printf" declared implicitly
                                                                                                                                 printf("set anlge loop yaw kd: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(229): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(232): warning:  #223-D: function "printf" declared implicitly
                                                                                                                         printf("set rate loop roll kp: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(239): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(242): warning:  #223-D: function "printf" declared implicitly
                                                                                                                         printf("set rate loop roll ki: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(249): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(252): warning:  #223-D: function "printf" declared implicitly
                                                                                                                         printf("set rate loop roll kd: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(260): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(263): warning:  #223-D: function "printf" declared implicitly
                                                                                                                         printf("set rate loop pitch kp: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(269): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(272): warning:  #223-D: function "printf" declared implicitly
                                                                                                                         printf("set rate loop pitch ki: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(278): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(281): warning:  #223-D: function "printf" declared implicitly
                                                                                                                         printf("set rate loop pitch kd: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(289): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(292): warning:  #223-D: function "printf" declared implicitly
                                                                                                                         printf("set rate loop yaw kp: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(298): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(301): warning:  #223-D: function "printf" declared implicitly
                                                                                                                         printf("set rate loop yaw ki: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(307): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(310): warning:  #223-D: function "printf" declared implicitly
                                                                                                                         printf("set rate loop yaw kd: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(332): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(335): warning:  #223-D: function "printf" declared implicitly
                                                                                                                 printf("set roll angle : %.6f\n", _data);
-..\Driver\bsp\uart_console.c(334): warning:  #111-D: statement is unreachable
+..\Driver\bsp\uart_console.c(337): warning:  #111-D: statement is unreachable
                                                                                                                 break;
-..\Driver\bsp\uart_console.c(340): warning:  #111-D: statement is unreachable
+..\Driver\bsp\uart_console.c(343): warning:  #111-D: statement is unreachable
                                                                                                                 break;
-..\Driver\bsp\uart_console.c(346): warning:  #111-D: statement is unreachable
+..\Driver\bsp\uart_console.c(349): warning:  #111-D: statement is unreachable
                                                                                                                 break;
-..\Driver\bsp\uart_console.c(359): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(362): warning:  #223-D: function "printf" declared implicitly
                                                                                                                 printf("set roll rate : %.6f\n", _data);
-..\Driver\bsp\uart_console.c(361): warning:  #111-D: statement is unreachable
+..\Driver\bsp\uart_console.c(364): warning:  #111-D: statement is unreachable
                                                                                                                 break;
-..\Driver\bsp\uart_console.c(367): warning:  #111-D: statement is unreachable
+..\Driver\bsp\uart_console.c(370): warning:  #111-D: statement is unreachable
                                                                                                                 break;
-..\Driver\bsp\uart_console.c(373): warning:  #111-D: statement is unreachable
+..\Driver\bsp\uart_console.c(376): warning:  #111-D: statement is unreachable
                                                                                                                 break;
-..\Driver\bsp\uart_console.c(387): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(390): warning:  #223-D: function "printf" declared implicitly
                                                 printf("set throttle thrust: %.6f\n", _data);
 ..\Driver\bsp\uart_console.c: 32 warnings, 0 errors
 compiling bsp_spi.c...
@@ -349,156 +306,132 @@ compiling uart.c...
 compiling wdt.c...
 compiling wwdt.c...
 compiling rc_channel.c...
-..\RC\rc_channel.c(17): warning:  #223-D: function "printf" declared implicitly
-                printf("rf xns104 init success\n");
-..\RC\rc_channel.c(24): warning:  #177-D: variable "data_buf_index" was declared but never referenced
-                static uint8_t buf_index = 0, data_buf_index = 0, rc_data_len = 0;
-..\RC\rc_channel.c(24): warning:  #177-D: variable "rc_data_len" was declared but never referenced
-                static uint8_t buf_index = 0, data_buf_index = 0, rc_data_len = 0;
-..\RC\rc_channel.c(25): warning:  #177-D: variable "step" was declared but never referenced
-                static uint8_t step = RC_START;
-..\RC\rc_channel.c(26): warning:  #177-D: variable "rc_data_update" was declared but never referenced
-                static bool rc_data_update = false;
-..\RC\rc_channel.c(28): warning:  #177-D: variable "current_index" was declared but never referenced
-                uint8_t current_index = 0;
-..\RC\rc_channel.c(29): warning:  #177-D: variable "j" was declared but never referenced
-                uint8_t j = 0;
-..\RC\rc_channel.c(129): warning:  #177-D: function "packet_parse" was declared but never referenced
+..\RC\rc_channel.c(21): warning:  #223-D: function "printf" declared implicitly
+      printf("rf xns104 init success\n");
+..\RC\rc_channel.c(33): warning:  #177-D: variable "j" was declared but never referenced
+      uint8_t j = 0;
+..\RC\rc_channel.c(182): warning:  #188-D: enumerated type mixed with another type
+              switch_event_trigger(ch_index, (switch_on_tick[ch_index] >= 250));
+..\RC\rc_channel.c(262): warning:  #223-D: function "printf" declared implicitly
+      printf("roll code: 0x%X 0x%X 0x%X\n", roll_code[0], roll_code[1], roll_code[2]);
+..\RC\rc_channel.c(155): warning:  #177-D: function "packet_parse" was declared but never referenced
   static void packet_parse(void)
-..\RC\rc_channel.c(8): warning:  #177-D: variable "pre_switch" was declared but never referenced
+..\RC\rc_channel.c(11): warning:  #177-D: variable "pre_switch" was declared but never referenced
   static uint8_t pre_switch = 0;
-..\RC\rc_channel.c: 9 warnings, 0 errors
+..\RC\rc_channel.c: 6 warnings, 0 errors
 compiling rf.c...
 linking...
-Program Size: Code=20604 RO-data=596 RW-data=200 ZI-data=2020  
+Program Size: Code=23028 RO-data=728 RW-data=224 ZI-data=2068  
 compiling bmi160.c...
 compiling fbm320.c...
 compiling motor.c...
-..\Driver\motor.c(33): warning:  #223-D: function "printf" declared implicitly
-                printf("period0:%d, period1:%d, period2:%d, period3:%d, motor_duty_range:%d\n", PWM->PERIOD0, PWM->PERIOD1, PWM->PERIOD2, PWM->PERIOD3, motor_duty_range);
-..\Driver\motor.c(63): warning:  #29-D: expected an expression
-  #elif
-..\Driver\motor.c: 2 warnings, 0 errors
+..\Driver\motor.c(35): warning:  #223-D: function "printf" declared implicitly
+        printf("period0:%d, period1:%d, period2:%d, period3:%d, motor_duty_range:%d\n", PWM->PERIOD0, PWM->PERIOD1, PWM->PERIOD2, PWM->PERIOD3, motor_duty_range);
+..\Driver\motor.c: 1 warning, 0 errors
 compiling common.c...
 compiling main.c...
-..\User\main.c(23): warning:  #111-D: statement is unreachable
+..\User\main.c(18): warning:  #111-D: statement is unreachable
           return 0;
 ..\User\main.c: 1 warning, 0 errors
 compiling system_PN020Series.c...
 compiling Algorithm_filter.c...
 compiling Algorithm_math.c...
 ..\Algorithm\Algorithm_math\Algorithm_math.c(88): warning:  #111-D: statement is unreachable
-        if(error < 0)
+        if(error < 0.0f)
 ..\Algorithm\Algorithm_math\Algorithm_math.c: 1 warning, 0 errors
 compiling mymath.c...
 compiling Algorithm_pid.c...
 compiling Algorithm_quaternion.c...
 compiling attitude_control.c...
 compiling flight_mode_control.c...
-..\Control\flight_mode_control.c(103): warning:  #177-D: variable "target_roll" was declared but never referenced
-      float target_roll, target_pitch;
-..\Control\flight_mode_control.c(103): warning:  #177-D: variable "target_pitch" was declared but never referenced
-      float target_roll, target_pitch;
-..\Control\flight_mode_control.c(104): warning:  #177-D: variable "target_yaw_rate" was declared but never referenced
-      float target_yaw_rate, target_throttle;
-..\Control\flight_mode_control.c(105): warning:  #177-D: variable "pilot_throttle_scaled" was declared but never referenced
-      float pilot_throttle_scaled;
-..\Control\flight_mode_control.c: 4 warnings, 0 errors
 compiling motor_control.c...
-..\Control\motor_control.c(150): warning:  #223-D: function "printf" declared implicitly
+..\Control\motor_control.c(111): warning:  #223-D: function "printf" declared implicitly
         printf("trace throttle: %.3f\n", trace_throttle);
 ..\Control\motor_control.c: 1 warning, 0 errors
+compiling position_control.c...
 compiling scheduler.c...
-..\Scheduler\scheduler.c(43): warning:  #177-D: variable "test" was declared but never referenced
+..\Scheduler\scheduler.c(61): warning:  #177-D: variable "test" was declared but never referenced
           static uint32_t test = 0;
-..\Scheduler\scheduler.c(123): warning:  #177-D: variable "_ahrs" was declared but never referenced
+..\Scheduler\scheduler.c(142): warning:  #177-D: variable "_ahrs" was declared but never referenced
                 EulerAngle _ahrs;
 ..\Scheduler\scheduler.c: 2 warnings, 0 errors
 compiling ahrs.c...
-..\AHRS\ahrs.c(45): warning:  #550-D: variable "sin_pitch" was set but never used
-      float sin_pitch,sin_roll,cos_roll,cos_pitch;
-..\AHRS\ahrs.c(45): warning:  #550-D: variable "sin_roll" was set but never used
-      float sin_pitch,sin_roll,cos_roll,cos_pitch;
-..\AHRS\ahrs.c(45): warning:  #550-D: variable "cos_roll" was set but never used
-      float sin_pitch,sin_roll,cos_roll,cos_pitch;
-..\AHRS\ahrs.c(45): warning:  #550-D: variable "cos_pitch" was set but never used
-      float sin_pitch,sin_roll,cos_roll,cos_pitch;
-..\AHRS\ahrs.c(150): warning:  #223-D: function "printf" declared implicitly
+..\AHRS\ahrs.c(156): warning:  #223-D: function "printf" declared implicitly
                 printf("kp: %.6f\n", cmp_kp);
-..\AHRS\ahrs.c(151): warning:  #223-D: function "memset" declared implicitly
+..\AHRS\ahrs.c(158): warning:  #223-D: function "memset" declared implicitly
                 memset(&NumQ, 0, sizeof(Quaternion));
-..\AHRS\ahrs.c(166): warning:  #223-D: function "printf" declared implicitly
+..\AHRS\ahrs.c(174): warning:  #223-D: function "printf" declared implicitly
                 printf("ki: %.6f\n", cmp_ki);
-..\AHRS\ahrs.c(167): warning:  #223-D: function "memset" declared implicitly
+..\AHRS\ahrs.c(176): warning:  #223-D: function "memset" declared implicitly
                 memset(&NumQ, 0, sizeof(Quaternion));
-..\AHRS\ahrs.c: 8 warnings, 0 errors
+..\AHRS\ahrs.c: 4 warnings, 0 errors
 compiling inertial_sensor.c...
 compiling bsp_i2c.c...
 compiling timer_delay.c...
 compiling uart_console.c...
-..\Driver\bsp\uart_console.c(56): warning:  #223-D: function "memset" declared implicitly
+..\Driver\bsp\uart_console.c(59): warning:  #223-D: function "memset" declared implicitly
                                                                 memset(rev_buf, 0, CONSOLE_BUF_SIZE);
-..\Driver\bsp\uart_console.c(66): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(69): warning:  #223-D: function "printf" declared implicitly
                                                 printf ("unknow command!\n");
-..\Driver\bsp\uart_console.c(68): warning:  #223-D: function "memset" declared implicitly
+..\Driver\bsp\uart_console.c(71): warning:  #223-D: function "memset" declared implicitly
                                 memset(rev_buf, 0, CONSOLE_BUF_SIZE);
-..\Driver\bsp\uart_console.c(100): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(103): warning:  #223-D: function "printf" declared implicitly
                                                                 printf("set ahrs success.\n        kp: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(108): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(111): warning:  #223-D: function "printf" declared implicitly
                                                                 printf("set ahrs success.\n        ki: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(131): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(134): warning:  #223-D: function "printf" declared implicitly
                                                                                                                                 printf("set anlge loop roll kp: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(141): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(144): warning:  #223-D: function "printf" declared implicitly
                                                                                                                                 printf("set anlge loop roll ki: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(151): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(154): warning:  #223-D: function "printf" declared implicitly
                                                                                                                                 printf("set anlge loop roll kd: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(162): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(165): warning:  #223-D: function "printf" declared implicitly
                                                                                                                                 printf("set anlge loop pitch kp: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(171): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(174): warning:  #223-D: function "printf" declared implicitly
                                                                                                                                 printf("set anlge loop pitch ki: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(180): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(183): warning:  #223-D: function "printf" declared implicitly
                                                                                                                                 printf("set anlge loop pitch kd: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(191): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(194): warning:  #223-D: function "printf" declared implicitly
                                                                                                                                 printf("set anlge loop yaw kp: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(200): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(203): warning:  #223-D: function "printf" declared implicitly
                                                                                                                                 printf("set anlge loop yaw ki: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(209): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(212): warning:  #223-D: function "printf" declared implicitly
                                                                                                                                 printf("set anlge loop yaw kd: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(229): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(232): warning:  #223-D: function "printf" declared implicitly
                                                                                                                         printf("set rate loop roll kp: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(239): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(242): warning:  #223-D: function "printf" declared implicitly
                                                                                                                         printf("set rate loop roll ki: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(249): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(252): warning:  #223-D: function "printf" declared implicitly
                                                                                                                         printf("set rate loop roll kd: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(260): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(263): warning:  #223-D: function "printf" declared implicitly
                                                                                                                         printf("set rate loop pitch kp: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(269): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(272): warning:  #223-D: function "printf" declared implicitly
                                                                                                                         printf("set rate loop pitch ki: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(278): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(281): warning:  #223-D: function "printf" declared implicitly
                                                                                                                         printf("set rate loop pitch kd: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(289): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(292): warning:  #223-D: function "printf" declared implicitly
                                                                                                                         printf("set rate loop yaw kp: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(298): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(301): warning:  #223-D: function "printf" declared implicitly
                                                                                                                         printf("set rate loop yaw ki: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(307): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(310): warning:  #223-D: function "printf" declared implicitly
                                                                                                                         printf("set rate loop yaw kd: %.6f\n", _data);
-..\Driver\bsp\uart_console.c(332): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(335): warning:  #223-D: function "printf" declared implicitly
                                                                                                                 printf("set roll angle : %.6f\n", _data);
-..\Driver\bsp\uart_console.c(334): warning:  #111-D: statement is unreachable
+..\Driver\bsp\uart_console.c(337): warning:  #111-D: statement is unreachable
                                                                                                                 break;
-..\Driver\bsp\uart_console.c(340): warning:  #111-D: statement is unreachable
+..\Driver\bsp\uart_console.c(343): warning:  #111-D: statement is unreachable
                                                                                                                 break;
-..\Driver\bsp\uart_console.c(346): warning:  #111-D: statement is unreachable
+..\Driver\bsp\uart_console.c(349): warning:  #111-D: statement is unreachable
                                                                                                                 break;
-..\Driver\bsp\uart_console.c(359): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(362): warning:  #223-D: function "printf" declared implicitly
                                                                                                                 printf("set roll rate : %.6f\n", _data);
-..\Driver\bsp\uart_console.c(361): warning:  #111-D: statement is unreachable
+..\Driver\bsp\uart_console.c(364): warning:  #111-D: statement is unreachable
                                                                                                                 break;
-..\Driver\bsp\uart_console.c(367): warning:  #111-D: statement is unreachable
+..\Driver\bsp\uart_console.c(370): warning:  #111-D: statement is unreachable
                                                                                                                 break;
-..\Driver\bsp\uart_console.c(373): warning:  #111-D: statement is unreachable
+..\Driver\bsp\uart_console.c(376): warning:  #111-D: statement is unreachable
                                                                                                                 break;
-..\Driver\bsp\uart_console.c(387): warning:  #223-D: function "printf" declared implicitly
+..\Driver\bsp\uart_console.c(390): warning:  #223-D: function "printf" declared implicitly
                                                 printf("set throttle thrust: %.6f\n", _data);
 ..\Driver\bsp\uart_console.c: 32 warnings, 0 errors
 compiling bsp_spi.c...
@@ -517,31 +450,25 @@ compiling uart.c...
 compiling wdt.c...
 compiling wwdt.c...
 compiling rc_channel.c...
-..\RC\rc_channel.c(17): warning:  #223-D: function "printf" declared implicitly
-                printf("rf xns104 init success\n");
-..\RC\rc_channel.c(24): warning:  #177-D: variable "data_buf_index" was declared but never referenced
-                static uint8_t buf_index = 0, data_buf_index = 0, rc_data_len = 0;
-..\RC\rc_channel.c(24): warning:  #177-D: variable "rc_data_len" was declared but never referenced
-                static uint8_t buf_index = 0, data_buf_index = 0, rc_data_len = 0;
-..\RC\rc_channel.c(25): warning:  #177-D: variable "step" was declared but never referenced
-                static uint8_t step = RC_START;
-..\RC\rc_channel.c(26): warning:  #177-D: variable "rc_data_update" was declared but never referenced
-                static bool rc_data_update = false;
-..\RC\rc_channel.c(28): warning:  #177-D: variable "current_index" was declared but never referenced
-                uint8_t current_index = 0;
-..\RC\rc_channel.c(29): warning:  #177-D: variable "j" was declared but never referenced
-                uint8_t j = 0;
-..\RC\rc_channel.c(129): warning:  #177-D: function "packet_parse" was declared but never referenced
+..\RC\rc_channel.c(21): warning:  #223-D: function "printf" declared implicitly
+      printf("rf xns104 init success\n");
+..\RC\rc_channel.c(33): warning:  #177-D: variable "j" was declared but never referenced
+      uint8_t j = 0;
+..\RC\rc_channel.c(182): warning:  #188-D: enumerated type mixed with another type
+              switch_event_trigger(ch_index, (switch_on_tick[ch_index] >= 250));
+..\RC\rc_channel.c(262): warning:  #223-D: function "printf" declared implicitly
+      printf("roll code: 0x%X 0x%X 0x%X\n", roll_code[0], roll_code[1], roll_code[2]);
+..\RC\rc_channel.c(155): warning:  #177-D: function "packet_parse" was declared but never referenced
   static void packet_parse(void)
-..\RC\rc_channel.c(8): warning:  #177-D: variable "pre_switch" was declared but never referenced
+..\RC\rc_channel.c(11): warning:  #177-D: variable "pre_switch" was declared but never referenced
   static uint8_t pre_switch = 0;
-..\RC\rc_channel.c: 9 warnings, 0 errors
+..\RC\rc_channel.c: 6 warnings, 0 errors
 compiling rf.c...
 linking...
-Program Size: Code=20604 RO-data=596 RW-data=200 ZI-data=2020  
+Program Size: Code=23028 RO-data=728 RW-data=224 ZI-data=2068  
 After Build - User command #1: fromelf --bin ".\output\HD_Drone.axf" --output ".\output\HD_Drone.bin"
 After Build - User command #2: fromelf --text -c ".\output\HD_Drone.axf" --output ".\output\HD_Drone.txt"
-".\output\HD_Drone.axf" - 0 Error(s), 60 Warning(s).
+".\output\HD_Drone.axf" - 0 Error(s), 48 Warning(s).
 *** Completed Cross-Module-Optimization after 3 iteration(s).
 
 <h2>Software Packages used:</h2>
@@ -560,7 +487,7 @@ Package Vendor: ARM
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.0.2
-Build Time Elapsed:  00:00:40
+Build Time Elapsed:  00:00:37
 </pre>
 </body>
 </html>

@@ -51,6 +51,10 @@ void motor_init(void);
  */
 void motor_update(float *_duty);
 
+/**
+ * @brief motor stop output
+ */
+void motor_stop(void);
 
 extern float motor_duty[MOTOR_MAX_NUM];
 

@@ -1,4 +1,4 @@
-;#<FEEDBACK># ARM Linker, 5060183: Last Updated: Fri Aug 25 17:02:49 2017
+;#<FEEDBACK># ARM Linker, 5060183: Last Updated: Mon Aug 28 17:04:41 2017
 ;VERSION 0.2
 ;FILE acmp.o
 ACMP_Close <= USED 0
@@ -149,6 +149,7 @@ __asm___7_motor_c_d71f47f0____REVSH <= USED 0
 ;FILE motor_control.o
 __asm___15_motor_control_c_thrust____REV16 <= USED 0
 __asm___15_motor_control_c_thrust____REVSH <= USED 0
+throttle_control <= USED 0
 ;FILE mymath.o
 To_180_degrees <= USED 0
 __asm___8_mymath_c_f480d7f9____REV16 <= USED 0
@@ -164,6 +165,9 @@ my_pow <= USED 0
 my_pow_2_curve <= USED 0
 my_sin <= USED 0
 my_sqrt <= USED 0
+;FILE position_control.o
+__asm___18_position_control_c____REV16 <= USED 0
+__asm___18_position_control_c____REVSH <= USED 0
 ;FILE pwm.o
 PWM_ClearADCTriggerFlag <= USED 0
 PWM_ClearCMPDIntFlag <= USED 0
@@ -200,7 +204,11 @@ __asm___5_pwm_c_03ee09af____REVSH <= USED 0
 __asm___12_rc_channel_c_ccc456d5____REV16 <= USED 0
 __asm___12_rc_channel_c_ccc456d5____REVSH <= USED 0
 norm_input <= USED 0
-norm_input_dz <= USED 0
+set_rc_channel_deadzone <= USED 0
+set_rc_channel_max <= USED 0
+set_rc_channel_min <= USED 0
+set_rc_channel_neutral <= USED 0
+set_rc_channel_reversed <= USED 0
 ;FILE retarget.o
 GetChar <= USED 0
 IsDebugFifoEmpty <= USED 0

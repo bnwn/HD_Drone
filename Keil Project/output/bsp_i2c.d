@@ -20,3 +20,4 @@
 .\output\bsp_i2c.o: ..\Library\StdDriver\inc\wwdt.h
 .\output\bsp_i2c.o: ..\Driver\bsp\bsp_i2c.h
 .\output\bsp_i2c.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\output\bsp_i2c.o: ..\User\common.h

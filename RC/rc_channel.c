@@ -5,7 +5,8 @@
 #include "timer_delay.h"
 #include "common.h"
 
-Rc_Channel_t rc_channels[RC_CHANNEL_MAX] = {0};
+Rc_Channel_t rc_channels[RC_CHANNEL_NUM_MAX] = {0};
+Rc_Switch_t rc_switchs[RC_SWITCH_MAX] = {0};
 uint8_t rc_buf[PAYLOAD_WIDTH] = {0}, data_buf[DATA_BUF_MAX] = {0}, roll_code[ROLL_CODE_NUM] = {0};
 static uint8_t pre_switch = 0;
 
@@ -22,6 +23,7 @@ void rc_channel_init(void)
     auto_code_matching();
 #else
 #endif
+	setting_rc_channel_all();
 }
 
 bool rc_channel_read(void)
@@ -42,11 +44,11 @@ bool rc_channel_read(void)
 	
 #if 1
     // if (roll_code eq)
-    if (rc_buf[START_CODE_INDEX] == 0xAA && rc_buf[START_CODE_INDEX+1] == 0xAA \ // start code
-            && rc_buf[END_CODE_INDEX] == 0xCE && rc_buf[END_CODE_INDEX+1] == 0xED) { // end code
-
-            for(; j<ROLL_CODE_NUM; j++) {
-                if (rc_buf[ROLL_CODE_INDEX+j] != roll_code[j]) {
+    if (rc_buf[START_CODE_INDEX] == 0xAA && rc_buf[START_CODE_INDEX+1] == 0xAA \
+            && rc_buf[END_CODE_INDEX] == 0xCE && rc_buf[END_CODE_INDEX+1] == 0xED) { // start and end code
+						uint8_t roll_code_index = 0;
+            for(; roll_code_index<ROLL_CODE_NUM; roll_code_index++) {
+                if (rc_buf[ROLL_CODE_INDEX+roll_code_index] != roll_code[roll_code_index]) {
                     return false;
                 }
             }
@@ -55,19 +57,19 @@ bool rc_channel_read(void)
             rc_channels[2].rc_in = (rc_buf[DATA_INDEX+4] << 8) | rc_buf[DATA_INDEX+5];
             rc_channels[3].rc_in = (rc_buf[DATA_INDEX+6] << 8) | rc_buf[DATA_INDEX+7];
 
-            rc_channels[4].rc_in = (rc_buf[DATA_INDEX+8] & 0x01) ? 1 : 0;
-            rc_channels[5].rc_in = (rc_buf[DATA_INDEX+8] & 0x02) ? 1 : 0;
-            rc_channels[6].rc_in = (rc_buf[DATA_INDEX+8] & 0x04) ? 1 : 0;
-            rc_channels[7].rc_in = (rc_buf[DATA_INDEX+8] & 0x08) ? 1 : 0;
-            rc_channels[8].rc_in = (rc_buf[DATA_INDEX+8] & 0x10) ? 1 : 0;
-            rc_channels[9].rc_in = (rc_buf[DATA_INDEX+8] & 0x20) ? 1 : 0;
-            rc_channels[10].rc_in = (rc_buf[DATA_INDEX+8] & 0x40) ? 1 : 0;
-            rc_channels[11].rc_in = (rc_buf[DATA_INDEX+8] & 0x80) ? 1 : 0;
+            rc_switchs[0].rc_in = (rc_buf[DATA_INDEX+8] & 0x01) ? 1 : 0;
+            rc_switchs[1].rc_in = (rc_buf[DATA_INDEX+8] & 0x02) ? 1 : 0;
+            rc_switchs[2].rc_in = (rc_buf[DATA_INDEX+8] & 0x04) ? 1 : 0;
+            rc_switchs[3].rc_in = (rc_buf[DATA_INDEX+8] & 0x08) ? 1 : 0;
+            rc_switchs[4].rc_in = (rc_buf[DATA_INDEX+8] & 0x10) ? 1 : 0;
+            rc_switchs[5].rc_in = (rc_buf[DATA_INDEX+8] & 0x20) ? 1 : 0;
+            rc_switchs[6].rc_in = (rc_buf[DATA_INDEX+8] & 0x40) ? 1 : 0;
+            rc_switchs[7].rc_in = (rc_buf[DATA_INDEX+8] & 0x80) ? 1 : 0;
 
             switch_handle();
 
-    } else if (rc_buf[START_CODE_INDEX] == 0xAC && rc_buf[START_CODE_INDEX+1] == 0xCE \ // match code
-               && rc_buf[END_CODE_INDEX] == 0xCE && rc_buf[END_CODE_INDEX+1] == 0xED) { // end code
+    } else if (rc_buf[START_CODE_INDEX] == 0xAC && rc_buf[START_CODE_INDEX+1] == 0xCE \
+               && rc_buf[END_CODE_INDEX] == 0xCE && rc_buf[END_CODE_INDEX+1] == 0xED) { // match and end code
             set_roll_code(rc_buf+ROLL_CODE_INDEX);
     } else {
         return false;
@@ -157,14 +159,14 @@ static void packet_parse(void)
     rc_channels[2].rc_in = (data_buf[4] << 8) | data_buf[5];
     rc_channels[3].rc_in = (data_buf[6] << 8) | data_buf[7];
 
-    rc_channels[4].rc_in = (data_buf[8] & 0x01) ? 1 : 0;
-    rc_channels[5].rc_in = (data_buf[8] & 0x02) ? 1 : 0;
-    rc_channels[6].rc_in = (data_buf[8] & 0x04) ? 1 : 0;
-    rc_channels[7].rc_in = (data_buf[8] & 0x08) ? 1 : 0;
-    rc_channels[8].rc_in = (data_buf[8] & 0x10) ? 1 : 0;
-    rc_channels[9].rc_in = (data_buf[8] & 0x20) ? 1 : 0;
-    rc_channels[10].rc_in = (data_buf[8] & 0x40) ? 1 : 0;
-    rc_channels[11].rc_in = (data_buf[8] & 0x80) ? 1 : 0;
+    rc_switchs[0].rc_in = (data_buf[8] & 0x01) ? 1 : 0;
+    rc_switchs[1].rc_in = (data_buf[8] & 0x02) ? 1 : 0;
+    rc_switchs[2].rc_in = (data_buf[8] & 0x04) ? 1 : 0;
+    rc_switchs[3].rc_in = (data_buf[8] & 0x08) ? 1 : 0;
+    rc_switchs[4].rc_in = (data_buf[8] & 0x10) ? 1 : 0;
+    rc_switchs[5].rc_in = (data_buf[8] & 0x20) ? 1 : 0;
+    rc_switchs[6].rc_in = (data_buf[8] & 0x40) ? 1 : 0;
+    rc_switchs[7].rc_in = (data_buf[8] & 0x80) ? 1 : 0;
 }
 
 static void switch_handle(void)
@@ -174,7 +176,7 @@ static void switch_handle(void)
 //				pre_switch = data_buf[8];
 	
     for (; ch_index < RC_SWITCH_MAX; ch_index++) {
-        if (rc_channels[ch_index+4].rc_in) {
+        if (rc_switchs[ch_index].rc_in) {
             switch_on_tick[ch_index]++;
         } else if (switch_on_tick[ch_index] > 0) {
             switch_event_trigger(ch_index, (switch_on_tick[ch_index] >= 250));
@@ -269,8 +271,8 @@ void get_desired_leans_angles(_Target_Attitude *_target_att, float _leans_limit)
         _leans_limit = ATT_ROLL_PITCH_YAW_MAX;
     }
 
-    _roll = channel_input_to_target(rc_channels[RC_EULER_ROLL_CH], _leans_limit);
-    _pitch = channel_input_to_target(rc_channels[RC_EULER_PITCH_CH], _leans_limit);
+    _roll = channel_input_to_target(&rc_channels[RC_EULER_ROLL_CH], _leans_limit);
+    _pitch = channel_input_to_target(&rc_channels[RC_EULER_PITCH_CH], _leans_limit);
     _squa_angle = squa(_roll) + squa(_pitch);
 
     if (_squa_angle > squa(_leans_limit)) {
@@ -283,14 +285,14 @@ void get_desired_leans_angles(_Target_Attitude *_target_att, float _leans_limit)
     _target_att->roll = (180/M_PI) * atanf(cosf(_pitch*(M_PI/180))*tanf(_roll*(M_PI/180)));
     _target_att->pitch = _pitch;
 
-    _yaw_stick_angle = channel_input_to_target(rc_channels[RC_EULER_YAW_CH], _leans_limit);
+    _yaw_stick_angle = channel_input_to_target(&rc_channels[RC_EULER_YAW_CH], _leans_limit);
     // calculate yaw rate
     _target_att->yaw = _yaw_stick_angle * ctrl_loop.acro_sensibility.yaw.kp;
 }
 
 float get_desired_throttle_expo(void)
 {
-    float throttle_out = (float)((norm_input_dz(rc_channels[RC_THROTTLE_CH]) + 1.0f) / 2.0f);
+    float throttle_out = (float)((norm_input_dz(&rc_channels[RC_THROTTLE_CH]) + 1.0f) / 2.0f);
 
     // calculate the output throttle using the given expo function
     throttle_out = throttle_out * 0.6 + 0.4 * throttle_out * throttle_out * throttle_out;
@@ -315,4 +317,45 @@ void auto_code_matching(void)
         }
         delay_ms(10);
     }
+}
+
+void set_rc_channel_max(Rc_Channel_t *_rc, uint16_t _value)
+{
+	_rc->rc_max = _value;
+}
+
+void set_rc_channel_min(Rc_Channel_t *_rc, uint16_t _value)
+{
+	_rc->rc_min = _value;
+}
+
+void set_rc_channel_neutral(Rc_Channel_t *_rc, uint16_t _value)
+{
+	_rc->rc_neutral = _value;
+}
+
+void set_rc_channel_reversed(Rc_Channel_t *_rc, uint8_t _value)
+{
+	_rc->reversed = _value;
+}
+
+void set_rc_channel_deadzone(Rc_Channel_t *_rc, uint16_t _value)
+{
+	_rc->dead_zone = _value;
+}
+
+void setting_rc_channel_all(void)
+{
+	uint8_t i = 0;
+	
+	for (; i<RC_CHANNEL_NUM_MAX; i++) {
+		set_rc_channel_max(&rc_channels[i], RC_CHANNEL_MAX);
+		set_rc_channel_min(&rc_channels[i], RC_CHANNEL_MIN);
+		set_rc_channel_neutral(&rc_channels[i], RC_CHANNEL_NEUTRAL);
+		set_rc_channel_deadzone(&rc_channels[i], RC_CHANNEL_DEADZONE);
+	}
+	set_rc_channel_reversed(&rc_channels[RC_EULER_ROLL_CH], RC_ROLL_REVERSED);
+	set_rc_channel_reversed(&rc_channels[RC_EULER_YAW_CH], RC_YAW_REVERSED);
+	set_rc_channel_reversed(&rc_channels[RC_EULER_PITCH_CH], RC_PITCH_REVERSED);
+	set_rc_channel_reversed(&rc_channels[RC_THROTTLE_CH], RC_THROTTLE_REVERSED);
 }

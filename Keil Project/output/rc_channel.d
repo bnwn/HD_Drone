@@ -21,4 +21,15 @@
 .\output\rc_channel.o: ..\RC\rf.h
 .\output\rc_channel.o: ..\Driver\bsp\bsp_spi.h
 .\output\rc_channel.o: ..\RC\rc_channel.h
-.\output\rc_channel.o: ..\Algorithm\Algorithm_math\Algorithm_math.h
+.\output\rc_channel.o: ..\Control\attitude_control.h
+.\output\rc_channel.o: ..\Control\../AHRS/inertial_sensor.h
+.\output\rc_channel.o: ..\Control\../AHRS/ahrs.h
+.\output\rc_channel.o: ..\Control\../AHRS/../Algorithm/Algorithm_quaternion/Algorithm_quaternion.h
+.\output\rc_channel.o: ..\Control\../Algorithm/Algorithm_math/Algorithm_math.h
+.\output\rc_channel.o: ..\Control\../Algorithm/Algorithm_math/mymath.h
+.\output\rc_channel.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\output\rc_channel.o: ..\Control\../Algorithm/Algorithm_pid/Algorithm_pid.h
+.\output\rc_channel.o: ..\Control\motor_control.h
+.\output\rc_channel.o: ..\Control\../Driver/motor.h
+.\output\rc_channel.o: ..\Driver\bsp\timer_delay.h
+.\output\rc_channel.o: ..\User\common.h

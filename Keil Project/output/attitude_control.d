@@ -28,3 +28,6 @@
 .\output\attitude_control.o: ..\Control\../Algorithm/Algorithm_pid/Algorithm_pid.h
 .\output\attitude_control.o: ..\Control\motor_control.h
 .\output\attitude_control.o: ..\Control\../Driver/motor.h
+.\output\attitude_control.o: ..\RC\rc_channel.h
+.\output\attitude_control.o: ..\User\common.h
+.\output\attitude_control.o: ..\Algorithm\Algorithm_filter\Algorithm_filter.h

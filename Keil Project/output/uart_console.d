@@ -19,6 +19,7 @@
 .\output\uart_console.o: ..\Library\StdDriver\inc\wdt.h
 .\output\uart_console.o: ..\Library\StdDriver\inc\wwdt.h
 .\output\uart_console.o: ..\Driver\bsp\uart_console.h
+.\output\uart_console.o: ..\User\common.h
 .\output\uart_console.o: ..\AHRS\ahrs.h
 .\output\uart_console.o: ..\AHRS\../Algorithm/Algorithm_quaternion/Algorithm_quaternion.h
 .\output\uart_console.o: ..\Control\attitude_control.h

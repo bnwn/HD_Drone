@@ -153,10 +153,10 @@ void sched_20Hzloop(void)
 //		printf ("%d, %d, %d, %d\n", (int16_t)(motor_duty[MOTOR1_INDEX]*1000), (int16_t)(motor_duty[MOTOR2_INDEX]*1000), (int16_t)(motor_duty[MOTOR3_INDEX]*1000), \
 																														(int16_t)(motor_duty[MOTOR4_INDEX]*1000));
 		
-//		printf("ch1:%d, ch2:%d, ch3:%d, ch4:%d, ch5:%d, ch6:%d, ch7:%d, ch8:%d, ch9:%d, ch10:%d, ch11:%d, ch12:%d\n", rc_channels[0].rc_in, rc_channels[1].rc_in, rc_channels[2].rc_in, \
-//																																			rc_channels[3].rc_in, rc_channels[4].rc_in, rc_channels[5].rc_in, rc_channels[6].rc_in, rc_channels[7].rc_in, \
-//																																			rc_channels[8].rc_in, rc_channels[9].rc_in, rc_channels[10].rc_in, rc_channels[11].rc_in);
-        printf("altitude: %d cm\n", fbm320_packet.Altitude);
+		printf("ch1:%d, ch2:%d, ch3:%d, ch4:%d, ch5:%d, ch6:%d, ch7:%d, ch8:%d, ch9:%d, ch10:%d, ch11:%d, ch12:%d\n", rc_channels[0].rc_in, rc_channels[1].rc_in, rc_channels[2].rc_in, \
+																																			rc_channels[3].rc_in, rc_switchs[0].rc_in, rc_switchs[1].rc_in, rc_switchs[2].rc_in, rc_switchs[3].rc_in, \
+																																			rc_switchs[4].rc_in, rc_switchs[5].rc_in, rc_switchs[6].rc_in, rc_switchs[7].rc_in);
+//        printf("altitude: %d cm\n", fbm320_packet.Altitude);
 #endif
 		slice_flag.loop_20Hz = false;
 }

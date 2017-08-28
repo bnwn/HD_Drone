@@ -20,3 +20,4 @@
 .\output\bsp_spi.o: ..\Library\StdDriver\inc\wdt.h
 .\output\bsp_spi.o: ..\Library\StdDriver\inc\wwdt.h
 .\output\bsp_spi.o: ..\Driver\bsp\timer_delay.h
+.\output\bsp_spi.o: ..\User\common.h

@@ -21,3 +21,4 @@
 .\output\fbm320.o: ..\Driver\fbm320.h
 .\output\fbm320.o: ..\Driver\bsp/bsp_i2c.h
 .\output\fbm320.o: ..\Driver\bsp/timer_delay.h
+.\output\fbm320.o: ..\User\common.h

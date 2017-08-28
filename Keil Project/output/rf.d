@@ -22,3 +22,4 @@
 .\output\rf.o: ..\Driver\bsp\timer_delay.h
 .\output\rf.o: ..\RC\rf.h
 .\output\rf.o: ..\Driver\bsp\bsp_spi.h
+.\output\rf.o: ..\User\common.h
