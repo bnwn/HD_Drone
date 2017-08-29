@@ -142,3 +142,10 @@ void param_load(void)
 		set_pid_param(&ctrl_loop.rate.yaw, CONTROL_RATE_LOOP_YAW_KP, CONTROL_RATE_LOOP_YAW_KI, \
                                                                                     CONTROL_RATE_LOOP_YAW_KD, OONTROL_RATE_LOOP_YAW_INTEGRATOR_MAX, 0.5, LOOP_DT);
 }
+
+void fc_status_reset(void)
+{
+	fc_status.armed = true;
+	fc_status.land_complete = true;
+	fc_status.code_matched = false;
+}

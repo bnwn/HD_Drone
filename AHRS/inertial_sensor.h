@@ -6,13 +6,13 @@
 #define SENSOR_TYPE SENSOR_BMI160
 
 /*----------------ÍÓÂÝÒÇ²É¼¯ÏÞ·ù--------------------*/
-#define GYRO_GATHER   70
+#define GYRO_GATHER   100
 
 typedef struct {
     float x;
     float y;
     float z;
-}_Vector_Float;
+}_Vector_Float; 
 
 typedef struct {
     int16_t x;

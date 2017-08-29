@@ -2,7 +2,7 @@
 #define __COMMON_H
 
 /* only develop debug output info through uart */
-//#define __DEVELOP__
+#define __DEVELOP__
 
 #define LOOP_DT 0.01f
 
@@ -12,7 +12,7 @@ void peripheral_init(void);
 
 void param_load(void);
 
-void fc_status_reset(void);
+void fc_status_clear(void);
 
 /* velhicle status */
 typedef struct {

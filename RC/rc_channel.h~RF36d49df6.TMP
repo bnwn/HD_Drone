@@ -28,7 +28,6 @@
 #define RC_THROTTLE_CH 2
 #define RC_EULER_YAW_CH 3
 
-#define RC_CHANNEL_DISARMED 2867 // percent 70
 #define RC_CHANNEL_MAX 4096
 #define RC_CHANNEL_MIN 0
 #define RC_CHANNEL_NEUTRAL 2048
@@ -64,14 +63,13 @@ float channel_input_to_target(Rc_Channel_t *_rc, float _max_range);
 void get_desired_leans_angles(_Target_Attitude *_target_att, float _leans_limit);
 float get_desired_throttle_expo(void);
 void set_roll_code(uint8_t *_code);
-bool auto_code_matching(void);
+void auto_code_matching(void);
 void set_rc_channel_max(Rc_Channel_t *_rc, uint16_t _value);
 void set_rc_channel_min(Rc_Channel_t *_rc, uint16_t _value);
 void set_rc_channel_neutral(Rc_Channel_t *_rc, uint16_t _value);
 void set_rc_channel_reversed(Rc_Channel_t *_rc, uint8_t _value);
 void set_rc_channel_deadzone(Rc_Channel_t *_rc, uint16_t _value);
 void setting_rc_channel_all(void);
-void check_motor_armed(void);
 
 extern Rc_Channel_t rc_channels[RC_CHANNEL_NUM_MAX];
 extern Rc_Switch_t rc_switchs[RC_SWITCH_MAX];

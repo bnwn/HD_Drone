@@ -12,6 +12,7 @@ static uint8_t pre_switch = 0;
 
 void rc_channel_init(void)
 {
+	uint8_t try_times = 5;
 #if RADIO == RF_XNS104
     /* only use spi1 */
     SPI1_Init();
@@ -20,7 +21,11 @@ void rc_channel_init(void)
 #ifdef __DEVELOP__
     printf("rf xns104 init success\n");
 #endif
-    auto_code_matching();
+    for (; try_times>0; try_times--) {
+		if (auto_code_matching()) {
+			break;
+		}
+	}
 #else
 #endif
 	setting_rc_channel_all();
@@ -31,6 +36,11 @@ bool rc_channel_read(void)
     static uint8_t buf_index = 0;
     uint8_t rev_len = PAYLOAD_WIDTH - buf_index;
     uint8_t j = 0;
+	
+	if (!fc_status.code_matched) {
+		auto_code_matching();
+		return false;
+	}
 
     ucRF_DumpRxData(rc_buf + buf_index, rev_len);
 
@@ -301,22 +311,20 @@ float get_desired_throttle_expo(void)
     return throttle_out;
 }
 
-void auto_code_matching(void)
+bool auto_code_matching(void)
 {
-    uint8_t try_times = 5;
+	ucRF_DumpRxData(rc_buf, PAYLOAD_WIDTH);
 
-    for (; try_times>0; try_times--) {
-        ucRF_DumpRxData(rc_buf, PAYLOAD_WIDTH);
-
-        if (rc_buf[START_CODE_INDEX] == 0xAA && rc_buf[START_CODE_INDEX+1] == 0xAA) {
-            if (rc_buf[END_CODE_INDEX] == 0xCE && rc_buf[END_CODE_INDEX+1] == 0xED) {
-                //if () // setting roll code action
-                set_roll_code(rc_buf+ROLL_CODE_INDEX);
-                break;
-            }
-        }
-        delay_ms(10);
-    }
+	if (rc_buf[START_CODE_INDEX] == 0xAA && rc_buf[START_CODE_INDEX+1] == 0xAA) {
+		if (rc_buf[END_CODE_INDEX] == 0xCE && rc_buf[END_CODE_INDEX+1] == 0xED) {
+			//if () // setting roll code action
+			set_roll_code(rc_buf+ROLL_CODE_INDEX);
+			fc_status.code_matched = true;
+			return true;
+		}
+	}
+	
+	return false;
 }
 
 void set_rc_channel_max(Rc_Channel_t *_rc, uint16_t _value)
@@ -359,3 +367,30 @@ void setting_rc_channel_all(void)
 	set_rc_channel_reversed(&rc_channels[RC_EULER_PITCH_CH], RC_PITCH_REVERSED);
 	set_rc_channel_reversed(&rc_channels[RC_THROTTLE_CH], RC_THROTTLE_REVERSED);
 }
+
+void check_motor_armed(void)
+{
+	static uint8_t check_times = 0;
+ 	if (fc_status.armed) {
+		if ((rc_channels[0].rc_in > RC_CHANNEL_DISARMED) && (rc_channels[1].rc_in < (RC_CHANNEL_MAX - RC_CHANNEL_DISARMED)) \
+								&& (rc_channels[2].rc_in > RC_CHANNEL_DISARMED) && (rc_channels[3].rc_in > RC_CHANNEL_DISARMED)) {
+			check_times++;
+			if (check_times > 20) {
+				fc_status.armed = false;
+				check_times = 0;
+			}
+		}
+	} else if (fc_status.land_complete) {
+		if ((rc_channels[0].rc_in > RC_CHANNEL_DISARMED) && (rc_channels[1].rc_in > RC_CHANNEL_DISARMED) \
+								&& (rc_channels[2].rc_in > RC_CHANNEL_DISARMED) && (rc_channels[3].rc_in < (RC_CHANNEL_MAX - RC_CHANNEL_DISARMED))) {
+			check_times++;
+			if (check_times > 20) {						
+				fc_status.armed = true;
+				check_times = 0;
+			}
+		}
+	} else {
+		check_times = 0;
+	}
+}
+

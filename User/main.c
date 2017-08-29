@@ -6,6 +6,8 @@ int main(void)
 {
     system_init();
 	
+	fc_status_reset();
+	
     peripheral_init();
 
     SCHEDULER_RUN;

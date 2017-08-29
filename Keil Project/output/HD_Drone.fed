@@ -1,4 +1,4 @@
-;#<FEEDBACK># ARM Linker, 5060183: Last Updated: Mon Aug 28 17:04:41 2017
+;#<FEEDBACK># ARM Linker, 5060183: Last Updated: Tue Aug 29 19:42:20 2017
 ;VERSION 0.2
 ;FILE acmp.o
 ACMP_Close <= USED 0
@@ -21,6 +21,8 @@ __asm___5_adc_c_26cd6614____REV16 <= USED 0
 __asm___5_adc_c_26cd6614____REVSH <= USED 0
 ;FILE ahrs.o
 AHRS_Read_Attitude <= USED 0
+AHRS_set_complementary_filter_ki <= USED 0
+AHRS_set_complementary_filter_kp <= USED 0
 __asm___6_ahrs_c_NumQ____REV16 <= USED 0
 __asm___6_ahrs_c_NumQ____REVSH <= USED 0
 ;FILE algorithm_filter.o
@@ -44,6 +46,9 @@ get_integrator <= USED 0
 reset_pid_D <= USED 0
 reset_pid_I <= USED 0
 set_input_filter_all <= USED 0
+set_pid_param_d <= USED 0
+set_pid_param_i <= USED 0
+set_pid_param_p <= USED 0
 ;FILE algorithm_quaternion.o
 Quaternion_Multiply <= USED 0
 Quaternion_ToNumQ <= USED 0
@@ -149,6 +154,7 @@ __asm___7_motor_c_d71f47f0____REVSH <= USED 0
 ;FILE motor_control.o
 __asm___15_motor_control_c_thrust____REV16 <= USED 0
 __asm___15_motor_control_c_thrust____REVSH <= USED 0
+set_trace_throttle <= USED 0
 throttle_control <= USED 0
 ;FILE mymath.o
 To_180_degrees <= USED 0
@@ -276,14 +282,16 @@ UART_ClearIntFlag <= USED 0
 UART_Close <= USED 0
 UART_DisableInt <= USED 0
 UART_EnableInt <= USED 0
+UART_Open <= USED 0
+UART_Read <= USED 0
 UART_SetLine_Config <= USED 0
 UART_SetTimeoutCnt <= USED 0
 UART_Write <= USED 0
 __asm___6_uart_c_f12f5b44____REV16 <= USED 0
 __asm___6_uart_c_f12f5b44____REVSH <= USED 0
 ;FILE uart_console.o
-__asm___14_uart_console_c_674804bb____REV16 <= USED 0
-__asm___14_uart_console_c_674804bb____REVSH <= USED 0
+__asm___14_uart_console_c____REV16 <= USED 0
+__asm___14_uart_console_c____REVSH <= USED 0
 ;FILE wdt.o
 WDT_Close <= USED 0
 WDT_DisableInt <= USED 0

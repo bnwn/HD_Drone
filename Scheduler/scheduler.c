@@ -39,7 +39,7 @@ void scheduler_init(void)
 
     /* enable timer1 interrupt */
     TIMER_EnableInt(TIMER1);
-		NVIC_EnableIRQ(TMR1_IRQn);
+	NVIC_EnableIRQ(TMR1_IRQn);
     NVIC_SetPriority(TMR1_IRQn, 0);
 
     TIMER_Stop(TIMER1);
@@ -47,8 +47,8 @@ void scheduler_init(void)
 
 void TMR1_IRQHandler(void)
 {
-		micro_ticker++;
-		if (micro_ticker >= 0xFFFFFFF8) micro_ticker = 0;
+	micro_ticker++;
+	if (micro_ticker >= 0xFFFFFFF8) micro_ticker = 0;
 	
     time_slice();
 
@@ -58,138 +58,139 @@ void TMR1_IRQHandler(void)
 
 void scheduler_run(void)
 {
-	  static uint32_t test = 0;
-		
-		//test = micro_ticker;
-		/* main loop */
-		fast_loop();
+	static uint32_t test = 0;
+	
+	//test = micro_ticker;
+	/* main loop */
+	fast_loop();
 #ifdef __DEVELOP__
-		//test = micro_ticker - test;
-		
+	//test = micro_ticker - test;
+	
 //		test = micro_ticker;
 //		test = micro_ticker - test;
 //		printf("using time:%d\n", test);
 #endif
-	
-		/* low priority task call in 200Hz, 100Hz, 50Hz, 20Hz, 10Hz, 5Hz, 1Hz */
-		low_priority_loop();
+
+	/* low priority task call in 200Hz, 100Hz, 50Hz, 20Hz, 10Hz, 5Hz, 1Hz */
+	low_priority_loop();
 }
 
 void fast_loop(void)
 { 
-		/* run out maximum cost 5.8ms */
-		if (!slice_flag.main_loop) {
-				return;
-		}
+	/* run out maximum cost 5.8ms */
+	if (!slice_flag.main_loop) {
+		return;
+	}
+	
+	inertial_sensor_read();
+	
+	attitude_angle_rate_controller();
+	
+	motors_output();
+	
+	AHRS_Update();
+	
+	update_flight_mode();
 		
-		inertial_sensor_read();
-		
-		attitude_angle_rate_controller();
-		
-		motors_output();
-		
-		AHRS_Update();
-		
-		update_flight_mode();
-			
-		slice_flag.main_loop = false;
+	slice_flag.main_loop = false;
 }
 
 void low_priority_loop(void)
 {
 //		sched_200Hzloop();
-		sched_100Hzloop();
-		sched_50Hzloop();
-		sched_20Hzloop();
-		sched_10Hzloop();
+	sched_100Hzloop();
+	sched_50Hzloop();
+	sched_20Hzloop();
+	sched_10Hzloop();
 //		sched_5Hzloop();
-		sched_1Hzloop();
+	sched_1Hzloop();
 }
 
 void sched_200Hzloop(void)
 {
-		if (!slice_flag.loop_200Hz) {
-				return;
-		}
+	if (!slice_flag.loop_200Hz) {
+		return;
+	}
 
-		slice_flag.loop_200Hz = false;
+	slice_flag.loop_200Hz = false;
 }
 
 void sched_100Hzloop(void)
 {
-		if (!slice_flag.loop_100Hz) {
-				return;
-		}
-		
-		
-		slice_flag.loop_100Hz = false;
+	if (!slice_flag.loop_100Hz) {
+		return;
+	}
+	
+	
+	slice_flag.loop_100Hz = false;
 }
 
 void sched_50Hzloop(void)
 {
-		if (!slice_flag.loop_50Hz) {
-				return;
-		}
-				
-		rc_channel_read();
-		fbm320_timer_procedure();  // update absolute altitude about 16.7Hz
-		
-		slice_flag.loop_50Hz = false;
+	if (!slice_flag.loop_50Hz) {
+		return;
+	}
+			
+	rc_channel_read();
+	fbm320_timer_procedure();  // update absolute altitude about 16.7Hz
+	
+	slice_flag.loop_50Hz = false;
 }
 
 void sched_20Hzloop(void)
 {
-		EulerAngle _ahrs;
-		if (!slice_flag.loop_20Hz) {
-				return;
-		}
+	EulerAngle _ahrs;
+	if (!slice_flag.loop_20Hz) {
+		return;
+	}
 #ifdef __DEVELOP__
-		//AHRS_Read_Attitude(&_ahrs);
-		//printf("attitude:%d, %d, %d\n", (int16_t)(100*_ahrs.Roll), (int16_t)(100*_ahrs.Pitch), (int16_t)(100*_ahrs.Yaw));
-		//printf("roll:%3.3f, pitch:%3.3f, yaw:%3.3f\n", (float)(_ahrs.Roll), (float)(_ahrs.Pitch), (float)(_ahrs.Yaw));
+	//AHRS_Read_Attitude(&_ahrs);
+	//printf("attitude:%d, %d, %d\n", (int16_t)(100*_ahrs.Roll), (int16_t)(100*_ahrs.Pitch), (int16_t)(100*_ahrs.Yaw));
+	//printf("roll:%3.3f, pitch:%3.3f, yaw:%3.3f\n", (float)(_ahrs.Roll), (float)(_ahrs.Pitch), (float)(_ahrs.Yaw));
 //		printf("%d, %d, %d \n", (int16_t)inertial_sensor.accel.filter.x, (int16_t)inertial_sensor.accel.filter.y, (int16_t)inertial_sensor.accel.filter.z);
 //		printf("%d, %d, %d \n", (int16_t)inertial_sensor.gyro.filter.x, (int16_t)inertial_sensor.gyro.filter.y, (int16_t)inertial_sensor.gyro.filter.z);
 //		printf("attitude:%d, %d, %d\n", (int16_t)(100*ahrs.Roll), (int16_t)(100*ahrs.Pitch), (int16_t)(100*ahrs.Yaw));
 //		printf ("%d, %d, %d, %d\n", (int16_t)(motor_duty[MOTOR1_INDEX]*1000), (int16_t)(motor_duty[MOTOR2_INDEX]*1000), (int16_t)(motor_duty[MOTOR3_INDEX]*1000), \
-																														(int16_t)(motor_duty[MOTOR4_INDEX]*1000));
-		
-		printf("ch1:%d, ch2:%d, ch3:%d, ch4:%d, ch5:%d, ch6:%d, ch7:%d, ch8:%d, ch9:%d, ch10:%d, ch11:%d, ch12:%d\n", rc_channels[0].rc_in, rc_channels[1].rc_in, rc_channels[2].rc_in, \
-																																			rc_channels[3].rc_in, rc_switchs[0].rc_in, rc_switchs[1].rc_in, rc_switchs[2].rc_in, rc_switchs[3].rc_in, \
-																																			rc_switchs[4].rc_in, rc_switchs[5].rc_in, rc_switchs[6].rc_in, rc_switchs[7].rc_in);
+																													(int16_t)(motor_duty[MOTOR4_INDEX]*1000));
+	
+	printf("ch1:%d, ch2:%d, ch3:%d, ch4:%d, ch5:%d, ch6:%d, ch7:%d, ch8:%d, ch9:%d, ch10:%d, ch11:%d, ch12:%d\n", rc_channels[0].rc_in, rc_channels[1].rc_in, rc_channels[2].rc_in, \
+																																		rc_channels[3].rc_in, rc_switchs[0].rc_in, rc_switchs[1].rc_in, rc_switchs[2].rc_in, rc_switchs[3].rc_in, \
+																																		rc_switchs[4].rc_in, rc_switchs[5].rc_in, rc_switchs[6].rc_in, rc_switchs[7].rc_in);
 //        printf("altitude: %d cm\n", fbm320_packet.Altitude);
 #endif
-		slice_flag.loop_20Hz = false;
+	slice_flag.loop_20Hz = false;
 }
 
 void sched_10Hzloop(void)
 {
-		if (!slice_flag.loop_10Hz) {
-				return;
-		}
+	if (!slice_flag.loop_10Hz) {
+		return;
+	}
 #ifdef __DEVELOP__
 //		printf("%d, %d, %d, %d, %d, %d \n", (int16_t)inertial_sensor.accel.filter.x, (int16_t)inertial_sensor.accel.filter.y, (int16_t)inertial_sensor.accel.filter.z, \
 //																	(int16_t)inertial_sensor.gyro.filter.x, (int16_t)inertial_sensor.gyro.filter.y, (int16_t)inertial_sensor.gyro.filter.z);
 //		printf("altitude: %d cm\n", fbm320_packet.Altitude);
 #endif
-		slice_flag.loop_10Hz = false;
+	check_motor_armed();
+	slice_flag.loop_10Hz = false;
 }
 
 void sched_5Hzloop(void)
 {
-		if (!slice_flag.loop_200Hz) {
-				return;
-		}
-		
-		slice_flag.loop_5Hz = false;
+	if (!slice_flag.loop_200Hz) {
+		return;
+	}
+	
+	slice_flag.loop_5Hz = false;
 }
 
 void sched_1Hzloop(void)
 {
-		if (!slice_flag.loop_1Hz) {
-				return;
-		}
+	if (!slice_flag.loop_1Hz) {
+		return;
+	}
 
-		slice_flag.loop_1Hz = false;
+	slice_flag.loop_1Hz = false;
 }
 
 

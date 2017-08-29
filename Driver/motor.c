@@ -39,8 +39,6 @@ void motor_init(void)
 	PWM_SET_CMR(PWM, 2, 0);
 	PWM_SET_CMR(PWM, 3, 0);
 #endif
-
-	fc_status.armed = true;
 }
 
 void motor_update(float *_duty)

@@ -18,17 +18,19 @@ float target_throttle = 0, trace_throttle = 0;
 void motors_output(void)
 {
     static float old_desired_throttle = 0;
-    if (thrust.thr_cutoff > 0.01f) {
-        thrust.throttle = LPF_1st(old_desired_throttle, thrust.throttle, thrust.thr_cutoff);
-        old_desired_throttle = thrust.throttle;
-    } else if (old_desired_throttle != 0.0f){
-        old_desired_throttle = 0.0f;
-    }
+
+	if (!fc_status.armed) {
+		if (thrust.thr_cutoff > 0.01f) {
+			thrust.throttle = LPF_1st(old_desired_throttle, thrust.throttle, thrust.thr_cutoff);
+			old_desired_throttle = thrust.throttle;
+		} else if (old_desired_throttle != 0.0f){
+			old_desired_throttle = 0.0f;
+		}
 #if VEHICLE_FRAME == QUAD
-    motor_duty[MOTOR1_INDEX] = thrust.throttle + thrust.pitch - thrust.roll + thrust.yaw;
-    motor_duty[MOTOR2_INDEX] = thrust.throttle - thrust.pitch + thrust.roll + thrust.yaw;
-    motor_duty[MOTOR3_INDEX] = thrust.throttle + thrust.pitch + thrust.roll - thrust.yaw;
-    motor_duty[MOTOR4_INDEX] = thrust.throttle - thrust.pitch - thrust.roll - thrust.yaw;
+		motor_duty[MOTOR1_INDEX] = thrust.throttle + thrust.pitch - thrust.roll + thrust.yaw;
+		motor_duty[MOTOR2_INDEX] = thrust.throttle - thrust.pitch + thrust.roll + thrust.yaw;
+		motor_duty[MOTOR3_INDEX] = thrust.throttle + thrust.pitch + thrust.roll - thrust.yaw;
+		motor_duty[MOTOR4_INDEX] = thrust.throttle - thrust.pitch - thrust.roll - thrust.yaw;
 
 #ifdef __DEVELOP__
 //		printf ("%d, %d, %d, %d\n", (int16_t)(motor_duty[MOTOR1_INDEX]*1000), (int16_t)(motor_duty[MOTOR2_INDEX]*1000), (int16_t)(motor_duty[MOTOR3_INDEX]*1000), \
@@ -37,7 +39,6 @@ void motors_output(void)
 #elif VEHICLE_FRAME == HEXA
 #endif
 
-	if (!fc_status.armed) {
 		motor_update(motor_duty);
 	} else {
 		motor_stop();
@@ -111,4 +112,3 @@ void set_trace_throttle(float _thr)
 	printf("trace throttle: %.3f\n", trace_throttle);
 #endif
 }
-
