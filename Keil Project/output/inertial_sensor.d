@@ -19,6 +19,7 @@
 .\output\inertial_sensor.o: ..\Library\StdDriver\inc\wdt.h
 .\output\inertial_sensor.o: ..\Library\StdDriver\inc\wwdt.h
 .\output\inertial_sensor.o: ..\AHRS\inertial_sensor.h
+.\output\inertial_sensor.o: ..\Algorithm\Algorithm_filter\Algorithm_filter.h
 .\output\inertial_sensor.o: ..\AHRS\../Driver/bmi160.h
 .\output\inertial_sensor.o: ..\AHRS\../Driver/bsp/bsp_i2c.h
 .\output\inertial_sensor.o: ..\AHRS\../Driver/bsp/timer_delay.h

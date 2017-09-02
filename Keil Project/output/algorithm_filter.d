@@ -19,3 +19,5 @@
 .\output\algorithm_filter.o: ..\Library\StdDriver\inc\wdt.h
 .\output\algorithm_filter.o: ..\Library\StdDriver\inc\wwdt.h
 .\output\algorithm_filter.o: ..\Algorithm\Algorithm_filter\Algorithm_filter.h
+.\output\algorithm_filter.o: ..\Algorithm\Algorithm_math\Algorithm_math.h
+.\output\algorithm_filter.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h

@@ -16,18 +16,18 @@ void attitude_angle_rate_controller(void)
 {
     _Vector_Float current_ang_vel = get_inertial_vel();
 
-    set_motor_roll(axis_target_pid_cal(&ctrl_loop.rate.roll, attitude_target_ang_vel.roll, current_ang_vel.x));
-    set_motor_pitch(axis_target_pid_cal(&ctrl_loop.rate.pitch, attitude_target_ang_vel.pitch, current_ang_vel.y));
-    set_motor_yaw(axis_target_pid_cal(&ctrl_loop.rate.yaw, attitude_target_ang_vel.yaw, current_ang_vel.z));
+    set_motor_roll(axis_target_pid_cal(&ctrl_loop.rate.roll, (attitude_target_ang_vel.roll - current_ang_vel.x)));
+    set_motor_pitch(axis_target_pid_cal(&ctrl_loop.rate.pitch, (attitude_target_ang_vel.pitch - current_ang_vel.y)));
+    set_motor_yaw(axis_target_pid_cal(&ctrl_loop.rate.yaw, (attitude_target_ang_vel.yaw - current_ang_vel.z)));
 //		set_motor_roll(axis_target_pid_cal(&ctrl_loop.rate.roll, trace_attituce_ang_vel.roll, current_ang_vel.x));
 //    set_motor_pitch(axis_target_pid_cal(&ctrl_loop.rate.pitch, trace_attituce_ang_vel.pitch, current_ang_vel.y));
 //    set_motor_yaw(axis_target_pid_cal(&ctrl_loop.rate.yaw, trace_attituce_ang_vel.yaw, current_ang_vel.z));
 }
 
-float axis_target_pid_cal(Pid_t *_pid, float _target, float _current)
+float axis_target_pid_cal(Pid_t *_pid, float _error)
 {
-    float rate_error_rads = Rad(_target - _current);
-		float output;
+    float rate_error_rads = Rad(_error);
+	float output;
 	
     set_pid_input(_pid, rate_error_rads);
 
@@ -40,11 +40,11 @@ float axis_target_pid_cal(Pid_t *_pid, float _target, float _current)
 
 void attitude_angle_euler_controller(float _target_roll, float _target_pitch, float _target_yaw_rate, float sense_level, float _dt)
 {
-    float _target_yaw = ahrs.Yaw + _target_yaw_rate * _dt;
+    float _target_yaw = _target_yaw_rate;
 
-    attitude_target_ang_vel.roll = sense_level * axis_target_pid_cal(&ctrl_loop.angle.roll, _target_roll, ahrs.Roll);
-    attitude_target_ang_vel.pitch = sense_level * axis_target_pid_cal(&ctrl_loop.angle.pitch, _target_pitch, ahrs.Pitch);
-    attitude_target_ang_vel.yaw = sense_level * axis_target_pid_cal(&ctrl_loop.angle.yaw, _target_yaw, ahrs.Yaw);
+    attitude_target_ang_vel.roll = sense_level * axis_target_pid_cal(&ctrl_loop.angle.roll, (_target_roll - ahrs.Roll));
+    attitude_target_ang_vel.pitch = sense_level * axis_target_pid_cal(&ctrl_loop.angle.pitch, (_target_pitch - ahrs.Pitch));
+    attitude_target_ang_vel.yaw = sense_level * axis_target_pid_cal(&ctrl_loop.angle.yaw, _target_yaw);
 }
 
 void attitude_throttle_controller(float _throttle, bool _use_leans_tilt, float _cutoff)
@@ -68,4 +68,14 @@ float get_throttle_boosted(float _throttle_in)
     float throttle_out = _throttle_in*inverted_factor*boost_factor;
     data_limit(throttle_out, RC_THROTTLE_OUT_LIMIT, 0.0f);
     return throttle_out;
+}
+
+void reset_pid_param(void)
+{
+	reset_pid_I(&ctrl_loop.rate.roll);
+	reset_pid_I(&ctrl_loop.rate.pitch);
+	reset_pid_I(&ctrl_loop.rate.yaw);
+	reset_pid_D(&ctrl_loop.rate.roll);
+	reset_pid_D(&ctrl_loop.rate.pitch);
+	reset_pid_D(&ctrl_loop.rate.yaw);
 }

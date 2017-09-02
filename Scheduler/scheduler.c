@@ -22,6 +22,7 @@
 
 uint32_t micro_ticker = 0;
 Slice_Flag slice_flag;
+extern _Target_Attitude attitude_target_ang_vel;
 
 void scheduler_init(void)
 {
@@ -127,13 +128,31 @@ void sched_100Hzloop(void)
 
 void sched_50Hzloop(void)
 {
+    _Vector_Float current_ang_vel = get_inertial_vel();
 	if (!slice_flag.loop_50Hz) {
 		return;
 	}
 			
 	rc_channel_read();
 	fbm320_timer_procedure();  // update absolute altitude about 16.7Hz
-	
+
+#ifdef __DEVELOP__	
+	if ((fc_status.printf_flag == 0) || (fc_status.printf_flag == 255))
+		printf("%d,%d,%d,%d,%d,%d,\n", (int16_t)(ahrs.Roll*2+200), (int16_t)(ahrs.Pitch*2+200), (int16_t)(ahrs.Yaw*2+200), (int16_t)(target_attitude.roll*2-200), (int16_t)(target_attitude.pitch*2-200), (int16_t)(target_attitude.yaw*2-200));
+	else if (fc_status.printf_flag == 1)
+		printf("%d,%d,%d,%d,%d,%d,\n", (int16_t)(current_ang_vel.x*10), (int16_t)(current_ang_vel.y*10), (int16_t)(current_ang_vel.z*10), \
+										(int16_t)(attitude_target_ang_vel.roll*10), (int16_t)(attitude_target_ang_vel.pitch*10), (int16_t)(attitude_target_ang_vel.yaw*10));
+	else if (fc_status.printf_flag == 2)
+		printf("%d,%d,%d,%d,%d,%d,\n", (int16_t)((inertial_sensor.accel.average.x-inertial_sensor.accel.quiet.x)*_accel_scale*30+200), (int16_t)((inertial_sensor.accel.average.y-inertial_sensor.accel.quiet.y)*_accel_scale*30+200), \
+										(int16_t)((inertial_sensor.accel.average.z-inertial_sensor.accel.quiet.z)*_accel_scale*10), \
+										(int16_t)(inertial_sensor.accel.filter.x*30-200), (int16_t)(inertial_sensor.accel.filter.y*30-200), (int16_t)(inertial_sensor.accel.filter.z*10));
+	else if (fc_status.printf_flag == 3)
+		printf("%d,%d,%d,%d,%d,%d,\n", (int16_t)(inertial_sensor.gyro.average.x*_gyro_scale+200), (int16_t)(inertial_sensor.gyro.average.y*_gyro_scale+200), (int16_t)(inertial_sensor.gyro.average.z*_gyro_scale+200), \
+										(int16_t)(inertial_sensor.gyro.filter.x-200), (int16_t)(inertial_sensor.gyro.filter.y-200), (int16_t)(inertial_sensor.gyro.filter.z-200));
+	else if (fc_status.printf_flag == 4)
+		printf ("%d, %d, %d, %d\n", (int16_t)(motor_duty[MOTOR1_INDEX]*500-300), (int16_t)(motor_duty[MOTOR2_INDEX]*500-300), (int16_t)(motor_duty[MOTOR3_INDEX]*500-300), \
+																														(int16_t)(motor_duty[MOTOR4_INDEX]*500-300));
+#endif	
 	slice_flag.loop_50Hz = false;
 }
 
@@ -153,9 +172,9 @@ void sched_20Hzloop(void)
 //		printf ("%d, %d, %d, %d\n", (int16_t)(motor_duty[MOTOR1_INDEX]*1000), (int16_t)(motor_duty[MOTOR2_INDEX]*1000), (int16_t)(motor_duty[MOTOR3_INDEX]*1000), \
 																													(int16_t)(motor_duty[MOTOR4_INDEX]*1000));
 	
-	printf("ch1:%d, ch2:%d, ch3:%d, ch4:%d, ch5:%d, ch6:%d, ch7:%d, ch8:%d, ch9:%d, ch10:%d, ch11:%d, ch12:%d\n", rc_channels[0].rc_in, rc_channels[1].rc_in, rc_channels[2].rc_in, \
-																																		rc_channels[3].rc_in, rc_switchs[0].rc_in, rc_switchs[1].rc_in, rc_switchs[2].rc_in, rc_switchs[3].rc_in, \
-																																		rc_switchs[4].rc_in, rc_switchs[5].rc_in, rc_switchs[6].rc_in, rc_switchs[7].rc_in);
+//	printf("ch1:%d, ch2:%d, ch3:%d, ch4:%d, ch5:%d, ch6:%d, ch7:%d, ch8:%d, ch9:%d, ch10:%d, ch11:%d, ch12:%d\n", rc_channels[0].rc_in, rc_channels[1].rc_in, rc_channels[2].rc_in, \
+//																																		rc_channels[3].rc_in, rc_switchs[0].rc_in, rc_switchs[1].rc_in, rc_switchs[2].rc_in, rc_switchs[3].rc_in, \
+//																																		rc_switchs[4].rc_in, rc_switchs[5].rc_in, rc_switchs[6].rc_in, rc_switchs[7].rc_in);
 //        printf("altitude: %d cm\n", fbm320_packet.Altitude);
 #endif
 	slice_flag.loop_20Hz = false;
@@ -190,6 +209,35 @@ void sched_1Hzloop(void)
 		return;
 	}
 
+	if (fc_status.printf_flag == 255) {
+		fc_status.armed = MOTOR_TEST;
+		trace_throttle += 0.1;
+		if (trace_throttle > 1.0f)
+		{
+			trace_throttle = 0.0f;
+			fc_status.motor_control_Hz += 1000;
+			#ifdef __DEVELOP__
+			printf("current motor PWM freq:%d\n", fc_status.motor_control_Hz);
+			#endif
+			PWM_ConfigOutputChannel(PWM, 0, fc_status.motor_control_Hz, MOTOR_MIN_PWM_DUTY);	
+			PWM_ConfigOutputChannel(PWM, 1, fc_status.motor_control_Hz, MOTOR_MIN_PWM_DUTY);
+			PWM_ConfigOutputChannel(PWM, 2, fc_status.motor_control_Hz, MOTOR_MIN_PWM_DUTY);
+			PWM_ConfigOutputChannel(PWM, 3, fc_status.motor_control_Hz, MOTOR_MIN_PWM_DUTY);
+			
+			PWM_EnableOutput(PWM, 0x0F);
+			PWM_Start(PWM, 0x0F);
+			
+			motor_duty_range = PWM->PERIOD0;
+		}
+		motor_duty[MOTOR1_INDEX] = trace_throttle;
+		motor_duty[MOTOR2_INDEX] = trace_throttle;
+		motor_duty[MOTOR3_INDEX] = trace_throttle;
+		motor_duty[MOTOR4_INDEX] = trace_throttle;
+		
+		motor_update(motor_duty);
+	} else {
+		trace_throttle = 0.0f;
+	}
 	slice_flag.loop_1Hz = false;
 }
 

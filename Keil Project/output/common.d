@@ -23,6 +23,7 @@
 .\output\common.o: ..\User\../AHRS/ahrs.h
 .\output\common.o: ..\User\../AHRS/../Algorithm/Algorithm_quaternion/Algorithm_quaternion.h
 .\output\common.o: ..\User\../AHRS/inertial_sensor.h
+.\output\common.o: ..\Algorithm\Algorithm_filter\Algorithm_filter.h
 .\output\common.o: ..\User\../Algorithm/Algorithm_filter/Algorithm_filter.h
 .\output\common.o: ..\User\../Algorithm/Algorithm_math/Algorithm_math.h
 .\output\common.o: ..\User\../Algorithm/Algorithm_math/mymath.h

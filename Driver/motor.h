@@ -27,7 +27,7 @@
 #define MOTOR_MIN_PWM_DUTY (MOTOR_PWM_FREQ * MOTOR_MIN_PWM / 10000)
 #define MOTOR_MAX_PWM_DUTY (MOTOR_PWM_FREQ * MOTOR_MAX_PWM / 10000)
 #elif MOTOR_TYPE == DC
-#define MOTOR_PWM_FREQ 20000 // uint(20KHz)
+#define MOTOR_PWM_FREQ 22000 // uint(20KHz)
 #define MOTOR_MIN_PWM 0
 #define MOTOR_MIN_PWM_DUTY 1
 #endif
@@ -57,5 +57,5 @@ void motor_update(float *_duty);
 void motor_stop(void);
 
 extern float motor_duty[MOTOR_MAX_NUM];
-
+extern uint32_t motor_duty_range;
 #endif

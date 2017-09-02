@@ -1,4 +1,4 @@
-;#<FEEDBACK># ARM Linker, 5060183: Last Updated: Tue Aug 29 19:42:20 2017
+;#<FEEDBACK># ARM Linker, 5060183: Last Updated: Sat Sep 02 21:39:36 2017
 ;VERSION 0.2
 ;FILE acmp.o
 ACMP_Close <= USED 0
@@ -21,16 +21,15 @@ __asm___5_adc_c_26cd6614____REV16 <= USED 0
 __asm___5_adc_c_26cd6614____REVSH <= USED 0
 ;FILE ahrs.o
 AHRS_Read_Attitude <= USED 0
-AHRS_set_complementary_filter_ki <= USED 0
-AHRS_set_complementary_filter_kp <= USED 0
 __asm___6_ahrs_c_NumQ____REV16 <= USED 0
 __asm___6_ahrs_c_NumQ____REVSH <= USED 0
 ;FILE algorithm_filter.o
+IIR_I_Filter <= USED 0
 KalmanFilter <= USED 0
 Moving_Average <= USED 0
 Moving_Median <= USED 0
-__asm___18_Algorithm_filter_c_41f50fa6____REV16 <= USED 0
-__asm___18_Algorithm_filter_c_41f50fa6____REVSH <= USED 0
+__asm___18_Algorithm_filter_c_b693f501____REV16 <= USED 0
+__asm___18_Algorithm_filter_c_b693f501____REVSH <= USED 0
 kalmanUpdate <= USED 0
 ;FILE algorithm_math.o
 __asm___16_Algorithm_math_c_Q_rsqrt____REV16 <= USED 0
@@ -43,12 +42,7 @@ constrain <= USED 0
 __asm___15_Algorithm_pid_c_61a19061____REV16 <= USED 0
 __asm___15_Algorithm_pid_c_61a19061____REVSH <= USED 0
 get_integrator <= USED 0
-reset_pid_D <= USED 0
-reset_pid_I <= USED 0
 set_input_filter_all <= USED 0
-set_pid_param_d <= USED 0
-set_pid_param_i <= USED 0
-set_pid_param_p <= USED 0
 ;FILE algorithm_quaternion.o
 Quaternion_Multiply <= USED 0
 Quaternion_ToNumQ <= USED 0
@@ -92,11 +86,10 @@ __asm___8_common_c_d7b85782____REVSH <= USED 0
 __asm___8_fbm320_c_8c0545fd____REV16 <= USED 0
 __asm___8_fbm320_c_8c0545fd____REVSH <= USED 0
 ;FILE flight_mode_control.o
-__asm___21_flight_mode_control_c_815d2a39____REV16 <= USED 0
-__asm___21_flight_mode_control_c_815d2a39____REVSH <= USED 0
+__asm___21_flight_mode_control_c_3550a7f2____REV16 <= USED 0
+__asm___21_flight_mode_control_c_3550a7f2____REVSH <= USED 0
+acro_init <= USED 0
 exit_mode <= USED 0
-set_flight_mode <= USED 0
-stabilize_init <= USED 0
 ;FILE fmc.o
 FMC_Close <= USED 0
 FMC_Erase <= USED 0
@@ -154,7 +147,6 @@ __asm___7_motor_c_d71f47f0____REVSH <= USED 0
 ;FILE motor_control.o
 __asm___15_motor_control_c_thrust____REV16 <= USED 0
 __asm___15_motor_control_c_thrust____REVSH <= USED 0
-set_trace_throttle <= USED 0
 throttle_control <= USED 0
 ;FILE mymath.o
 To_180_degrees <= USED 0
@@ -282,16 +274,14 @@ UART_ClearIntFlag <= USED 0
 UART_Close <= USED 0
 UART_DisableInt <= USED 0
 UART_EnableInt <= USED 0
-UART_Open <= USED 0
-UART_Read <= USED 0
 UART_SetLine_Config <= USED 0
 UART_SetTimeoutCnt <= USED 0
 UART_Write <= USED 0
 __asm___6_uart_c_f12f5b44____REV16 <= USED 0
 __asm___6_uart_c_f12f5b44____REVSH <= USED 0
 ;FILE uart_console.o
-__asm___14_uart_console_c____REV16 <= USED 0
-__asm___14_uart_console_c____REVSH <= USED 0
+__asm___14_uart_console_c_674804bb____REV16 <= USED 0
+__asm___14_uart_console_c_674804bb____REVSH <= USED 0
 ;FILE wdt.o
 WDT_Close <= USED 0
 WDT_DisableInt <= USED 0

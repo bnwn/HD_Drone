@@ -1,5 +1,57 @@
 #include "PN020Series.h"
 #include "Algorithm_filter.h"
+#include "Algorithm_math.h"
+#include "math.h"
+
+void LPF2pSetCutoffFreq(LPF2p_t *_lpf2p, float _sample_freq, float _cutoff_freq)
+{
+    float fr =0;
+    float ohm =0;
+    float c =0;
+
+    fr= _sample_freq/_cutoff_freq;
+    ohm=tanf(M_PI/fr);
+    c=1.0f+2.0f*cosf(M_PI/4.0f)*ohm + ohm*ohm;
+
+    _lpf2p->cutoff_freq = _cutoff_freq;
+    if (_lpf2p->cutoff_freq > 0.0f)
+    {
+        _lpf2p->b0 = ohm*ohm/c;
+        _lpf2p->b1 = 2.0f*_lpf2p->b0;
+        _lpf2p->b2 = _lpf2p->b0;
+        _lpf2p->a1 = 2.0f*(ohm*ohm-1.0f)/c;
+        _lpf2p->a2 = (1.0f-2.0f*cosf(M_PI/4.0f)*ohm+ohm*ohm)/c;
+    }
+	_lpf2p->delay_element_1 = 0.0f;
+	_lpf2p->delay_element_2 = 0.0f;
+}
+
+float LPF2pApply(LPF2p_t *_lpf2p, float _sample)
+{
+
+    float delay_element_0 = 0, output=0;
+    if (_lpf2p->cutoff_freq <= 0.0f) {
+        // no filtering
+        return _sample;
+    }
+    else
+    {
+        delay_element_0 = _sample - _lpf2p->delay_element_1 * _lpf2p->a1 -_lpf2p->delay_element_2 * _lpf2p->a2;
+        // do the filtering
+        if (isnan(delay_element_0) || isinf(delay_element_0)) {
+            // don't allow bad values to propogate via the filter
+            delay_element_0 = _sample;
+        }
+        output = delay_element_0 * _lpf2p->b0 + _lpf2p->delay_element_1 * _lpf2p->b1 + _lpf2p->delay_element_2 * _lpf2p->b2;
+
+        _lpf2p->delay_element_2 = _lpf2p->delay_element_1;
+        _lpf2p->delay_element_1 = delay_element_0;
+
+        // return the value.  Should be no need to check limits
+        return output;
+    }
+}
+
 
 /*====================================================================================================*/
 /*====================================================================================================*

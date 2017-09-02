@@ -66,21 +66,13 @@ void Quaternion_ToNumQ( Quaternion *pNumQ, EulerAngle *pAngE )
 **สนำร : Quaternion_ToAngE(&NumQ, &AngE);
 **====================================================================================================*/
 /*====================================================================================================*/
-void Quaternion_ToAngE( Quaternion *pNumQ, EulerAngle *pAngE )
+void Quaternion_ToAngE( Quaternion *pNumQ, EulerAngle *pAngE, float *_matrix)
 {
-  float NumQ_T11 = pNumQ->q0*pNumQ->q0 + pNumQ->q1*pNumQ->q1 - pNumQ->q2*pNumQ->q2 - pNumQ->q3*pNumQ->q3;
-  float NumQ_T12 = 2.0f*(pNumQ->q0*pNumQ->q3 + pNumQ->q1*pNumQ->q2);
-  float NumQ_T13 = 2.0f*(pNumQ->q1*pNumQ->q3 - pNumQ->q0*pNumQ->q2);
-  float NumQ_T23 = 2.0f*(pNumQ->q0*pNumQ->q1 + pNumQ->q2*pNumQ->q3);
-  float NumQ_T33 = pNumQ->q0*pNumQ->q0 - pNumQ->q1*pNumQ->q1 - pNumQ->q2*pNumQ->q2 + pNumQ->q3*pNumQ->q3;
+	Quaternion_ToMatrix(pNumQ, _matrix);
 
-  pAngE->Pitch = -asinf(NumQ_T13);
-  pAngE->Roll    = -atan2f(NumQ_T23, NumQ_T33);
-	pAngE->Yaw    = -atan2f(NumQ_T12, NumQ_T11);
-#if 0
-	if(flag.MagIssue || !flag.MagExist)
-		pAngE->Yaw    = atan2f(NumQ_T12, NumQ_T11);
-#endif
+	pAngE->Pitch = -asinf(_matrix[2]);
+	pAngE->Roll    = -atan2f(_matrix[5], _matrix[8]);
+	pAngE->Yaw    = -atan2f(_matrix[1], _matrix[0]);
 }
 /*====================================================================================================*/
 /*====================================================================================================*
@@ -147,3 +139,15 @@ void Quaternion_RungeKutta( Quaternion *pNumQ, float GyrX, float GyrY, float Gyr
 }
 /*====================================================================================================*/
 
+void Quaternion_ToMatrix(Quaternion *pNumQ, float *_matrix)
+{
+	_matrix[0] = pNumQ->q0*pNumQ->q0 + pNumQ->q1*pNumQ->q1 - pNumQ->q2*pNumQ->q2 - pNumQ->q3*pNumQ->q3; // 11
+    _matrix[1] = 2.0f*(pNumQ->q0*pNumQ->q3 + pNumQ->q1*pNumQ->q2); // 12
+    _matrix[2] = 2.0f*(pNumQ->q1*pNumQ->q3 - pNumQ->q0*pNumQ->q2);	// 13
+    _matrix[3] = 2.0f*(pNumQ->q1*pNumQ->q2 - pNumQ->q0*pNumQ->q3);	// 21
+    _matrix[4] = pNumQ->q0*pNumQ->q0 - pNumQ->q1*pNumQ->q1 + pNumQ->q2*pNumQ->q2 - pNumQ->q3*pNumQ->q3;;// 22
+    _matrix[5] = 2.0f*(pNumQ->q0*pNumQ->q1 + pNumQ->q2*pNumQ->q3);	// 23
+    _matrix[6] = 2.0f*(pNumQ->q1*pNumQ->q3 + pNumQ->q0*pNumQ->q2);	// 31
+    _matrix[7] = 2.0f*(pNumQ->q2*pNumQ->q3 - pNumQ->q0*pNumQ->q1);	// 32
+    _matrix[8] = pNumQ->q0*pNumQ->q0 - pNumQ->q1*pNumQ->q1 - pNumQ->q2*pNumQ->q2 + pNumQ->q3*pNumQ->q3; // 33
+}

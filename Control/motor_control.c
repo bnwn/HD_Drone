@@ -2,6 +2,7 @@
 #include "motor_control.h"
 #include "Algorithm_filter.h"
 #include "common.h"
+#include "Algorithm_pid.h"
 
 Thrust thrust = {0};
 float target_throttle = 0, trace_throttle = 0;
@@ -19,7 +20,7 @@ void motors_output(void)
 {
     static float old_desired_throttle = 0;
 
-	if (!fc_status.armed) {
+	if (fc_status.armed == DISARMED) {
 		if (thrust.thr_cutoff > 0.01f) {
 			thrust.throttle = LPF_1st(old_desired_throttle, thrust.throttle, thrust.thr_cutoff);
 			old_desired_throttle = thrust.throttle;
@@ -31,16 +32,27 @@ void motors_output(void)
 		motor_duty[MOTOR2_INDEX] = thrust.throttle - thrust.pitch + thrust.roll + thrust.yaw;
 		motor_duty[MOTOR3_INDEX] = thrust.throttle + thrust.pitch + thrust.roll - thrust.yaw;
 		motor_duty[MOTOR4_INDEX] = thrust.throttle - thrust.pitch - thrust.roll - thrust.yaw;
+//		motor_duty[MOTOR1_INDEX] = 0.5;
+//		motor_duty[MOTOR2_INDEX] = 0.5;
+//		motor_duty[MOTOR3_INDEX] = 0.5;
+//		motor_duty[MOTOR4_INDEX] = 0.5;
 
 #ifdef __DEVELOP__
-//		printf ("%d, %d, %d, %d\n", (int16_t)(motor_duty[MOTOR1_INDEX]*1000), (int16_t)(motor_duty[MOTOR2_INDEX]*1000), (int16_t)(motor_duty[MOTOR3_INDEX]*1000), \
+		//printf ("%d, %d, %d, %d\n", (int16_t)(motor_duty[MOTOR1_INDEX]*1000), (int16_t)(motor_duty[MOTOR2_INDEX]*1000), (int16_t)(motor_duty[MOTOR3_INDEX]*1000), \
 																														(int16_t)(motor_duty[MOTOR4_INDEX]*1000));
 #endif
 #elif VEHICLE_FRAME == HEXA
 #endif
 
 		motor_update(motor_duty);
-	} else {
+	} else if (fc_status.armed == IDLED) {
+		motor_duty[MOTOR1_INDEX] = IDLED_DUTY;
+		motor_duty[MOTOR2_INDEX] = IDLED_DUTY;
+		motor_duty[MOTOR3_INDEX] = IDLED_DUTY;
+		motor_duty[MOTOR4_INDEX] = IDLED_DUTY;
+		
+		motor_update(motor_duty);
+	} else if (fc_status.armed != MOTOR_TEST) {
 		motor_stop();
 	}
 }

@@ -20,6 +20,7 @@
 .\output\attitude_control.o: ..\Library\StdDriver\inc\wwdt.h
 .\output\attitude_control.o: ..\Control\attitude_control.h
 .\output\attitude_control.o: ..\Control\../AHRS/inertial_sensor.h
+.\output\attitude_control.o: ..\Algorithm\Algorithm_filter\Algorithm_filter.h
 .\output\attitude_control.o: ..\Control\../AHRS/ahrs.h
 .\output\attitude_control.o: ..\Control\../AHRS/../Algorithm/Algorithm_quaternion/Algorithm_quaternion.h
 .\output\attitude_control.o: ..\Control\../Algorithm/Algorithm_math/Algorithm_math.h

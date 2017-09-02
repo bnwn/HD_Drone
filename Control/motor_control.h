@@ -6,6 +6,8 @@
 #include "../Algorithm/Algorithm_math/mymath.h"
 #include "../Algorithm/Algorithm_math/Algorithm_math.h"
 
+#define IDLED_DUTY 0.1
+
 typedef struct {
     float roll;
     float pitch;

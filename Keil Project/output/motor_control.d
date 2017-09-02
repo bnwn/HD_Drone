@@ -27,3 +27,4 @@
 .\output\motor_control.o: ..\Control\../Algorithm/Algorithm_math/Algorithm_math.h
 .\output\motor_control.o: ..\Algorithm\Algorithm_filter\Algorithm_filter.h
 .\output\motor_control.o: ..\User\common.h
+.\output\motor_control.o: ..\Algorithm\Algorithm_pid\Algorithm_pid.h

@@ -23,6 +23,7 @@
 .\output\rc_channel.o: ..\RC\rc_channel.h
 .\output\rc_channel.o: ..\Control\attitude_control.h
 .\output\rc_channel.o: ..\Control\../AHRS/inertial_sensor.h
+.\output\rc_channel.o: ..\Algorithm\Algorithm_filter\Algorithm_filter.h
 .\output\rc_channel.o: ..\Control\../AHRS/ahrs.h
 .\output\rc_channel.o: ..\Control\../AHRS/../Algorithm/Algorithm_quaternion/Algorithm_quaternion.h
 .\output\rc_channel.o: ..\Control\../Algorithm/Algorithm_math/Algorithm_math.h
@@ -33,3 +34,4 @@
 .\output\rc_channel.o: ..\Control\../Driver/motor.h
 .\output\rc_channel.o: ..\Driver\bsp\timer_delay.h
 .\output\rc_channel.o: ..\User\common.h
+.\output\rc_channel.o: ..\Control\flight_mode_control.h

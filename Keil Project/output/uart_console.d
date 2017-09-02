@@ -24,6 +24,7 @@
 .\output\uart_console.o: ..\AHRS\../Algorithm/Algorithm_quaternion/Algorithm_quaternion.h
 .\output\uart_console.o: ..\Control\attitude_control.h
 .\output\uart_console.o: ..\Control\../AHRS/inertial_sensor.h
+.\output\uart_console.o: ..\Algorithm\Algorithm_filter\Algorithm_filter.h
 .\output\uart_console.o: ..\Control\../Algorithm/Algorithm_math/Algorithm_math.h
 .\output\uart_console.o: ..\Control\../Algorithm/Algorithm_math/mymath.h
 .\output\uart_console.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h

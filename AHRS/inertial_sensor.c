@@ -13,6 +13,16 @@ double OutPut_IIR[3][IIR_ORDER+1] = {0};
 
 Inertial_Sensor inertial_sensor;
 
+void inertial_sensor_init(void)
+{
+	LPF2pSetCutoffFreq(&inertial_sensor.accel.flit_lpf2p.x, IMU_SAMPLE_RATE, IMU_FILTER_CUTOFF_FREQ);		//30Hz
+	LPF2pSetCutoffFreq(&inertial_sensor.accel.flit_lpf2p.y, IMU_SAMPLE_RATE, IMU_FILTER_CUTOFF_FREQ);		//30Hz
+	LPF2pSetCutoffFreq(&inertial_sensor.accel.flit_lpf2p.z, IMU_SAMPLE_RATE, IMU_FILTER_CUTOFF_FREQ);		//30Hz
+    LPF2pSetCutoffFreq(&inertial_sensor.gyro.flit_lpf2p.x, IMU_SAMPLE_RATE, IMU_FILTER_CUTOFF_FREQ);
+	LPF2pSetCutoffFreq(&inertial_sensor.gyro.flit_lpf2p.y, IMU_SAMPLE_RATE, IMU_FILTER_CUTOFF_FREQ);
+	LPF2pSetCutoffFreq(&inertial_sensor.gyro.flit_lpf2p.z, IMU_SAMPLE_RATE, IMU_FILTER_CUTOFF_FREQ);
+}
+
 void inertial_sensor_read(void)
 {
     static _Vector_Int16 last_gyro;
@@ -25,14 +35,31 @@ void inertial_sensor_read(void)
         break;
     }
 
+#if SENSOR_FILTER == FILTER_LPF2P
+	inertial_sensor.accel.relative.x = inertial_sensor.accel.average.x - inertial_sensor.accel.quiet.x;
+    inertial_sensor.accel.relative.y = inertial_sensor.accel.average.y - inertial_sensor.accel.quiet.y;
+    inertial_sensor.accel.relative.z = inertial_sensor.accel.average.z - inertial_sensor.accel.quiet.z;
+
+//    inertial_sensor.gyro.relative.x = inertial_sensor.gyro.average.x;
+//    inertial_sensor.gyro.relative.y = inertial_sensor.gyro.average.y ;
+//    inertial_sensor.gyro.relative.z = inertial_sensor.gyro.average.z ;
+	
+	inertial_sensor.gyro.relative.x = inertial_sensor.gyro.average.x - inertial_sensor.gyro.quiet.x;
+    inertial_sensor.gyro.relative.y = inertial_sensor.gyro.average.y - inertial_sensor.gyro.quiet.y;
+    inertial_sensor.gyro.relative.z = inertial_sensor.gyro.average.z - inertial_sensor.gyro.quiet.z;
+	
+	inertial_sensor.accel.filter.x = LPF2pApply(&inertial_sensor.accel.flit_lpf2p.x, (float)(inertial_sensor.accel.relative.x * _accel_scale));
+    inertial_sensor.accel.filter.y = LPF2pApply(&inertial_sensor.accel.flit_lpf2p.y, (float)(inertial_sensor.accel.relative.y * _accel_scale));
+    inertial_sensor.accel.filter.z = LPF2pApply(&inertial_sensor.accel.flit_lpf2p.z, (float)(inertial_sensor.accel.relative.z * _accel_scale));
+
+	inertial_sensor.gyro.filter.x = LPF2pApply(&inertial_sensor.gyro.flit_lpf2p.x, (float)(inertial_sensor.gyro.relative.x * _gyro_scale));
+    inertial_sensor.gyro.filter.y = LPF2pApply(&inertial_sensor.gyro.flit_lpf2p.y, (float)(inertial_sensor.gyro.relative.y * _gyro_scale));
+    inertial_sensor.gyro.filter.z = LPF2pApply(&inertial_sensor.gyro.flit_lpf2p.z, (float)(inertial_sensor.gyro.relative.z * _gyro_scale));
+#elif SENSOR_FILTER == FILTER_IIR_I	
     inertial_sensor.accel.relative.x = inertial_sensor.accel.average.x - inertial_sensor.accel.quiet.x;
     inertial_sensor.accel.relative.y = inertial_sensor.accel.average.y - inertial_sensor.accel.quiet.y;
     inertial_sensor.accel.relative.z = inertial_sensor.accel.average.z;
-
-    inertial_sensor.gyro.relative.x = inertial_sensor.gyro.average.x - inertial_sensor.gyro.quiet.x;
-    inertial_sensor.gyro.relative.y = inertial_sensor.gyro.average.y - inertial_sensor.gyro.quiet.y;
-    inertial_sensor.gyro.relative.z = inertial_sensor.gyro.average.z - inertial_sensor.gyro.quiet.z;
-		
+	
     // 加速度计IIR滤波
     inertial_sensor.accel.filter.x = IIR_I_Filter(inertial_sensor.accel.relative.x, InPut_IIR[0], OutPut_IIR[0], b_IIR, IIR_ORDER+1, a_IIR, IIR_ORDER+1);
     inertial_sensor.accel.filter.y = IIR_I_Filter(inertial_sensor.accel.relative.y, InPut_IIR[1], OutPut_IIR[1], b_IIR, IIR_ORDER+1, a_IIR, IIR_ORDER+1);
@@ -45,6 +72,7 @@ void inertial_sensor_read(void)
     last_gyro.y = inertial_sensor.gyro.filter.y;
     inertial_sensor.gyro.filter.z = LPF_1st(last_gyro.z, inertial_sensor.gyro.relative.z * _gyro_scale, 0.386f);
     last_gyro.z = inertial_sensor.gyro.filter.z;//
+#endif
 }
 
 /*====================================================================================================*/
@@ -58,9 +86,9 @@ void inertial_sensor_read(void)
 /*====================================================================================================*/
 void gyro_caloffest(float x,float y,float z,uint16_t amount)
 {
-   inertial_sensor.gyro.quiet.x = x / amount;
-     inertial_sensor.gyro.quiet.y = y / amount;
-     inertial_sensor.gyro.quiet.z = z / amount;
+	inertial_sensor.gyro.quiet.x = x / amount;
+	inertial_sensor.gyro.quiet.y = y / amount;
+	inertial_sensor.gyro.quiet.z = z / amount;
 }
 
 /*====================================================================================================*/
@@ -77,10 +105,10 @@ void gyro_offset(void)
     static uint8_t over_flag=0;
     uint8_t  i,cnt_g = 0;
 
-  int16_t gx_last=0,gy_last=0,gz_last=0;
+	int16_t gx_last=0,gy_last=0,gz_last=0;
     int16_t Integral[3] = {0,0,0};
     int32_t tempg[3]={0,0,0};
-  over_flag=0;//因为定义的是static，如果不自己赋值，下次进来时over_flag就不会被赋值0了，保持为上一次校准完时赋值的1
+	over_flag=0;//因为定义的是static，如果不自己赋值，下次进来时over_flag就不会被赋值0了，保持为上一次校准完时赋值的1
 
     delay_ms(1500);
     delay_ms(1500);
@@ -146,7 +174,7 @@ void accel_offset(void)
     inertial_sensor.accel.quiet.y = 0;
     inertial_sensor.accel.quiet.z = 0;
 
-    for(cnt_a=0;cnt_a<200;cnt_a++)
+    for(cnt_a=0;cnt_a<50;cnt_a++)
     {
 				switch (SENSOR_TYPE) {
 						case SENSOR_BMI160:
@@ -155,14 +183,14 @@ void accel_offset(void)
 				default:
 						break;
 				}
-				delay_ms(1);
+		delay_ms(10);
         tempax+= inertial_sensor.accel.average.x;
         tempay+= inertial_sensor.accel.average.y;
         tempaz+= inertial_sensor.accel.average.z;
     }
     inertial_sensor.accel.quiet.x = tempax/cnt_a;
     inertial_sensor.accel.quiet.y = tempay/cnt_a;
-    inertial_sensor.accel.quiet.z = tempaz/cnt_a;
+    inertial_sensor.accel.quiet.z = IMU_ACC_RAW_RANGE - tempaz/cnt_a;
     cnt_a = 0;
     //flag.calibratingA = 0;
     //EE_SAVE_ACC_OFFSET();//保存数据
@@ -170,14 +198,14 @@ void accel_offset(void)
 
 _Vector_Float get_inertial_vel(void)
 {
-		_Vector_Float _vel = {0};
+	_Vector_Float _vel = {0};
 		
-		/* rotation */
-		_vel.x = inertial_sensor.gyro.filter.x * -1;
-		_vel.y = inertial_sensor.gyro.filter.y;
-		_vel.z = inertial_sensor.gyro.filter.z * -1;
-		
-		return _vel;
+	/* rotation */
+	_vel.x = inertial_sensor.gyro.filter.x * -1;
+	_vel.y = inertial_sensor.gyro.filter.y;
+	_vel.z = inertial_sensor.gyro.filter.z * -1;
+
+	return _vel;
 }
 
 

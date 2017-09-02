@@ -37,5 +37,7 @@ void pos_to_rate_z(void);
 void rate_to_accel_z(void);
 // accel_to_throttle - alt hold's acceleration controller
 void accel_to_throttle(float _accel_target_z);
+void calc_leash_length_z(void);
+float calc_leash_length(float speed_cms, float accel_cms, float kP);
 
 #endif

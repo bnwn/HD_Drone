@@ -4,11 +4,13 @@
 #include "Algorithm_math.h"
 #include "timer_delay.h"
 #include "common.h"
+#include "flight_mode_control.h"
 
 Rc_Channel_t rc_channels[RC_CHANNEL_NUM_MAX] = {0};
 Rc_Switch_t rc_switchs[RC_SWITCH_MAX] = {0};
 uint8_t rc_buf[PAYLOAD_WIDTH] = {0}, data_buf[DATA_BUF_MAX] = {0}, roll_code[ROLL_CODE_NUM] = {0};
 static uint8_t pre_switch = 0;
+extern float cmp_kp, cmp_ki;
 
 void rc_channel_init(void)
 {
@@ -199,20 +201,42 @@ static void switch_event_trigger(uint8_t _ch, bool _is_long_hold)
 {
     switch(_ch) {
         case 0:
+			set_pid_param_i(&ctrl_loop.rate.roll, (ctrl_loop.rate.roll.ki + 0.01f));
+			set_pid_param_i(&ctrl_loop.rate.pitch, (ctrl_loop.rate.pitch.ki + 0.01f));
+			printf("set_pid_param_p:%i", (int16_t)(ctrl_loop.rate.pitch.ki * 100));
             break;
         case 1:
+			set_pid_param_i(&ctrl_loop.rate.roll, (ctrl_loop.rate.roll.ki - 0.01f));
+			set_pid_param_i(&ctrl_loop.rate.pitch, (ctrl_loop.rate.pitch.ki - 0.01f));
+			printf("set_pid_param_p:%i", (int16_t)(ctrl_loop.rate.pitch.ki*100));
             break;
         case 2:
+			if (fc_status.printf_flag != 255) fc_status.printf_flag = 255;
+			else {
+				fc_status.printf_flag = 0x0;
+				
+				fc_status.armed = ARMED;
+			}
             break;
         case 3:
+			fc_status.armed = ARMED;
             break;
         case 4:
+			set_flight_mode(Acro);
             break;
         case 5:
+			set_pid_param_d(&ctrl_loop.rate.roll, (ctrl_loop.rate.roll.kd + 0.0005f));
+			set_pid_param_d(&ctrl_loop.rate.pitch, (ctrl_loop.rate.pitch.kd + 0.0005f));
+			printf("set_pid_param_d:%d", (int16_t)(ctrl_loop.rate.pitch.kd*10000));
             break;
         case 6:
+			set_pid_param_d(&ctrl_loop.rate.roll, (ctrl_loop.rate.roll.kd - 0.0005f));
+			set_pid_param_d(&ctrl_loop.rate.pitch, (ctrl_loop.rate.pitch.kd - 0.0005f));
+			printf("set_pid_param_d:%d", (int16_t)(ctrl_loop.rate.pitch.kd*10000));
             break;
         case 7:
+			fc_status.printf_flag++;
+			if (fc_status.printf_flag >= 5) fc_status.printf_flag = 0;
             break;
         default:
             break;
@@ -292,7 +316,8 @@ void get_desired_leans_angles(_Target_Attitude *_target_att, float _leans_limit)
         _pitch *= _ratio;
     }
 
-    _target_att->roll = (180/M_PI) * atanf(cosf(_pitch*(M_PI/180))*tanf(_roll*(M_PI/180)));
+ //   _target_att->roll = (180/M_PI) * atanf(cosf(_pitch*(M_PI/180))*tanf(_roll*(M_PI/180)));
+	_target_att->roll = _roll;
     _target_att->pitch = _pitch;
 
     _yaw_stick_angle = channel_input_to_target(&rc_channels[RC_EULER_YAW_CH], _leans_limit);
@@ -306,7 +331,7 @@ float get_desired_throttle_expo(void)
 
     // calculate the output throttle using the given expo function
     throttle_out = throttle_out * 0.6 + 0.4 * throttle_out * throttle_out * throttle_out;
-
+	
     throttle_out = data_limit(throttle_out, RC_THROTTLE_OUT_LIMIT, 0.0f);
     return throttle_out;
 }
@@ -371,26 +396,66 @@ void setting_rc_channel_all(void)
 void check_motor_armed(void)
 {
 	static uint8_t check_times = 0;
- 	if (fc_status.armed) {
-		if ((rc_channels[0].rc_in > RC_CHANNEL_DISARMED) && (rc_channels[1].rc_in < (RC_CHANNEL_MAX - RC_CHANNEL_DISARMED)) \
-								&& (rc_channels[2].rc_in > RC_CHANNEL_DISARMED) && (rc_channels[3].rc_in > RC_CHANNEL_DISARMED)) {
-			check_times++;
-			if (check_times > 20) {
-				fc_status.armed = false;
+	static uint8_t idle_tick = 0;
+	
+	switch (fc_status.armed) {
+		case ARMED:
+			if ((rc_channels[0].rc_in > RC_CHANNEL_DISARMED) && (rc_channels[1].rc_in < (RC_CHANNEL_MAX - RC_CHANNEL_DISARMED)) \
+									&& (rc_channels[2].rc_in > RC_CHANNEL_DISARMED) && (rc_channels[3].rc_in > RC_CHANNEL_DISARMED)) {
+				check_times++;
+				if (check_times > 20) {
+					fc_status.armed = IDLED;
+					check_times = 0;
+					idle_tick = 0;
+				}
+			} else {
 				check_times = 0;
 			}
-		}
-	} else if (fc_status.land_complete) {
-		if ((rc_channels[0].rc_in > RC_CHANNEL_DISARMED) && (rc_channels[1].rc_in > RC_CHANNEL_DISARMED) \
-								&& (rc_channels[2].rc_in > RC_CHANNEL_DISARMED) && (rc_channels[3].rc_in < (RC_CHANNEL_MAX - RC_CHANNEL_DISARMED))) {
-			check_times++;
-			if (check_times > 20) {						
-				fc_status.armed = true;
+			break;
+		case IDLED:
+			idle_tick++;
+			
+			if (idle_tick > 100) {
+				fc_status.armed = ARMED;
+				idle_tick = 0;
+			}
+			
+			if ((rc_channels[RC_THROTTLE_CH].reversed && (rc_channels[RC_THROTTLE_CH].rc_in < (rc_channels[RC_THROTTLE_CH].rc_neutral - rc_channels[RC_THROTTLE_CH].dead_zone * 2))) || \
+					(!~rc_channels[RC_THROTTLE_CH].reversed && (rc_channels[RC_THROTTLE_CH].rc_in > (rc_channels[RC_THROTTLE_CH].rc_neutral + rc_channels[RC_THROTTLE_CH].dead_zone * 2))))
+			{
+				fc_status.armed = DISARMED;
+				reset_pid_param();
+			} else if (fc_status.land_complete && (rc_channels[0].rc_in > RC_CHANNEL_DISARMED) && (rc_channels[1].rc_in > RC_CHANNEL_DISARMED) \
+									&& (rc_channels[2].rc_in > RC_CHANNEL_DISARMED) && (rc_channels[3].rc_in < (RC_CHANNEL_MAX - RC_CHANNEL_DISARMED))) {
+				check_times++;
+				if (check_times > 20) {						
+					fc_status.armed = ARMED;
+					check_times = 0;
+				}
+			} else {
 				check_times = 0;
 			}
-		}
-	} else {
-		check_times = 0;
+			
+			break;
+		case DISARMED:
+			if ((rc_channels[RC_THROTTLE_CH].reversed && (rc_channels[RC_THROTTLE_CH].rc_in > (rc_channels[RC_THROTTLE_CH].rc_max - rc_channels[RC_THROTTLE_CH].dead_zone * 10))) || \
+					(!~rc_channels[RC_THROTTLE_CH].reversed && (rc_channels[RC_THROTTLE_CH].rc_in < (rc_channels[RC_THROTTLE_CH].rc_min + rc_channels[RC_THROTTLE_CH].dead_zone * 10))))
+			{
+				check_times++;
+				
+				// need to rewrite
+				if (check_times > 50) {
+					fc_status.armed = IDLED;
+					idle_tick = 0;
+				}
+			} else {
+				check_times = 0;
+			}
+			break;
+		case MOTOR_TEST:
+			break;
+		default:
+			break;
 	}
 }
 

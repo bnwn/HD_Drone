@@ -36,9 +36,9 @@
 #define RC_THROTTLE_REVERSED 1
 #define RC_ROLL_REVERSED 0
 #define RC_PITCH_REVERSED 0
-#define RC_YAW_REVERSED  1
+#define RC_YAW_REVERSED  0
 
-#define RC_THROTTLE_OUT_LIMIT 1.0f
+#define RC_THROTTLE_OUT_LIMIT 0.95f
 
 typedef struct {
 		uint16_t rc_in;

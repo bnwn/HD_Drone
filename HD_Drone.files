@@ -405,3 +405,5 @@ RC/rc_channel.c
 RC/rc_channel.h
 RC/rf.c
 RC/rf.h
+AHRS/inertial_nav.c
+AHRS/inertial_nav.h

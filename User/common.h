@@ -2,7 +2,7 @@
 #define __COMMON_H
 
 /* only develop debug output info through uart */
-//#define __DEVELOP__
+#define __DEVELOP__
 
 #define LOOP_DT 0.01f
 
@@ -14,11 +14,21 @@ void param_load(void);
 
 void fc_status_reset(void);
 
+enum Armed_t{
+	ARMED = 0,
+	IDLED = 1,
+	DISARMED = 2,
+	MOTOR_TEST = 3
+};
+
 /* velhicle status */
 typedef struct {
-	bool armed;
+	enum Armed_t armed;
 	bool land_complete;
 	bool code_matched;
+    bool altitude_updated;
+	uint8_t printf_flag;
+	uint16_t motor_control_Hz;
 }_Status_t;
 
 extern _Status_t fc_status;

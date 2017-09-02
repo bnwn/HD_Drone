@@ -7,6 +7,7 @@
 #include "rc_channel.h"
 
 enum Flight_Mode control_mode, prev_control_mode;
+_Target_Attitude target_attitude = {0};
 
 bool set_flight_mode(enum Flight_Mode _mode)
 {
@@ -29,6 +30,7 @@ bool set_flight_mode(enum Flight_Mode _mode)
         case OneKeyFlip:
             break;
         case Acro:
+			success = acro_init(ignore_checks);
             break;
         case Loiter:
             break;
@@ -46,7 +48,7 @@ bool set_flight_mode(enum Flight_Mode _mode)
         control_mode = _mode;
     }
 		
-		return success;
+	return success;
 }
 
 void update_flight_mode(void)
@@ -61,6 +63,7 @@ void update_flight_mode(void)
         case OneKeyFlip:
             break;
         case Acro:
+			acro_run();
             break;
         case Loiter:
             break;
@@ -81,6 +84,7 @@ void exit_mode(enum Flight_Mode _mode)
 // stabilize_init - initialise stabilize controller
 bool stabilize_init(bool _ignore_checks)
 {
+	reset_pid_param();
     if (_ignore_checks) {
         return true;
     }
@@ -103,8 +107,10 @@ bool stabilize_init(bool _ignore_checks)
 void stabilize_run(void)
 {
     float target_throttle;
-    _Target_Attitude target_attitude;
 
+	if (fc_status.armed != DISARMED) {
+		return;
+	}
     target_throttle = get_desired_throttle_expo();
     get_desired_leans_angles(&target_attitude, CONTROL_LEANS_ANGLE_MAX_DEFAULT);
 
@@ -127,6 +133,30 @@ void stabilize_run(void)
     // apply SIMPLE mode transform to pilot inputs
     update_simple_mode();
 #endif
+}
+
+bool acro_init(bool ignore_checks)
+{
+	reset_pid_param();
+	return true;
+}
+
+void acro_run(void)
+{
+	float target_throttle;
+
+	if (fc_status.armed != DISARMED) {
+		return;
+	}
+	
+    target_throttle = get_desired_throttle_expo();
+	
+	get_desired_leans_angles(&target_attitude, CONTROL_LEANS_ANGLE_MAX_DEFAULT);
+	
+    attitude_throttle_controller(target_throttle, true, 0.0f);
+	attitude_target_ang_vel.roll = target_attitude.roll;
+	attitude_target_ang_vel.pitch = target_attitude.pitch;
+	attitude_target_ang_vel.yaw = target_attitude.yaw;
 }
 
 #if 0

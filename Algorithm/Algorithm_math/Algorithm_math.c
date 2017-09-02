@@ -84,7 +84,6 @@ float VariableParameter(float error)
 {	
 	float  result = 0;
 	return 1.0f;
-	
 	if(error < 0.0f)
 	{
 	   error = -error;

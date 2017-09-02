@@ -100,7 +100,7 @@ void RF_SetChannel( uint8_t Channel)
 //              2. 1: 读取接收到的数据成功
 //              note: Only use in Rx Mode
 //              length 通常等于 PAYLOAD_WIDTH
-/******************************************************************************/
+  /******************************************************************************/
 uint8_t ucRF_DumpRxData( uint8_t *ucPayload,  uint8_t length)
 { 
    if(ucRF_GetStatus()&RX_DR_FLAG)

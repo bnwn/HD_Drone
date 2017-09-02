@@ -137,6 +137,10 @@ bool read_fifo(Inertial_Sensor *_sensor)
     uint8_t num_samples = 0;
     uint8_t sample_index = 0;
     uint16_t buf_index = 0;
+	_Vector_Int16 max_acc={0x8001,0x8001,0x8001},max_gyro={0x8001,0x8001,0x8001},second_max_acc={0x8001,0x8001,0x8001},second_max_gyro={0x8001,0x8001,0x8001};
+	_Vector_Int16 min_acc={0x7FFF,0x7FFF,0x7FFF},min_gyro={0x7FFF,0x7FFF,0x7FFF},second_min_acc={0x7FFF,0x7FFF,0x7FFF},second_min_gyro={0x7FFF,0x7FFF,0x7FFF};
+	bool vetcor_init = false;
+	
     bool ret = true;
 
     I2C_SequentialRead(BMI160_SLAVE_ADDRESS, BMI160_REG_FIFO_LENGTH, num_byte, 2);
@@ -188,13 +192,102 @@ read_fifo_read_data:
 //        sum_gyro[1] += raw_data[sample_index].gyro.y;
 //        sum_gyro[2] += raw_data[sample_index].gyro.z;
 			  
-				_sensor->gyro.latest.x = (buf[buf_index + 1] << 8) | buf[buf_index + 0];
+		_sensor->gyro.latest.x = (buf[buf_index + 1] << 8) | buf[buf_index + 0];
         _sensor->gyro.latest.y = (buf[buf_index + 3] << 8) | buf[buf_index + 2];
         _sensor->gyro.latest.z = (buf[buf_index + 5] << 8) | buf[buf_index + 4];
         _sensor->accel.latest.x = (buf[buf_index + 7] << 8) | buf[buf_index + 6];
         _sensor->accel.latest.y = (buf[buf_index + 9] << 8) | buf[buf_index + 8];
         _sensor->accel.latest.z = (buf[buf_index + 11] << 8) | buf[buf_index + 10];
-
+		
+		if (!vetcor_init) {
+			vetcor_init = true;
+			max_acc.x = second_max_acc.x = _sensor->accel.latest.x;
+			max_acc.y = second_max_acc.y = _sensor->accel.latest.y;
+			max_acc.z = second_max_acc.z = _sensor->accel.latest.z;
+			min_acc.x = second_min_acc.x = _sensor->accel.latest.x;
+			min_acc.y = second_min_acc.y = _sensor->accel.latest.y;
+			min_acc.z = second_min_acc.z = _sensor->accel.latest.z;
+			max_gyro.x = second_max_gyro.x = _sensor->gyro.latest.x;
+			max_gyro.y = second_max_gyro.y = _sensor->gyro.latest.y;
+			max_gyro.z = second_max_gyro.z = _sensor->gyro.latest.z;
+			min_gyro.x = second_min_gyro.x = _sensor->gyro.latest.x;
+			min_gyro.y = second_min_gyro.y = _sensor->gyro.latest.y;
+			min_gyro.z = second_min_gyro.z = _sensor->gyro.latest.z;
+		} else {
+			if (_sensor->gyro.latest.x > max_gyro.x) {
+				max_gyro.x = _sensor->gyro.latest.x;
+				second_max_gyro.x = max_gyro.x;
+			} else if (_sensor->gyro.latest.x > second_max_gyro.x) {
+				second_max_gyro.x = _sensor->gyro.latest.x;
+			} else if (_sensor->gyro.latest.x < min_gyro.x) {
+				min_gyro.x = _sensor->gyro.latest.x;
+				second_min_gyro.x = min_gyro.x;
+			} else if (_sensor->gyro.latest.x < second_min_gyro.x) {
+				second_min_gyro.x = _sensor->gyro.latest.x;
+			}
+			
+			if (_sensor->gyro.latest.y > max_gyro.y) {
+				max_gyro.y = _sensor->gyro.latest.y;
+				second_max_gyro.y = max_gyro.y;
+			} else if (_sensor->gyro.latest.y > second_max_gyro.y) {
+				second_max_gyro.y = _sensor->gyro.latest.y;
+			} else if (_sensor->gyro.latest.y < min_gyro.y) {
+				min_gyro.y = _sensor->gyro.latest.y;
+				second_min_gyro.y = min_gyro.y;
+			} else if (_sensor->gyro.latest.y < second_min_gyro.y) {
+				second_min_gyro.y = _sensor->gyro.latest.y;
+			}
+			
+			if (_sensor->gyro.latest.z > max_gyro.z) {
+				max_gyro.z = _sensor->gyro.latest.z;
+				second_max_gyro.z = max_gyro.z;
+			} else if (_sensor->gyro.latest.z > second_max_gyro.z) {
+				second_max_gyro.z = _sensor->gyro.latest.z;
+			} else if (_sensor->gyro.latest.z < min_gyro.z) {
+				min_gyro.z = _sensor->gyro.latest.z;
+				second_min_gyro.z = min_gyro.z;
+			} else if (_sensor->gyro.latest.z < second_min_gyro.z) {
+				second_min_gyro.z = _sensor->gyro.latest.z;
+			}
+			
+			if (_sensor->accel.latest.x > max_acc.x) {
+				max_acc.x = _sensor->accel.latest.x;
+				second_max_acc.x = max_acc.x;
+			} else if (_sensor->accel.latest.x > second_max_acc.x) {
+				second_max_acc.x = _sensor->accel.latest.x;
+			} else if (_sensor->accel.latest.x < min_acc.x) {
+				min_acc.x = _sensor->accel.latest.x;
+				second_min_acc.x = min_acc.x;
+			} else if (_sensor->accel.latest.x < second_min_acc.x) {
+				second_min_acc.x = _sensor->accel.latest.x;
+			}
+			
+			if (_sensor->accel.latest.y > max_acc.y) {
+				max_acc.y = _sensor->accel.latest.y;
+				second_max_acc.y = max_acc.y;
+			} else if (_sensor->accel.latest.y > second_max_acc.y) {
+				second_max_acc.y = _sensor->accel.latest.y;
+			} else if (_sensor->accel.latest.y < min_acc.y) {
+				min_acc.y = _sensor->accel.latest.y;
+				second_min_acc.y = min_acc.y;
+			} else if (_sensor->accel.latest.y < second_min_acc.y) {
+				second_min_acc.y = _sensor->accel.latest.y;
+			}
+			
+			if (_sensor->accel.latest.z > max_acc.z) {
+				max_acc.z = _sensor->accel.latest.z;
+				second_max_acc.z = max_acc.z;
+			} else if (_sensor->accel.latest.z > second_max_acc.z) {
+				second_max_acc.z = _sensor->accel.latest.z;
+			} else if (_sensor->accel.latest.z < min_acc.z) {
+				min_acc.z = _sensor->accel.latest.z;
+				second_min_acc.z = min_acc.z;
+			} else if (_sensor->accel.latest.z < second_min_acc.z) {
+				second_min_acc.z = _sensor->accel.latest.z;
+			}
+		}
+			
+		
         sum_acc[0] += _sensor->accel.latest.x;
         sum_acc[1] += _sensor->accel.latest.y;
         sum_acc[2] += _sensor->accel.latest.z;
@@ -220,12 +313,19 @@ read_fifo_read_data:
 //    _sensor->gyro.latest.x = raw_data[sample_index - 1].gyro.x;
 //    _sensor->gyro.latest.y = raw_data[sample_index - 1].gyro.y;
 //    _sensor->gyro.latest.z = raw_data[sample_index - 1].gyro.z;
-    _sensor->accel.average.x = sum_acc[0] / fifo_num;
-    _sensor->accel.average.y = sum_acc[1] / fifo_num;
-    _sensor->accel.average.z = sum_acc[2] / fifo_num;
-    _sensor->gyro.average.x = sum_gyro[0] / fifo_num;
-    _sensor->gyro.average.y = sum_gyro[1] / fifo_num;
-    _sensor->gyro.average.z = sum_gyro[2] / fifo_num;
+//    _sensor->accel.average.x = (sum_acc[0] - max_acc.x - second_max_acc.x - min_acc.x - second_min_acc.x) / (fifo_num - 4);
+//    _sensor->accel.average.y = (sum_acc[1] - max_acc.y - second_max_acc.y - min_acc.y - second_min_acc.y) / (fifo_num - 4);
+//    _sensor->accel.average.z = (sum_acc[2] - max_acc.z - second_max_acc.z - min_acc.z - second_min_acc.z) / (fifo_num - 4);
+//    _sensor->gyro.average.x = (sum_gyro[0] - max_gyro.x - second_max_gyro.x - min_gyro.x - second_min_gyro.x) / (fifo_num - 4);
+//    _sensor->gyro.average.y = (sum_gyro[1] - max_gyro.y - second_max_gyro.y - min_gyro.y - second_min_gyro.y) / (fifo_num - 4);
+//    _sensor->gyro.average.z = (sum_gyro[2] - max_gyro.z - second_max_gyro.z - min_gyro.z - second_min_gyro.z) / (fifo_num - 4);
+	_sensor->accel.average.x = (sum_acc[0] - max_acc.x - min_acc.x) / (fifo_num - 2);
+    _sensor->accel.average.y = (sum_acc[1] - max_acc.y - min_acc.y) / (fifo_num - 2);
+    _sensor->accel.average.z = (sum_acc[2] - max_acc.z - min_acc.z) / (fifo_num - 2);
+    _sensor->gyro.average.x = (sum_gyro[0] - max_gyro.x - min_gyro.x) / (fifo_num - 2);
+    _sensor->gyro.average.y = (sum_gyro[1] - max_gyro.y - min_gyro.y) / (fifo_num - 2);
+    _sensor->gyro.average.z = (sum_gyro[2] - max_gyro.z - min_gyro.z) / (fifo_num - 2);
+
 
 
 read_fifo_end:

@@ -1,5 +1,6 @@
 #ifndef __FLIGHT_MODE_CONTROL
 #define __FLIGHT_MODE_CONTROL
+#include "attitude_control.h"
 
 #define CONTROL_SENSE_LEVEL0 1
 
@@ -25,7 +26,10 @@ bool stabilize_init(bool ignore_checks);
 void stabilize_run(void);
 bool althold_init(bool ignore_checks);
 void althold_run(void);
+bool acro_init(bool ignore_checks);
+void acro_run(void);
 
 extern enum Flight_Mode control_mode;
+extern _Target_Attitude target_attitude;
 
 #endif

@@ -22,5 +22,6 @@
 .\output\bmi160.o: ..\Driver\bsp/bsp_i2c.h
 .\output\bmi160.o: ..\Driver\bsp/timer_delay.h
 .\output\bmi160.o: ..\Driver\../AHRS/inertial_sensor.h
+.\output\bmi160.o: ..\Algorithm\Algorithm_filter\Algorithm_filter.h
 .\output\bmi160.o: ..\Driver\../Algorithm/Algorithm_math/Algorithm_math.h
 .\output\bmi160.o: ..\User\common.h

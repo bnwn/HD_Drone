@@ -83,9 +83,9 @@ void peripheral_init(void)
     uart_console_init(UART0, CONSOLE_BAUDRATE);
     printf("console init success!\n");
 #endif
-	
     /* I2C Bus device init */
     I2C_Init(I2C0, I2C_CLOCK_FREQ);
+	
     if (!fbm320_init()) {
 
     }
@@ -117,6 +117,7 @@ void peripheral_init(void)
 #endif
     gyro_offset();
     accel_offset();
+	inertial_sensor_init();
 #ifdef __DEVELOP__
     printf("collect complete\n");
 #endif
@@ -124,28 +125,33 @@ void peripheral_init(void)
 
 void param_load(void)
 {
-		set_pid_param(&ctrl_loop.angle.pitch, CONTROL_ANGLE_LOOP_PITCH_KP, CONTROL_ANGLE_LOOP_PITCH_KI, \
-                                                                                    CONTROL_ANGLE_LOOP_PITCH_KD, OONTROL_ANGLE_LOOP_PITCH_INTEGRATOR_MAX, 0, LOOP_DT);
-	
-		set_pid_param(&ctrl_loop.angle.roll, CONTROL_ANGLE_LOOP_ROLL_KP, CONTROL_ANGLE_LOOP_ROLL_KI, \
-                                                                                    CONTROL_ANGLE_LOOP_ROLL_KD, OONTROL_ANGLE_LOOP_ROLL_INTEGRATOR_MAX, 0, LOOP_DT);
-	
-		set_pid_param(&ctrl_loop.angle.yaw, CONTROL_ANGLE_LOOP_YAW_KP, CONTROL_ANGLE_LOOP_YAW_KI, \
-                                                                                    CONTROL_ANGLE_LOOP_YAW_KD, OONTROL_ANGLE_LOOP_YAW_INTEGRATOR_MAX, 0, LOOP_DT);
-	
-		set_pid_param(&ctrl_loop.rate.pitch, CONTROL_RATE_LOOP_PITCH_KP, CONTROL_RATE_LOOP_PITCH_KI, \
-                                                                                    CONTROL_RATE_LOOP_PITCH_KD, OONTROL_RATE_LOOP_PITCH_INTEGRATOR_MAX, 20, LOOP_DT);
-	
-		set_pid_param(&ctrl_loop.rate.roll, CONTROL_RATE_LOOP_ROLL_KP, CONTROL_RATE_LOOP_ROLL_KI, \
-                                                                                    CONTROL_RATE_LOOP_ROLL_KD, OONTROL_RATE_LOOP_ROLL_INTEGRATOR_MAX, 20, LOOP_DT);
-	
-		set_pid_param(&ctrl_loop.rate.yaw, CONTROL_RATE_LOOP_YAW_KP, CONTROL_RATE_LOOP_YAW_KI, \
-                                                                                    CONTROL_RATE_LOOP_YAW_KD, OONTROL_RATE_LOOP_YAW_INTEGRATOR_MAX, 0.5, LOOP_DT);
+	set_pid_param(&ctrl_loop.angle.pitch, CONTROL_ANGLE_LOOP_PITCH_KP, CONTROL_ANGLE_LOOP_PITCH_KI, \
+																				CONTROL_ANGLE_LOOP_PITCH_KD, OONTROL_ANGLE_LOOP_PITCH_INTEGRATOR_MAX, 0, LOOP_DT);
+
+	set_pid_param(&ctrl_loop.angle.roll, CONTROL_ANGLE_LOOP_ROLL_KP, CONTROL_ANGLE_LOOP_ROLL_KI, \
+																				CONTROL_ANGLE_LOOP_ROLL_KD, OONTROL_ANGLE_LOOP_ROLL_INTEGRATOR_MAX, 0, LOOP_DT);
+
+	set_pid_param(&ctrl_loop.angle.yaw, CONTROL_ANGLE_LOOP_YAW_KP, CONTROL_ANGLE_LOOP_YAW_KI, \
+																				CONTROL_ANGLE_LOOP_YAW_KD, OONTROL_ANGLE_LOOP_YAW_INTEGRATOR_MAX, 0, LOOP_DT);
+
+	set_pid_param(&ctrl_loop.rate.pitch, CONTROL_RATE_LOOP_PITCH_KP, CONTROL_RATE_LOOP_PITCH_KI, \
+																				CONTROL_RATE_LOOP_PITCH_KD, OONTROL_RATE_LOOP_PITCH_INTEGRATOR_MAX, 20, LOOP_DT);
+
+	set_pid_param(&ctrl_loop.rate.roll, CONTROL_RATE_LOOP_ROLL_KP, CONTROL_RATE_LOOP_ROLL_KI, \
+																				CONTROL_RATE_LOOP_ROLL_KD, OONTROL_RATE_LOOP_ROLL_INTEGRATOR_MAX, 20, LOOP_DT);
+
+	set_pid_param(&ctrl_loop.rate.yaw, CONTROL_RATE_LOOP_YAW_KP, CONTROL_RATE_LOOP_YAW_KI, \
+																				CONTROL_RATE_LOOP_YAW_KD, OONTROL_RATE_LOOP_YAW_INTEGRATOR_MAX, 0.5, LOOP_DT);
+
+	set_pid_param(&ctrl_loop.acro_sensibility.yaw, CONTROL_ACRO_SENSITITY_LOOP_YAW_KP, 0, \
+																			0, 0, 0.5, LOOP_DT);
 }
 
 void fc_status_reset(void)
 {
-	fc_status.armed = true;
+	fc_status.armed = ARMED;
 	fc_status.land_complete = true;
 	fc_status.code_matched = false;
+    fc_status.altitude_updated = false;
+	fc_status.motor_control_Hz = 2000;
 }
