@@ -27,6 +27,7 @@ typedef struct {
 	bool land_complete;
 	bool code_matched;
     bool altitude_updated;
+    bool accel_updated;
 	uint8_t printf_flag;
 	uint16_t motor_control_Hz;
 }_Status_t;

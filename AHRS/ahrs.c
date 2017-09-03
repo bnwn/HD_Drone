@@ -25,7 +25,8 @@
 // #define KALMAN_R        8.0000
 
 Quaternion NumQ = {1, 0, 0, 0};
-EulerAngle AngE = {0}, ahrs = {0};
+EulerAngle AngE = {0};
+struct AHRS ahrs = {0};
 float Rot_matrix[9] = {1.f,  0.0f,  0.0f, 0.0f,  1.f,  0.0f, 0.0f,  0.0f,  1.f };		/**< init: identity matrix */
 
 int16_t MAG[3];
@@ -45,7 +46,7 @@ float exInt = 0.0f, eyInt = 0.0f, ezInt = 0.0f;
 void AHRS_Update(void)
 {
 //    float sin_pitch,sin_roll,cos_roll,cos_pitch;
-
+    int i = 0;
     // 获取四元数
     AHRS_GetQ();
 
@@ -81,6 +82,12 @@ void AHRS_Update(void)
     }
     else
 #endif
+
+    //DCM . ground to body
+    for(i=0; i<9; i++)
+    {
+        *(&(ahrs.dcm[0][0]) + i)=Rot_matrix[i];
+    }
 
     ahrs.Yaw = (float)Degree((double)AngE.Yaw);
     ahrs.Roll = (float)Degree((double)AngE.Roll);  // roll

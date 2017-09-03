@@ -4,31 +4,100 @@
 #include "mymath.h"
 #include "Algorithm_filter.h"
 #include "fbm320.h"
+#include "bmi160.h"
+#include "ahrs.h"
 
-Position nav_pos = {0};
-Position nav_pos_vel = {0};
-Position home_absolute_pos = {0};
+_Nav_t nav = {0}; // NED frame in earth
+_Vector_Float home_absolute_pos = {0};
+float z_est[3];	// estimate z Vz  Az
+static float w_z_baro=0.5f;
+static float w_z_acc=20.0f;
+static float w_acc_bias=0.05f;
+
+/* acceleration in NED frame */
+float accel_NED[3] = { 0.0f, 0.0f, -CONSTANTS_ONE_G };
+/* store error when sensor updates, but correct on each time step to avoid jumps in estimated value */
+float corr_acc[] = { 0.0f, 0.0f, 0.0f };	// N E D ,  m/s2
+float acc_bias[] = { 0.0f, 0.0f, 0.0f };	// body frame ,
+float acc[] = { 0.0f, 0.0f, 0.0f };
+float corr_baro = 0.0f;					//m
 
 void inertial_nav_update(void)
 {
-    position_z_update();
+    position_z_update(LOOP_DT);
 }
 
-void position_z_update()
+void position_z_update(float dt)
 {
+    uint8_t i, j;
+    /* accelerometer bias correction */
+    float accel_bias_corr[3] = { 0.0f, 0.0f, 0.0f };
+
     if (fc_status.altitude_updated) { // update altitude in 16.67Hz
         float new_alt = fbm320_packet.Altitude - home_absolute_pos.z;
-        new_alt = Moving_Median(0, 5, new_alt);
+        corr_baro = 0 - new_alt - z_est[0];
+//        new_alt = Moving_Median(0, 5, new_alt);
 
-        if (ABS(new_alt - nav_pos.z) < 10) {
-            nav_pos.z = (new_alt - nav_pos.z) * 0.2736f; // 2Hz LPF
-        } else if (ABS(new_alt - nav_pos.z) < 50) {
-            nav_pos.z = (new_alt - nav_pos.z) * 0.1585f; // 1Hz LPF
-        } else {
-            nav_pos.z = (new_alt - nav_pos.z) * 0.086f; // 0.5Hz LPF
-        }
+//        if (ABS(new_alt - nav_pos.z) < 10) {
+//            nav_pos.z += (new_alt - nav_pos.z) * 0.2736f; // 2Hz LPF
+//        } else if (ABS(new_alt - nav_pos.z) < 50) {
+//            nav_pos.z += (new_alt - nav_pos.z) * 0.1585f; // 1Hz LPF
+//        } else {
+//            nav_pos.z += (new_alt - nav_pos.z) * 0.086f; // 0.5Hz LPF
+//        }
         fc_status.altitude_updated = false;
     }
+
+    if (fc_status.accel_updated) {
+        acc[0] = -inertial_sensor.accel.filter.x - acc_bias[0];
+        acc[1] = -inertial_sensor.accel.filter.y - acc_bias[1];
+        acc[2] = -inertial_sensor.accel.filter.z - acc_bias[2];
+
+        for(i=0; i<3; i++)
+        {
+            accel_NED[i] = 0.0f;
+            for(j=0; j<3; j++)
+            {
+                accel_NED[i] += ahrs.dcm[j][i]* acc[j];
+            }
+        }
+
+        accel_NED[2] = -accel_NED[2];
+        corr_acc[2] = accel_NED[2] + GRAVITY_MSS - z_est[2];
+
+        fc_status.accel_updated = false;
+    }
+
+    //correct accelerometer bias every time step
+    accel_bias_corr[2] -= corr_baro * w_z_baro * w_z_baro;
+
+    //transform error vector from NED frame to body frame
+    for (i = 0; i < 3; i++)
+    {
+        float c = 0.0f;
+
+        for (j = 0; j < 3; j++) {
+            c += ahrs.dcm[i][j] * accel_bias_corr[j];
+        }
+
+        acc_bias[i] += c * w_acc_bias * dt;		//accumulate bias
+    }
+
+    acc_bias[2] = -acc_bias[2];
+
+
+    /* inertial filter prediction for altitude */
+    inertial_filter_predict(dt, z_est);
+    /* inertial filter correction for altitude */
+    inertial_filter_correct(corr_baro, dt, z_est, 0, w_z_baro);	//0.5f
+    inertial_filter_correct(corr_acc[2], dt, z_est, 2, w_z_acc);		//20.0f
+
+    nav.z = z_est[0];
+    nav.vz = z_est[1];
+    nav.az = z_est[2];
+
+#if 0
+/* Complementary filter */
     height_thr = LIMIT( thr , 0, 700 );
     thr_lpf += ( 1 / ( 1 + 1 / ( 2.0f *3.14f *T ) ) ) *( height_thr - thr_lpf );//对油门值低通滤波修正
     userdata1[0]=	thr_lpf;//调试用
@@ -78,5 +147,26 @@ void position_z_update()
     userdata1[5] =hc_speed_i;//这个没显示
     wz_speed_0 += ( 1 / ( 1 + 1 / ( 0.1f *3.14f *T ) ) ) *( h_speed - wz_speed_0  ) ;//0.1实测速度修正加速度算的速度
     userdata1[6] = wz_speed=wz_speed_0 + hc_speed_i;//经过修正的速度+经过限幅的增量式速度积分
+#endif
+}
 
+//Combine Filter to correct err
+static void inertial_filter_predict(float dt, float x[3])
+{
+    x[0] += x[1] * dt + x[2] * dt * dt / 2.0f;
+    x[1] += x[2] * dt;
+}
+
+static void inertial_filter_correct(float e, float dt, float x[3], int i, float w)
+{
+    float ewdt = e * w * dt;
+    x[i] += ewdt;
+
+    if (i == 0) {
+        x[1] += w * ewdt;
+        x[2] += w * w * ewdt / 3.0;
+
+    } else if (i == 1) {
+        x[2] += w * ewdt;
+    }
 }

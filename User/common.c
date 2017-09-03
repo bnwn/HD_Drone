@@ -153,5 +153,6 @@ void fc_status_reset(void)
 	fc_status.land_complete = true;
 	fc_status.code_matched = false;
     fc_status.altitude_updated = false;
+    fc_status.accel_updated = false;
 	fc_status.motor_control_Hz = 2000;
 }

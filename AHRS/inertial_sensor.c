@@ -73,6 +73,7 @@ void inertial_sensor_read(void)
     inertial_sensor.gyro.filter.z = LPF_1st(last_gyro.z, inertial_sensor.gyro.relative.z * _gyro_scale, 0.386f);
     last_gyro.z = inertial_sensor.gyro.filter.z;//
 #endif
+    fc_status.accel_updated true;
 }
 
 /*====================================================================================================*/
