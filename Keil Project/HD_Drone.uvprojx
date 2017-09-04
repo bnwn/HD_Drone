@@ -438,11 +438,6 @@
               <FilePath>..\Algorithm\Algorithm_math\Algorithm_math.c</FilePath>
             </File>
             <File>
-              <FileName>mymath.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Algorithm\Algorithm_math\mymath.c</FilePath>
-            </File>
-            <File>
               <FileName>Algorithm_pid.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Algorithm\Algorithm_pid\Algorithm_pid.c</FilePath>
@@ -451,11 +446,6 @@
               <FileName>Algorithm_quaternion.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Algorithm\Algorithm_quaternion\Algorithm_quaternion.c</FilePath>
-            </File>
-            <File>
-              <FileName>Algorithm_sqLite.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Algorithm\Algorithm_sqLite\Algorithm_sqLite.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -507,20 +497,25 @@
               <FileType>1</FileType>
               <FilePath>..\AHRS\inertial_sensor.c</FilePath>
             </File>
+            <File>
+              <FileName>inertial_nav.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\AHRS\inertial_nav.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>Bsp</GroupName>
           <Files>
             <File>
-              <FileName>bsp_i2c.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Driver\bsp\bsp_i2c.c</FilePath>
-            </File>
-            <File>
               <FileName>timer_delay.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Driver\bsp\timer_delay.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_i2c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Driver\bsp\bsp_i2c.c</FilePath>
             </File>
             <File>
               <FileName>uart_console.c</FileName>

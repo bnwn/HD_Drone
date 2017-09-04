@@ -1,6 +1,8 @@
 #ifndef __Algorithm_quaternion_H
 #define	__Algorithm_quaternion_H
 
+#include "inertial_sensor.h"
+
 typedef   struct {
   float Pitch;
   float Roll;
@@ -14,13 +16,7 @@ typedef volatile struct {
   float q3;
 } Quaternion;
 
-typedef volatile struct {
-  float x;
-  float y;
-  float z;
-} Gravity;
-
-Gravity Quaternion_vectorGravity( Quaternion *pNumQ );
+_Vector_Float Quaternion_vectorGravity( Quaternion *pNumQ );
 void Quaternion_ToNumQ( Quaternion *pNumQ, EulerAngle *pAngE );
 void Quaternion_ToAngE( Quaternion *pNumQ, EulerAngle *pAngE, float *_matrix);
 Quaternion Quaternion_Multiply( Quaternion NowQ, Quaternion OldQ );

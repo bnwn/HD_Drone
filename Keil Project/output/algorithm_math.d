@@ -19,3 +19,4 @@
 .\output\algorithm_math.o: ..\Library\StdDriver\inc\wdt.h
 .\output\algorithm_math.o: ..\Library\StdDriver\inc\wwdt.h
 .\output\algorithm_math.o: ..\Algorithm\Algorithm_math\Algorithm_math.h
+.\output\algorithm_math.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h

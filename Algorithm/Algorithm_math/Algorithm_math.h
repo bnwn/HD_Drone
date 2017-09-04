@@ -1,6 +1,8 @@
 #ifndef __Algorithm_math_H
 #define	__Algorithm_math_H
 
+#include "math.h"
+
 #define M_PI  (float)3.1415926535
 #define M_2PI (float)6.283185307
 #define squa( Sq )        (((float)Sq)*((float)Sq))

@@ -8,8 +8,8 @@
 
 Rc_Channel_t rc_channels[RC_CHANNEL_NUM_MAX] = {0};
 Rc_Switch_t rc_switchs[RC_SWITCH_MAX] = {0};
-uint8_t rc_buf[PAYLOAD_WIDTH] = {0}, data_buf[DATA_BUF_MAX] = {0}, roll_code[ROLL_CODE_NUM] = {0};
-static uint8_t pre_switch = 0;
+uint8_t rc_buf[PAYLOAD_WIDTH] = {0}; 
+uint8_t roll_code[ROLL_CODE_NUM] = {0};
 extern float cmp_kp, cmp_ki;
 
 void rc_channel_init(void)
@@ -44,6 +44,7 @@ bool rc_channel_read(void)
 		return false;
 	}
 
+	memset(rc_buf, 0, PAYLOAD_WIDTH);
     ucRF_DumpRxData(rc_buf + buf_index, rev_len);
 
 #ifdef __DEVELOP__
@@ -56,9 +57,8 @@ bool rc_channel_read(void)
 	
 #if 1
     // if (roll_code eq)
-    if (rc_buf[START_CODE_INDEX] == 0xAA && rc_buf[START_CODE_INDEX+1] == 0xAA \
-            && rc_buf[END_CODE_INDEX] == 0xCE && rc_buf[END_CODE_INDEX+1] == 0xED) { // start and end code
-						uint8_t roll_code_index = 0;
+    if ((rc_buf[START_CODE_INDEX] == 0xAA) && (rc_buf[START_CODE_INDEX+1] == 0xAA) && (rc_buf[END_CODE_INDEX] == 0xCE) && (rc_buf[END_CODE_INDEX+1] == 0xED)) { // start and end code
+			uint8_t roll_code_index = 0;
             for(; roll_code_index<ROLL_CODE_NUM; roll_code_index++) {
                 if (rc_buf[ROLL_CODE_INDEX+roll_code_index] != roll_code[roll_code_index]) {
                     return false;
@@ -164,6 +164,7 @@ bool rc_channel_read(void)
     return true;
 }
 
+#if 0
 static void packet_parse(void)
 {
     rc_channels[0].rc_in = (data_buf[0] << 8) | data_buf[1];
@@ -180,6 +181,7 @@ static void packet_parse(void)
     rc_switchs[6].rc_in = (data_buf[8] & 0x40) ? 1 : 0;
     rc_switchs[7].rc_in = (data_buf[8] & 0x80) ? 1 : 0;
 }
+#endif
 
 static void switch_handle(void)
 {
@@ -236,7 +238,7 @@ static void switch_event_trigger(uint8_t _ch, bool _is_long_hold)
             break;
         case 7:
 			fc_status.printf_flag++;
-			if (fc_status.printf_flag >= 5) fc_status.printf_flag = 0;
+			if (fc_status.printf_flag >= 7) fc_status.printf_flag = 0;
             break;
         default:
             break;
@@ -403,7 +405,7 @@ void check_motor_armed(void)
 			if ((rc_channels[0].rc_in > RC_CHANNEL_DISARMED) && (rc_channels[1].rc_in < (RC_CHANNEL_MAX - RC_CHANNEL_DISARMED)) \
 									&& (rc_channels[2].rc_in > RC_CHANNEL_DISARMED) && (rc_channels[3].rc_in > RC_CHANNEL_DISARMED)) {
 				check_times++;
-				if (check_times > 20) {
+				if (check_times > 10) {
 					fc_status.armed = IDLED;
 					check_times = 0;
 					idle_tick = 0;
@@ -424,11 +426,12 @@ void check_motor_armed(void)
 					(!~rc_channels[RC_THROTTLE_CH].reversed && (rc_channels[RC_THROTTLE_CH].rc_in > (rc_channels[RC_THROTTLE_CH].rc_neutral + rc_channels[RC_THROTTLE_CH].dead_zone * 2))))
 			{
 				fc_status.armed = DISARMED;
+				fc_status.land_complete = false;
 				reset_pid_param();
 			} else if (fc_status.land_complete && (rc_channels[0].rc_in > RC_CHANNEL_DISARMED) && (rc_channels[1].rc_in > RC_CHANNEL_DISARMED) \
 									&& (rc_channels[2].rc_in > RC_CHANNEL_DISARMED) && (rc_channels[3].rc_in < (RC_CHANNEL_MAX - RC_CHANNEL_DISARMED))) {
 				check_times++;
-				if (check_times > 20) {						
+				if (check_times > 10) {						
 					fc_status.armed = ARMED;
 					check_times = 0;
 				}
@@ -445,6 +448,10 @@ void check_motor_armed(void)
 				
 				// need to rewrite
 				if (check_times > 50) {
+					fc_status.land_complete = true;
+					check_times = 0;
+				}
+				if (fc_status.land_complete) {
 					fc_status.armed = IDLED;
 					idle_tick = 0;
 				}

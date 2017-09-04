@@ -7,6 +7,12 @@
 
 #define SENSOR_TYPE SENSOR_BMI160
 
+#if SENSOR_TYPE == SENSOR_BMI160
+#define IMU_SENSOR_X_FACTOR  -1
+#define IMU_SENSOR_Y_FACTOR  1
+#define IMU_SENSOR_Z_FACTOR  -1
+#endif
+
 /*----------------ÍÓÂÝÒÇ²É¼¯ÏÞ·ù--------------------*/
 #define GYRO_GATHER   100
 #define FILTER_LPF2P 0

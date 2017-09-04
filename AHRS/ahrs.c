@@ -3,7 +3,6 @@
 #include "inertial_sensor.h"
 #include "../Algorithm/Algorithm_filter/Algorithm_filter.h"
 #include "../Algorithm/Algorithm_math/Algorithm_math.h"
-#include "../Algorithm/Algorithm_math/mymath.h"
 #include "scheduler.h"
 #include "common.h"
 
@@ -30,7 +29,6 @@ struct AHRS ahrs = {0};
 float Rot_matrix[9] = {1.f,  0.0f,  0.0f, 0.0f,  1.f,  0.0f, 0.0f,  0.0f,  1.f };		/**< init: identity matrix */
 
 int16_t MAG[3];
-Gravity V;//重力分量
 float cmp_kp = KpDef, cmp_ki = KiDef;
 float exInt = 0.0f, eyInt = 0.0f, ezInt = 0.0f;
 
@@ -89,9 +87,10 @@ void AHRS_Update(void)
         *(&(ahrs.dcm[0][0]) + i)=Rot_matrix[i];
     }
 
-    ahrs.Yaw = (float)Degree((double)AngE.Yaw);
-    ahrs.Roll = (float)Degree((double)AngE.Roll);  // roll
-    ahrs.Pitch = (float)Degree((double)AngE.Pitch); // pitch
+	/* rotation */
+    ahrs.Yaw = (float)Degree((double)AngE.Yaw) * IMU_SENSOR_Z_FACTOR;
+    ahrs.Roll = (float)Degree((double)AngE.Roll) * IMU_SENSOR_X_FACTOR;  // roll
+    ahrs.Pitch = (float)Degree((double)AngE.Pitch) * IMU_SENSOR_Y_FACTOR; // pitch
 #ifdef __DEVELOP__
 //		printf("attitude:%.3f, %.3f, %.3f\n", ahrs.Roll, ahrs.Pitch, ahrs.Yaw);
 #endif
@@ -113,6 +112,8 @@ void AHRS_GetQ(void)
     float GyrX, GyrY, GyrZ;
     float Normalize;
 
+	_Vector_Float V;//重力分量
+	
 #ifdef __DEVELOP__
 		//printf(" filter : acc.x:%.3f, acc.y:%.3f, acc.z:%.3f \n", inertial_sensor.accel.filter.x, inertial_sensor.accel.filter.y, inertial_sensor.accel.filter.z);
 		//printf(" filter : gyro.x:%.3f, gyro.y:%.3f, gyro.z:%.3f \n", inertial_sensor.gyro.filter.x, inertial_sensor.gyro.filter.y, inertial_sensor.gyro.filter.z);

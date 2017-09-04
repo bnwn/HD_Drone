@@ -3,7 +3,6 @@
 
 #include "../Driver/motor.h"
 #include "../AHRS/ahrs.h"
-#include "../Algorithm/Algorithm_math/mymath.h"
 #include "../Algorithm/Algorithm_math/Algorithm_math.h"
 
 #define IDLED_DUTY 0.1

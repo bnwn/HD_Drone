@@ -1,7 +1,7 @@
 #include "PN020Series.h"
 #include "Algorithm_quaternion.h"
 #include "../Algorithm_math/Algorithm_math.h"
-#include "../Algorithm_math/mymath.h"
+#include "../AHRS/inertial_sensor.h"
 
 /*====================================================================================================*/
 /*====================================================================================================*
@@ -12,9 +12,9 @@
 **สนำร : Quaternion_vectorGravity( Quaternion *pNumQ );
 **====================================================================================================*/
 /*====================================================================================================*/
-Gravity Quaternion_vectorGravity( Quaternion *pNumQ )
+_Vector_Float Quaternion_vectorGravity( Quaternion *pNumQ )
 {
-	Gravity G;
+	_Vector_Float G;
   G.x = 2*(pNumQ->q1*pNumQ->q3 - pNumQ->q0*pNumQ->q2);								
   G.y = 2*(pNumQ->q0*pNumQ->q1 + pNumQ->q2*pNumQ->q3);						  
   G.z = 1-2*(pNumQ->q1*pNumQ->q1 + pNumQ->q2*pNumQ->q2);
@@ -71,8 +71,8 @@ void Quaternion_ToAngE( Quaternion *pNumQ, EulerAngle *pAngE, float *_matrix)
 	Quaternion_ToMatrix(pNumQ, _matrix);
 
 	pAngE->Pitch = -asinf(_matrix[2]);
-	pAngE->Roll    = -atan2f(_matrix[5], _matrix[8]);
-	pAngE->Yaw    = -atan2f(_matrix[1], _matrix[0]);
+	pAngE->Roll    = atan2f(_matrix[5], _matrix[8]);
+	pAngE->Yaw    = atan2f(_matrix[1], _matrix[0]);
 }
 /*====================================================================================================*/
 /*====================================================================================================*

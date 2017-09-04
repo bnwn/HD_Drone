@@ -3,9 +3,9 @@
 #include "stdio.h"
 #include "../AHRS/ahrs.h"
 #include "../AHRS/inertial_sensor.h"
+#include "../AHRS/inertial_nav.h"
 #include "../Algorithm/Algorithm_filter/Algorithm_filter.h"
 #include "../Algorithm/Algorithm_math/Algorithm_math.h"
-#include "../Algorithm/Algorithm_math/mymath.h"
 #include "../Algorithm/Algorithm_pid/Algorithm_pid.h"
 #include "../Algorithm/Algorithm_quaternion/Algorithm_quaternion.h"
 #include "../Control/attitude_control.h"
@@ -134,7 +134,11 @@ void sched_50Hzloop(void)
 	}
 			
 	rc_channel_read();
+	
 	fbm320_timer_procedure();  // update absolute altitude about 16.7Hz
+	
+	inertial_nav_update();
+	
 
 #ifdef __DEVELOP__	
 	if ((fc_status.printf_flag == 0) || (fc_status.printf_flag == 255))
@@ -150,8 +154,12 @@ void sched_50Hzloop(void)
 		printf("%d,%d,%d,%d,%d,%d,\n", (int16_t)(inertial_sensor.gyro.average.x*_gyro_scale+200), (int16_t)(inertial_sensor.gyro.average.y*_gyro_scale+200), (int16_t)(inertial_sensor.gyro.average.z*_gyro_scale+200), \
 										(int16_t)(inertial_sensor.gyro.filter.x-200), (int16_t)(inertial_sensor.gyro.filter.y-200), (int16_t)(inertial_sensor.gyro.filter.z-200));
 	else if (fc_status.printf_flag == 4)
-		printf ("%d, %d, %d, %d\n", (int16_t)(motor_duty[MOTOR1_INDEX]*500-300), (int16_t)(motor_duty[MOTOR2_INDEX]*500-300), (int16_t)(motor_duty[MOTOR3_INDEX]*500-300), \
+		printf ("%d, %d, %d, %d,\n", (int16_t)(motor_duty[MOTOR1_INDEX]*500-300), (int16_t)(motor_duty[MOTOR2_INDEX]*500-300), (int16_t)(motor_duty[MOTOR3_INDEX]*500-300), \
 																														(int16_t)(motor_duty[MOTOR4_INDEX]*500-300));
+	else if (fc_status.printf_flag == 5)
+		printf ("%d, %d, %d, %d,\n", (int16_t)(rc_channels[0].rc_in/5), (int16_t)(rc_channels[1].rc_in/5), (int16_t)(rc_channels[2].rc_in/5), (int16_t)(rc_channels[3].rc_in/5));
+	else if (fc_status.printf_flag == 6)
+		printf("%d, %d, %d,\n", (int16_t)(fbm320_packet.altitude*100 - 11000), (int16_t)(nav.z*100), (int16_t)(home_absolute_pos.z*100 - 11000));
 #endif	
 	slice_flag.loop_50Hz = false;
 }
@@ -161,7 +169,10 @@ void sched_20Hzloop(void)
 	EulerAngle _ahrs;
 	if (!slice_flag.loop_20Hz) {
 		return;
-	}
+	}	
+	
+	update_home_pos();
+	
 #ifdef __DEVELOP__
 	//AHRS_Read_Attitude(&_ahrs);
 	//printf("attitude:%d, %d, %d\n", (int16_t)(100*_ahrs.Roll), (int16_t)(100*_ahrs.Pitch), (int16_t)(100*_ahrs.Yaw));
@@ -175,7 +186,7 @@ void sched_20Hzloop(void)
 //	printf("ch1:%d, ch2:%d, ch3:%d, ch4:%d, ch5:%d, ch6:%d, ch7:%d, ch8:%d, ch9:%d, ch10:%d, ch11:%d, ch12:%d\n", rc_channels[0].rc_in, rc_channels[1].rc_in, rc_channels[2].rc_in, \
 //																																		rc_channels[3].rc_in, rc_switchs[0].rc_in, rc_switchs[1].rc_in, rc_switchs[2].rc_in, rc_switchs[3].rc_in, \
 //																																		rc_switchs[4].rc_in, rc_switchs[5].rc_in, rc_switchs[6].rc_in, rc_switchs[7].rc_in);
-//        printf("altitude: %d cm\n", fbm320_packet.Altitude);
+//        printf("altitude: %d m\n", (int16)(100*fbm320_packet.altitude));
 #endif
 	slice_flag.loop_20Hz = false;
 }
@@ -185,12 +196,9 @@ void sched_10Hzloop(void)
 	if (!slice_flag.loop_10Hz) {
 		return;
 	}
-#ifdef __DEVELOP__
-//		printf("%d, %d, %d, %d, %d, %d \n", (int16_t)inertial_sensor.accel.filter.x, (int16_t)inertial_sensor.accel.filter.y, (int16_t)inertial_sensor.accel.filter.z, \
-//																	(int16_t)inertial_sensor.gyro.filter.x, (int16_t)inertial_sensor.gyro.filter.y, (int16_t)inertial_sensor.gyro.filter.z);
-//		printf("altitude: %d cm\n", fbm320_packet.Altitude);
-#endif
+	
 	check_motor_armed();
+	
 	slice_flag.loop_10Hz = false;
 }
 

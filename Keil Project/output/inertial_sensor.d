@@ -25,4 +25,5 @@
 .\output\inertial_sensor.o: ..\AHRS\../Driver/bsp/timer_delay.h
 .\output\inertial_sensor.o: ..\AHRS\../Algorithm/Algorithm_filter/Algorithm_filter.h
 .\output\inertial_sensor.o: ..\AHRS\../Algorithm/Algorithm_math/Algorithm_math.h
+.\output\inertial_sensor.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\output\inertial_sensor.o: ..\User\common.h

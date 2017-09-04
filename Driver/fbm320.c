@@ -1,6 +1,7 @@
 #include "PN020Series.h"
 #include "fbm320.h"
 #include "common.h"
+#include "Algorithm_filter.h"
 
 uint8_t	Formula_Select = 0;
 
@@ -33,6 +34,8 @@ bool fbm320_init(void)
     calculate(fbm320_packet.UP, fbm320_packet.UT);
 
     I2C_WriteByte(FBM320_SLAVE_ADDRESS, FBM320_REG_CMD, FBM320_READ_TEMPERATURE);
+	
+	fbm320_packet.altitude = 0.0f;
 
     return true;
 }
@@ -52,7 +55,8 @@ int32_t fbm320_read_long_data(void)
 void fbm320_timer_procedure(void)
 {
     static uint16_t timer_count = 0;
-
+	float new_alt;
+	
     switch (timer_count) {
     case 0:
         I2C_WriteByte(FBM320_SLAVE_ADDRESS, FBM320_REG_CMD, FBM320_READ_PRESSURE);
@@ -66,8 +70,26 @@ void fbm320_timer_procedure(void)
         I2C_WriteByte(FBM320_SLAVE_ADDRESS, FBM320_REG_CMD, FBM320_READ_PRESSURE);
 
         calculate(fbm320_packet.UP, fbm320_packet.UT);
-        fbm320_packet.Altitude = abs_altitude(fbm320_packet.RP) / 10;
-        fc_status.altitude_updated = true;
+        new_alt = (float)(abs_altitude(fbm320_packet.RP) / 1000.0f);
+		
+		if (!fc_status.baro_initialize) {
+			if (fbm320_packet.altitude == 0.0f) {
+				fbm320_packet.altitude = new_alt;
+			} else if (fabs(new_alt - fbm320_packet.altitude) < 0.1f) {
+				fc_status.baro_initialize = true;
+			}
+			
+		} else {
+			if (fabs(new_alt - fbm320_packet.altitude) < 10) {
+				fbm320_packet.altitude += (new_alt - fbm320_packet.altitude) * 0.2736f; // 2Hz LPF
+			} else if (fabs(new_alt - fbm320_packet.altitude) < 50) {
+				fbm320_packet.altitude += (new_alt - fbm320_packet.altitude) * 0.1585f; // 1Hz LPF
+			} else {
+				fbm320_packet.altitude += (new_alt - fbm320_packet.altitude) * 0.086f; // 0.5Hz LPF
+			}
+			fc_status.altitude_updated = true;
+			fc_status.home_abs_alt_updated = true;
+		}
     default:
         break;
     }

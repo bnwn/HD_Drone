@@ -22,9 +22,10 @@
 .\output\motor_control.o: ..\Control\../Driver/motor.h
 .\output\motor_control.o: ..\Control\../AHRS/ahrs.h
 .\output\motor_control.o: ..\Control\../AHRS/../Algorithm/Algorithm_quaternion/Algorithm_quaternion.h
-.\output\motor_control.o: ..\Control\../Algorithm/Algorithm_math/mymath.h
-.\output\motor_control.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\output\motor_control.o: ..\AHRS\inertial_sensor.h
+.\output\motor_control.o: ..\Algorithm\Algorithm_filter\Algorithm_filter.h
 .\output\motor_control.o: ..\Control\../Algorithm/Algorithm_math/Algorithm_math.h
+.\output\motor_control.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\output\motor_control.o: ..\Algorithm\Algorithm_filter\Algorithm_filter.h
 .\output\motor_control.o: ..\User\common.h
 .\output\motor_control.o: ..\Algorithm\Algorithm_pid\Algorithm_pid.h

@@ -20,5 +20,4 @@
 .\output\algorithm_pid.o: ..\Library\StdDriver\inc\wwdt.h
 .\output\algorithm_pid.o: ..\Algorithm\Algorithm_pid\Algorithm_pid.h
 .\output\algorithm_pid.o: ..\Algorithm\Algorithm_pid\../Algorithm_math/Algorithm_math.h
-.\output\algorithm_pid.o: ..\Algorithm\Algorithm_pid\../Algorithm_math/mymath.h
 .\output\algorithm_pid.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h

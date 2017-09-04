@@ -22,7 +22,7 @@ Dialog DLL:      TARMCM1.DLL V1.10.0.0
  
 <h2>Project:</h2>
 C:\Users\Administrator.DESKTOP-ZXM\Desktop\workspace\HD_Drone\HD_Drone_Firmware\Keil Project\HD_Drone.uvprojx
-Project File Date:  08/25/2017
+Project File Date:  09/04/2017
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 2 (build 183)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
@@ -31,6 +31,11 @@ Clean started - Project: 'HD_Drone'
    deleting intermediate output files for target 'HD_Drone'
 compiling bmi160.c...
 compiling fbm320.c...
+..\Driver\fbm320.c(78): warning:  #223-D: function "fabs" declared implicitly
+                        } else if (fabs(new_alt - fbm320_packet.altitude) < 0.1f) {
+..\Driver\fbm320.c(83): warning:  #223-D: function "fabs" declared implicitly
+                        if (fabs(new_alt - fbm320_packet.altitude) < 10) {
+..\Driver\fbm320.c: 2 warnings, 0 errors
 compiling motor.c...
 ..\Driver\motor.c(35): warning:  #223-D: function "printf" declared implicitly
         printf("period0:%d, period1:%d, period2:%d, period3:%d, motor_duty_range:%d\n", PWM->PERIOD0, PWM->PERIOD1, PWM->PERIOD2, PWM->PERIOD3, motor_duty_range);
@@ -44,16 +49,17 @@ compiling system_PN020Series.c...
 assembling startup_PN020Series.s...
 compiling Algorithm_filter.c...
 compiling Algorithm_math.c...
-..\Algorithm\Algorithm_math\Algorithm_math.c(87): warning:  #111-D: statement is unreachable
+..\Algorithm\Algorithm_math\Algorithm_math.c(53): warning:  #111-D: statement is unreachable
         if(error < 0.0f)
 ..\Algorithm\Algorithm_math\Algorithm_math.c: 1 warning, 0 errors
-compiling mymath.c...
 compiling Algorithm_pid.c...
+..\Algorithm\Algorithm_pid\Algorithm_pid.c(42): warning:  #223-D: function "fmax" declared implicitly
+      _pid->filt_hz = fmax(_pid->filt_hz, PID_FILT_MIN_HZ);
+..\Algorithm\Algorithm_pid\Algorithm_pid.c: 1 warning, 0 errors
 compiling Algorithm_quaternion.c...
 ..\Algorithm\Algorithm_quaternion\Algorithm_quaternion.c(153): warning:  #1-D: last line of file ends without a newline
   }
 ..\Algorithm\Algorithm_quaternion\Algorithm_quaternion.c: 1 warning, 0 errors
-compiling Algorithm_sqLite.c...
 compiling attitude_control.c...
 compiling flight_mode_control.c...
 compiling motor_control.c...
@@ -66,25 +72,26 @@ compiling position_control.c...
 compiling scheduler.c...
 ..\Scheduler\scheduler.c(62): warning:  #177-D: variable "test" was declared but never referenced
         static uint32_t test = 0;
-..\Scheduler\scheduler.c(161): warning:  #177-D: variable "_ahrs" was declared but never referenced
+..\Scheduler\scheduler.c(169): warning:  #177-D: variable "_ahrs" was declared but never referenced
         EulerAngle _ahrs;
 ..\Scheduler\scheduler.c: 2 warnings, 0 errors
 compiling ahrs.c...
-..\AHRS\ahrs.c(157): warning:  #223-D: function "printf" declared implicitly
+..\AHRS\ahrs.c(165): warning:  #223-D: function "printf" declared implicitly
                 printf("kp: %.6f\n", cmp_kp);
-..\AHRS\ahrs.c(159): warning:  #223-D: function "memset" declared implicitly
+..\AHRS\ahrs.c(167): warning:  #223-D: function "memset" declared implicitly
                 memset(&NumQ, 0, sizeof(Quaternion));
-..\AHRS\ahrs.c(175): warning:  #223-D: function "printf" declared implicitly
+..\AHRS\ahrs.c(183): warning:  #223-D: function "printf" declared implicitly
                 printf("ki: %.6f\n", cmp_ki);
-..\AHRS\ahrs.c(177): warning:  #223-D: function "memset" declared implicitly
+..\AHRS\ahrs.c(185): warning:  #223-D: function "memset" declared implicitly
                 memset(&NumQ, 0, sizeof(Quaternion));
 ..\AHRS\ahrs.c: 4 warnings, 0 errors
 compiling inertial_sensor.c...
 ..\AHRS\inertial_sensor.c(28): warning:  #177-D: variable "last_gyro" was declared but never referenced
       static _Vector_Int16 last_gyro;
 ..\AHRS\inertial_sensor.c: 1 warning, 0 errors
-compiling bsp_i2c.c...
+compiling inertial_nav.c...
 compiling timer_delay.c...
+compiling bsp_i2c.c...
 compiling uart_console.c...
 ..\Driver\bsp\uart_console.c(59): warning:  #223-D: function "memset" declared implicitly
                                                                 memset(rev_buf, 0, CONSOLE_BUF_SIZE);
@@ -169,27 +176,30 @@ compiling wwdt.c...
 compiling rc_channel.c...
 ..\RC\rc_channel.c(24): warning:  #223-D: function "printf" declared implicitly
       printf("rf xns104 init success\n");
+..\RC\rc_channel.c(47): warning:  #223-D: function "memset" declared implicitly
+        memset(rc_buf, 0, PAYLOAD_WIDTH);
 ..\RC\rc_channel.c(40): warning:  #177-D: variable "j" was declared but never referenced
       uint8_t j = 0;
-..\RC\rc_channel.c(194): warning:  #188-D: enumerated type mixed with another type
+..\RC\rc_channel.c(196): warning:  #188-D: enumerated type mixed with another type
               switch_event_trigger(ch_index, (switch_on_tick[ch_index] >= 250));
-..\RC\rc_channel.c(206): warning:  #223-D: function "printf" declared implicitly
+..\RC\rc_channel.c(208): warning:  #223-D: function "printf" declared implicitly
                         printf("set_pid_param_p:%i", (int16_t)(ctrl_loop.rate.pitch.ki * 100));
-..\RC\rc_channel.c(296): warning:  #223-D: function "printf" declared implicitly
+..\RC\rc_channel.c(298): warning:  #223-D: function "printf" declared implicitly
       printf("roll code: 0x%X 0x%X 0x%X\n", roll_code[0], roll_code[1], roll_code[2]);
-..\RC\rc_channel.c(167): warning:  #177-D: function "packet_parse" was declared but never referenced
-  static void packet_parse(void)
-..\RC\rc_channel.c(12): warning:  #177-D: variable "pre_switch" was declared but never referenced
-  static uint8_t pre_switch = 0;
-..\RC\rc_channel.c: 7 warnings, 0 errors
+..\RC\rc_channel.c: 6 warnings, 0 errors
 compiling rf.c...
 linking...
-Program Size: Code=30104 RO-data=688 RW-data=272 ZI-data=2184  
-".\output\HD_Drone.axf" - 0 Error(s), 52 Warning(s).
+Program Size: Code=30516 RO-data=700 RW-data=200 ZI-data=2128  
+".\output\HD_Drone.axf" - 0 Error(s), 54 Warning(s).
 
 *** Performing Cross-Module-Optimization:
 compiling bmi160.c...
 compiling fbm320.c...
+..\Driver\fbm320.c(78): warning:  #223-D: function "fabs" declared implicitly
+                        } else if (fabs(new_alt - fbm320_packet.altitude) < 0.1f) {
+..\Driver\fbm320.c(83): warning:  #223-D: function "fabs" declared implicitly
+                        if (fabs(new_alt - fbm320_packet.altitude) < 10) {
+..\Driver\fbm320.c: 2 warnings, 0 errors
 compiling motor.c...
 ..\Driver\motor.c(35): warning:  #223-D: function "printf" declared implicitly
         printf("period0:%d, period1:%d, period2:%d, period3:%d, motor_duty_range:%d\n", PWM->PERIOD0, PWM->PERIOD1, PWM->PERIOD2, PWM->PERIOD3, motor_duty_range);
@@ -202,11 +212,13 @@ compiling main.c...
 compiling system_PN020Series.c...
 compiling Algorithm_filter.c...
 compiling Algorithm_math.c...
-..\Algorithm\Algorithm_math\Algorithm_math.c(87): warning:  #111-D: statement is unreachable
+..\Algorithm\Algorithm_math\Algorithm_math.c(53): warning:  #111-D: statement is unreachable
         if(error < 0.0f)
 ..\Algorithm\Algorithm_math\Algorithm_math.c: 1 warning, 0 errors
-compiling mymath.c...
 compiling Algorithm_pid.c...
+..\Algorithm\Algorithm_pid\Algorithm_pid.c(42): warning:  #223-D: function "fmax" declared implicitly
+      _pid->filt_hz = fmax(_pid->filt_hz, PID_FILT_MIN_HZ);
+..\Algorithm\Algorithm_pid\Algorithm_pid.c: 1 warning, 0 errors
 compiling Algorithm_quaternion.c...
 ..\Algorithm\Algorithm_quaternion\Algorithm_quaternion.c(153): warning:  #1-D: last line of file ends without a newline
   }
@@ -223,25 +235,26 @@ compiling position_control.c...
 compiling scheduler.c...
 ..\Scheduler\scheduler.c(62): warning:  #177-D: variable "test" was declared but never referenced
         static uint32_t test = 0;
-..\Scheduler\scheduler.c(161): warning:  #177-D: variable "_ahrs" was declared but never referenced
+..\Scheduler\scheduler.c(169): warning:  #177-D: variable "_ahrs" was declared but never referenced
         EulerAngle _ahrs;
 ..\Scheduler\scheduler.c: 2 warnings, 0 errors
 compiling ahrs.c...
-..\AHRS\ahrs.c(157): warning:  #223-D: function "printf" declared implicitly
+..\AHRS\ahrs.c(165): warning:  #223-D: function "printf" declared implicitly
                 printf("kp: %.6f\n", cmp_kp);
-..\AHRS\ahrs.c(159): warning:  #223-D: function "memset" declared implicitly
+..\AHRS\ahrs.c(167): warning:  #223-D: function "memset" declared implicitly
                 memset(&NumQ, 0, sizeof(Quaternion));
-..\AHRS\ahrs.c(175): warning:  #223-D: function "printf" declared implicitly
+..\AHRS\ahrs.c(183): warning:  #223-D: function "printf" declared implicitly
                 printf("ki: %.6f\n", cmp_ki);
-..\AHRS\ahrs.c(177): warning:  #223-D: function "memset" declared implicitly
+..\AHRS\ahrs.c(185): warning:  #223-D: function "memset" declared implicitly
                 memset(&NumQ, 0, sizeof(Quaternion));
 ..\AHRS\ahrs.c: 4 warnings, 0 errors
 compiling inertial_sensor.c...
 ..\AHRS\inertial_sensor.c(28): warning:  #177-D: variable "last_gyro" was declared but never referenced
       static _Vector_Int16 last_gyro;
 ..\AHRS\inertial_sensor.c: 1 warning, 0 errors
-compiling bsp_i2c.c...
+compiling inertial_nav.c...
 compiling timer_delay.c...
+compiling bsp_i2c.c...
 compiling uart_console.c...
 ..\Driver\bsp\uart_console.c(59): warning:  #223-D: function "memset" declared implicitly
                                                                 memset(rev_buf, 0, CONSOLE_BUF_SIZE);
@@ -326,24 +339,27 @@ compiling wwdt.c...
 compiling rc_channel.c...
 ..\RC\rc_channel.c(24): warning:  #223-D: function "printf" declared implicitly
       printf("rf xns104 init success\n");
+..\RC\rc_channel.c(47): warning:  #223-D: function "memset" declared implicitly
+        memset(rc_buf, 0, PAYLOAD_WIDTH);
 ..\RC\rc_channel.c(40): warning:  #177-D: variable "j" was declared but never referenced
       uint8_t j = 0;
-..\RC\rc_channel.c(194): warning:  #188-D: enumerated type mixed with another type
+..\RC\rc_channel.c(196): warning:  #188-D: enumerated type mixed with another type
               switch_event_trigger(ch_index, (switch_on_tick[ch_index] >= 250));
-..\RC\rc_channel.c(206): warning:  #223-D: function "printf" declared implicitly
+..\RC\rc_channel.c(208): warning:  #223-D: function "printf" declared implicitly
                         printf("set_pid_param_p:%i", (int16_t)(ctrl_loop.rate.pitch.ki * 100));
-..\RC\rc_channel.c(296): warning:  #223-D: function "printf" declared implicitly
+..\RC\rc_channel.c(298): warning:  #223-D: function "printf" declared implicitly
       printf("roll code: 0x%X 0x%X 0x%X\n", roll_code[0], roll_code[1], roll_code[2]);
-..\RC\rc_channel.c(167): warning:  #177-D: function "packet_parse" was declared but never referenced
-  static void packet_parse(void)
-..\RC\rc_channel.c(12): warning:  #177-D: variable "pre_switch" was declared but never referenced
-  static uint8_t pre_switch = 0;
-..\RC\rc_channel.c: 7 warnings, 0 errors
+..\RC\rc_channel.c: 6 warnings, 0 errors
 compiling rf.c...
 linking...
-Program Size: Code=25412 RO-data=684 RW-data=180 ZI-data=2008  
+Program Size: Code=26748 RO-data=700 RW-data=200 ZI-data=2128  
 compiling bmi160.c...
 compiling fbm320.c...
+..\Driver\fbm320.c(78): warning:  #223-D: function "fabs" declared implicitly
+                        } else if (fabs(new_alt - fbm320_packet.altitude) < 0.1f) {
+..\Driver\fbm320.c(83): warning:  #223-D: function "fabs" declared implicitly
+                        if (fabs(new_alt - fbm320_packet.altitude) < 10) {
+..\Driver\fbm320.c: 2 warnings, 0 errors
 compiling motor.c...
 ..\Driver\motor.c(35): warning:  #223-D: function "printf" declared implicitly
         printf("period0:%d, period1:%d, period2:%d, period3:%d, motor_duty_range:%d\n", PWM->PERIOD0, PWM->PERIOD1, PWM->PERIOD2, PWM->PERIOD3, motor_duty_range);
@@ -356,11 +372,13 @@ compiling main.c...
 compiling system_PN020Series.c...
 compiling Algorithm_filter.c...
 compiling Algorithm_math.c...
-..\Algorithm\Algorithm_math\Algorithm_math.c(87): warning:  #111-D: statement is unreachable
+..\Algorithm\Algorithm_math\Algorithm_math.c(53): warning:  #111-D: statement is unreachable
         if(error < 0.0f)
 ..\Algorithm\Algorithm_math\Algorithm_math.c: 1 warning, 0 errors
-compiling mymath.c...
 compiling Algorithm_pid.c...
+..\Algorithm\Algorithm_pid\Algorithm_pid.c(42): warning:  #223-D: function "fmax" declared implicitly
+      _pid->filt_hz = fmax(_pid->filt_hz, PID_FILT_MIN_HZ);
+..\Algorithm\Algorithm_pid\Algorithm_pid.c: 1 warning, 0 errors
 compiling Algorithm_quaternion.c...
 ..\Algorithm\Algorithm_quaternion\Algorithm_quaternion.c(153): warning:  #1-D: last line of file ends without a newline
   }
@@ -377,25 +395,26 @@ compiling position_control.c...
 compiling scheduler.c...
 ..\Scheduler\scheduler.c(62): warning:  #177-D: variable "test" was declared but never referenced
         static uint32_t test = 0;
-..\Scheduler\scheduler.c(161): warning:  #177-D: variable "_ahrs" was declared but never referenced
+..\Scheduler\scheduler.c(169): warning:  #177-D: variable "_ahrs" was declared but never referenced
         EulerAngle _ahrs;
 ..\Scheduler\scheduler.c: 2 warnings, 0 errors
 compiling ahrs.c...
-..\AHRS\ahrs.c(157): warning:  #223-D: function "printf" declared implicitly
+..\AHRS\ahrs.c(165): warning:  #223-D: function "printf" declared implicitly
                 printf("kp: %.6f\n", cmp_kp);
-..\AHRS\ahrs.c(159): warning:  #223-D: function "memset" declared implicitly
+..\AHRS\ahrs.c(167): warning:  #223-D: function "memset" declared implicitly
                 memset(&NumQ, 0, sizeof(Quaternion));
-..\AHRS\ahrs.c(175): warning:  #223-D: function "printf" declared implicitly
+..\AHRS\ahrs.c(183): warning:  #223-D: function "printf" declared implicitly
                 printf("ki: %.6f\n", cmp_ki);
-..\AHRS\ahrs.c(177): warning:  #223-D: function "memset" declared implicitly
+..\AHRS\ahrs.c(185): warning:  #223-D: function "memset" declared implicitly
                 memset(&NumQ, 0, sizeof(Quaternion));
 ..\AHRS\ahrs.c: 4 warnings, 0 errors
 compiling inertial_sensor.c...
 ..\AHRS\inertial_sensor.c(28): warning:  #177-D: variable "last_gyro" was declared but never referenced
       static _Vector_Int16 last_gyro;
 ..\AHRS\inertial_sensor.c: 1 warning, 0 errors
-compiling bsp_i2c.c...
+compiling inertial_nav.c...
 compiling timer_delay.c...
+compiling bsp_i2c.c...
 compiling uart_console.c...
 ..\Driver\bsp\uart_console.c(59): warning:  #223-D: function "memset" declared implicitly
                                                                 memset(rev_buf, 0, CONSOLE_BUF_SIZE);
@@ -480,25 +499,23 @@ compiling wwdt.c...
 compiling rc_channel.c...
 ..\RC\rc_channel.c(24): warning:  #223-D: function "printf" declared implicitly
       printf("rf xns104 init success\n");
+..\RC\rc_channel.c(47): warning:  #223-D: function "memset" declared implicitly
+        memset(rc_buf, 0, PAYLOAD_WIDTH);
 ..\RC\rc_channel.c(40): warning:  #177-D: variable "j" was declared but never referenced
       uint8_t j = 0;
-..\RC\rc_channel.c(194): warning:  #188-D: enumerated type mixed with another type
+..\RC\rc_channel.c(196): warning:  #188-D: enumerated type mixed with another type
               switch_event_trigger(ch_index, (switch_on_tick[ch_index] >= 250));
-..\RC\rc_channel.c(206): warning:  #223-D: function "printf" declared implicitly
+..\RC\rc_channel.c(208): warning:  #223-D: function "printf" declared implicitly
                         printf("set_pid_param_p:%i", (int16_t)(ctrl_loop.rate.pitch.ki * 100));
-..\RC\rc_channel.c(296): warning:  #223-D: function "printf" declared implicitly
+..\RC\rc_channel.c(298): warning:  #223-D: function "printf" declared implicitly
       printf("roll code: 0x%X 0x%X 0x%X\n", roll_code[0], roll_code[1], roll_code[2]);
-..\RC\rc_channel.c(167): warning:  #177-D: function "packet_parse" was declared but never referenced
-  static void packet_parse(void)
-..\RC\rc_channel.c(12): warning:  #177-D: variable "pre_switch" was declared but never referenced
-  static uint8_t pre_switch = 0;
-..\RC\rc_channel.c: 7 warnings, 0 errors
+..\RC\rc_channel.c: 6 warnings, 0 errors
 compiling rf.c...
 linking...
-Program Size: Code=25412 RO-data=684 RW-data=180 ZI-data=2008  
+Program Size: Code=26748 RO-data=700 RW-data=200 ZI-data=2128  
 After Build - User command #1: fromelf --bin ".\output\HD_Drone.axf" --output ".\output\HD_Drone.bin"
 After Build - User command #2: fromelf --text -c ".\output\HD_Drone.axf" --output ".\output\HD_Drone.txt"
-".\output\HD_Drone.axf" - 0 Error(s), 52 Warning(s).
+".\output\HD_Drone.axf" - 0 Error(s), 54 Warning(s).
 *** Completed Cross-Module-Optimization after 3 iteration(s).
 
 <h2>Software Packages used:</h2>
@@ -517,7 +534,7 @@ Package Vendor: ARM
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.0.2
-Build Time Elapsed:  00:00:40
+Build Time Elapsed:  00:00:54
 </pre>
 </body>
 </html>

@@ -20,4 +20,5 @@
 .\output\motor.o: ..\Library\StdDriver\inc\wwdt.h
 .\output\motor.o: ..\Driver\motor.h
 .\output\motor.o: ..\Driver\../Algorithm/Algorithm_math/Algorithm_math.h
+.\output\motor.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\output\motor.o: ..\User\common.h

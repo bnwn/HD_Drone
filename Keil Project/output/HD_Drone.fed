@@ -1,4 +1,4 @@
-;#<FEEDBACK># ARM Linker, 5060183: Last Updated: Sat Sep 02 21:39:36 2017
+;#<FEEDBACK># ARM Linker, 5060183: Last Updated: Mon Sep 04 20:45:21 2017
 ;VERSION 0.2
 ;FILE acmp.o
 ACMP_Close <= USED 0
@@ -25,18 +25,11 @@ __asm___6_ahrs_c_NumQ____REV16 <= USED 0
 __asm___6_ahrs_c_NumQ____REVSH <= USED 0
 ;FILE algorithm_filter.o
 IIR_I_Filter <= USED 0
-KalmanFilter <= USED 0
-Moving_Average <= USED 0
-Moving_Median <= USED 0
 __asm___18_Algorithm_filter_c_b693f501____REV16 <= USED 0
 __asm___18_Algorithm_filter_c_b693f501____REVSH <= USED 0
-kalmanUpdate <= USED 0
 ;FILE algorithm_math.o
 __asm___16_Algorithm_math_c_Q_rsqrt____REV16 <= USED 0
 __asm___16_Algorithm_math_c_Q_rsqrt____REVSH <= USED 0
-applyDeadband <= USED 0
-array_assign <= USED 0
-array_astrict <= USED 0
 constrain <= USED 0
 ;FILE algorithm_pid.o
 __asm___15_Algorithm_pid_c_61a19061____REV16 <= USED 0
@@ -135,6 +128,10 @@ I2C_SetSlaveAddrMask <= USED 0
 I2C_Trigger <= USED 0
 __asm___5_i2c_c_I2C_Open____REV16 <= USED 0
 __asm___5_i2c_c_I2C_Open____REVSH <= USED 0
+;FILE inertial_nav.o
+__asm___14_inertial_nav_c_nav____REV16 <= USED 0
+__asm___14_inertial_nav_c_nav____REVSH <= USED 0
+inertial_nav_init <= USED 0
 ;FILE inertial_sensor.o
 __asm___17_inertial_sensor_c_b_IIR____REV16 <= USED 0
 __asm___17_inertial_sensor_c_b_IIR____REVSH <= USED 0
@@ -148,21 +145,6 @@ __asm___7_motor_c_d71f47f0____REVSH <= USED 0
 __asm___15_motor_control_c_thrust____REV16 <= USED 0
 __asm___15_motor_control_c_thrust____REVSH <= USED 0
 throttle_control <= USED 0
-;FILE mymath.o
-To_180_degrees <= USED 0
-__asm___8_mymath_c_f480d7f9____REV16 <= USED 0
-__asm___8_mymath_c_f480d7f9____REVSH <= USED 0
-fast_atan2 <= USED 0
-mx_sin <= USED 0
-my_abs <= USED 0
-my_atan <= USED 0
-my_cos <= USED 0
-my_deathzoom <= USED 0
-my_deathzoom_2 <= USED 0
-my_pow <= USED 0
-my_pow_2_curve <= USED 0
-my_sin <= USED 0
-my_sqrt <= USED 0
 ;FILE position_control.o
 __asm___18_position_control_c____REV16 <= USED 0
 __asm___18_position_control_c____REVSH <= USED 0

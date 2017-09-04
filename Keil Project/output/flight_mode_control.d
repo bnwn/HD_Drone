@@ -25,7 +25,6 @@
 .\output\flight_mode_control.o: ..\Control\../AHRS/ahrs.h
 .\output\flight_mode_control.o: ..\Control\../AHRS/../Algorithm/Algorithm_quaternion/Algorithm_quaternion.h
 .\output\flight_mode_control.o: ..\Control\../Algorithm/Algorithm_math/Algorithm_math.h
-.\output\flight_mode_control.o: ..\Control\../Algorithm/Algorithm_math/mymath.h
 .\output\flight_mode_control.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\output\flight_mode_control.o: ..\Control\../Algorithm/Algorithm_pid/Algorithm_pid.h
 .\output\flight_mode_control.o: ..\Control\motor_control.h

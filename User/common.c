@@ -3,9 +3,9 @@
 #include "stdio.h"
 #include "../AHRS/ahrs.h"
 #include "../AHRS/inertial_sensor.h"
+#include "../AHRS/inertial_nav.h"
 #include "../Algorithm/Algorithm_filter/Algorithm_filter.h"
 #include "../Algorithm/Algorithm_math/Algorithm_math.h"
-#include "../Algorithm/Algorithm_math/mymath.h"
 #include "../Algorithm/Algorithm_pid/Algorithm_pid.h"
 #include "../Algorithm/Algorithm_quaternion/Algorithm_quaternion.h"
 #include "../Control/attitude_control.h"
@@ -118,6 +118,7 @@ void peripheral_init(void)
     gyro_offset();
     accel_offset();
 	inertial_sensor_init();
+//	inertial_nav_init();
 #ifdef __DEVELOP__
     printf("collect complete\n");
 #endif
@@ -153,6 +154,9 @@ void fc_status_reset(void)
 	fc_status.land_complete = true;
 	fc_status.code_matched = false;
     fc_status.altitude_updated = false;
+	fc_status.home_abs_alt_updated = false;
     fc_status.accel_updated = false;
+	fc_status.position_z_ok = false;
+	fc_status.baro_initialize = false;
 	fc_status.motor_control_Hz = 2000;
 }

@@ -4,7 +4,6 @@
 #include "../AHRS/inertial_sensor.h"
 #include "../AHRS/ahrs.h"
 #include "../Algorithm/Algorithm_math/Algorithm_math.h"
-#include "../Algorithm/Algorithm_math/mymath.h"
 #include "../Algorithm/Algorithm_pid/Algorithm_pid.h"
 #include "motor_control.h"
 

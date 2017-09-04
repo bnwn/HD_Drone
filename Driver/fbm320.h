@@ -61,7 +61,7 @@ typedef struct FMTI_Sensor
     int32_t UT;
     int32_t RP;																								//Unit: Pa
     int32_t RT;																								//Unit: 0.01 degree
-    int16_t Altitude;																						//Unit: centi meter
+    float altitude;																						//Unit: meter
     uint16_t C0, C1, C2, C3, C6, C8, C9, C10, C11, C12;
     uint32_t C4, C5, C7;
 }FMTI_Sensor;

@@ -73,7 +73,7 @@ void inertial_sensor_read(void)
     inertial_sensor.gyro.filter.z = LPF_1st(last_gyro.z, inertial_sensor.gyro.relative.z * _gyro_scale, 0.386f);
     last_gyro.z = inertial_sensor.gyro.filter.z;//
 #endif
-    fc_status.accel_updated true;
+    fc_status.accel_updated = true;
 }
 
 /*====================================================================================================*/
@@ -202,9 +202,9 @@ _Vector_Float get_inertial_vel(void)
 	_Vector_Float _vel = {0};
 		
 	/* rotation */
-	_vel.x = inertial_sensor.gyro.filter.x * -1;
-	_vel.y = inertial_sensor.gyro.filter.y;
-	_vel.z = inertial_sensor.gyro.filter.z * -1;
+	_vel.x = inertial_sensor.gyro.filter.x * IMU_SENSOR_X_FACTOR;
+	_vel.y = inertial_sensor.gyro.filter.y * IMU_SENSOR_Y_FACTOR;
+	_vel.z = inertial_sensor.gyro.filter.z * IMU_SENSOR_Z_FACTOR;
 
 	return _vel;
 }

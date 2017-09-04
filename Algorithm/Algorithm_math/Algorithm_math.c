@@ -26,40 +26,6 @@ float Q_rsqrt(float number)
 } 
 
 /**************************实现函数********************************************
-*函数原型:    array_astrict_lower(int16_t *array,int16_t value)
-*功　　能:    对数组下限限制
-输入参数：    *array   目标数组指针
-*             value      
-输出参数：    无
-*******************************************************************************/
-void array_astrict(int16_t *array,int16_t lower,int16_t upper)
-{
-   int16_t length = sizeof(array);
-   uint16_t i=0;
-   for(;i<length;i++)
-   {
-     if(*(array+i)<lower)  *(array+i) = lower;
-     else if(*(array+i)>upper)  *(array+i) = upper;
-   } 
-}
-
-/**************************实现函数********************************************
-*函数原型:    array_assign(int16_t *array,int16_t value)
-*功　　能:    对数组赋值
-输入参数：    *array   目标数组指针 
-*             value      
-输出参数：    无
-*******************************************************************************/
-void array_assign(uint16_t *array,int16_t value,uint16_t length)
-{
-    uint16_t i=0;
-    for(;i<length;i++)
-    {
-     *(array+i) = value;
-    }
-}
-
-/**************************实现函数********************************************
 *函数原型:    data_limit(float data,flaot toplimit,float lowerlimit)
 *功　　能:    数据限幅
 输入参数：    data       要操作的数据 
@@ -130,16 +96,4 @@ double constrain(double inputvalue, double limitmin, double limitmax)
         inputvalue=limitmin;
     }
 		return inputvalue;
-}
-
-void applyDeadband(double value,double deadband)
-{
-  if((value  < deadband) && value > -deadband) 
-  { value = 0;} 
-  else if(value > 0)
-        {value -= deadband;
-        } else if(value < 0)
-                {
-                 value += deadband;
-                }
 }

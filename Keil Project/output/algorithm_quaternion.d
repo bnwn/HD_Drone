@@ -19,6 +19,7 @@
 .\output\algorithm_quaternion.o: ..\Library\StdDriver\inc\wdt.h
 .\output\algorithm_quaternion.o: ..\Library\StdDriver\inc\wwdt.h
 .\output\algorithm_quaternion.o: ..\Algorithm\Algorithm_quaternion\Algorithm_quaternion.h
+.\output\algorithm_quaternion.o: ..\AHRS\inertial_sensor.h
+.\output\algorithm_quaternion.o: ..\Algorithm\Algorithm_filter\Algorithm_filter.h
 .\output\algorithm_quaternion.o: ..\Algorithm\Algorithm_quaternion\../Algorithm_math/Algorithm_math.h
-.\output\algorithm_quaternion.o: ..\Algorithm\Algorithm_quaternion\../Algorithm_math/mymath.h
 .\output\algorithm_quaternion.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h

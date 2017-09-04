@@ -1,7 +1,6 @@
 #include "PN020Series.h"
 #include "Algorithm_pid.h"
 #include "../Algorithm_math/Algorithm_math.h"
-#include "../Algorithm_math/mymath.h"
 
 void set_pid_param(Pid_t *_pid, float _kp, float _ki, float _kd, float _imax, float _filt_hz, float dt)
 {
@@ -40,7 +39,7 @@ void set_pid_filt_hz(Pid_t *_pid, float _hz)
     _pid->filt_hz = _hz;
 
     // sanity check _filt_hz
-    _pid->filt_hz = MAX(_pid->filt_hz, PID_FILT_MIN_HZ);
+    _pid->filt_hz = fmax(_pid->filt_hz, PID_FILT_MIN_HZ);
 }
 
 void set_pid_input(Pid_t *_pid, float _input)
