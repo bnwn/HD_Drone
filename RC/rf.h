@@ -70,23 +70,23 @@
 
 /////////////////////////////////////////////////////////////////////////////////////
 /*************************CONTROL CMD***********************************************/
-#define         RF13dBm                         0x3F                            // 13dBm  发射档位功率设置
-#define         RF10dBm                         0X0F                            // 10dBm 
-#define         RF8dBm                          0x15                            // 8dbm      
-#define         RF7dBm                          0x07                            // 7dbm   
+//#define         RF13dBm                         0x3F                            // 13dBm  发射档位功率设置
+//#define         RF10dBm                         0X0F                            // 10dBm 
+//#define         RF8dBm                          0x15                            // 8dbm      
+//#define         RF7dBm                          0x07                            // 7dbm   
 #define         RF5dBm                          0x2c                            // 5dbm   
-#define         RF4dBm                          0x06                            // 4dbm   
-#define         RF2dBm                          0x05                            // 2dbm  
-#define         RF0dBm                          0X0B                            // 0dBm  
-#define         RF_3dBm                         0x04                            // -3dBm     
-#define         RF_6dBm                         0x0A                            // -6dBm 
-#define         RF_10dBm                        0x02                            // -10dBm 
-#define         RF_18dBm                        0x01                            // -18dBm 
-#define         RF_30dBm                        0x00                            // -30dBm 
+//#define         RF4dBm                          0x06                            // 4dbm   
+//#define         RF2dBm                          0x05                            // 2dbm  
+//#define         RF0dBm                          0X0B                            // 0dBm  
+//#define         RF_3dBm                         0x04                            // -3dBm     
+//#define         RF_6dBm                         0x0A                            // -6dBm 
+//#define         RF_10dBm                        0x02                            // -10dBm 
+//#define         RF_18dBm                        0x01                            // -18dBm 
+//#define         RF_30dBm                        0x00                            // -30dBm 
 
 #define         DR_1M                           0X00				//通信速率 1Mbps
-#define         DR_2M                           0X40				//通信速率 2Mbps
-#define         DR_250K                         0XC0                             //通信速率 250Kbps
+//#define         DR_2M                           0X40				//通信速率 2Mbps
+//#define         DR_250K                         0XC0                             //通信速率 250Kbps
 
 #define         RX_DR_FLAG                      0X40                            // 接收中断标志位
 #define         TX_DS_FLAG                      0X20                            // 发送完成中断标志位
@@ -124,10 +124,10 @@ extern    unsigned short Payload_Count;
 #define         DATA_RATE                      DR_1M                            //通信速率1Mbps            DR_2M    DR_1M  DR_250K
 #define         RF_POWER                      (RF5dBm |DATA_RATE)		//发射功率13dBm 
 #endif
-#if(TRANSMIT_TYPE == TRANS_BURST_MODE)  
-#define         EN_DYNPLOAD                    0
-#define         EN_ACK_PAYLOAD                 0                            // ack_payload must < =32 byte
-#endif
+//#if(TRANSMIT_TYPE == TRANS_BURST_MODE)  
+//#define         EN_DYNPLOAD                    0
+//#define         EN_ACK_PAYLOAD                 0                            // ack_payload must < =32 byte
+//#endif
 
 
 /**************************************************************/

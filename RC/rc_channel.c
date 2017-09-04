@@ -8,7 +8,7 @@
 
 Rc_Channel_t rc_channels[RC_CHANNEL_NUM_MAX] = {0};
 Rc_Switch_t rc_switchs[RC_SWITCH_MAX] = {0};
-uint8_t rc_buf[PAYLOAD_WIDTH] = {0}; 
+uint8_t rc_buf[PAYLOAD_WIDTH+1] = {0}; 
 uint8_t roll_code[ROLL_CODE_NUM] = {0};
 extern float cmp_kp, cmp_ki;
 
@@ -64,6 +64,7 @@ bool rc_channel_read(void)
                     return false;
                 }
             }
+			
             rc_channels[0].rc_in = (rc_buf[DATA_INDEX] << 8) | rc_buf[DATA_INDEX+1];
             rc_channels[1].rc_in = (rc_buf[DATA_INDEX+2] << 8) | rc_buf[DATA_INDEX+3];
             rc_channels[2].rc_in = (rc_buf[DATA_INDEX+4] << 8) | rc_buf[DATA_INDEX+5];
@@ -80,10 +81,10 @@ bool rc_channel_read(void)
 
             switch_handle();
 
-    } else if (rc_buf[START_CODE_INDEX] == 0xAC && rc_buf[START_CODE_INDEX+1] == 0xCE \
+    } /* else if (rc_buf[START_CODE_INDEX] == 0xAC && rc_buf[START_CODE_INDEX+1] == 0xCE \
                && rc_buf[END_CODE_INDEX] == 0xCE && rc_buf[END_CODE_INDEX+1] == 0xED) { // match and end code
             set_roll_code(rc_buf+ROLL_CODE_INDEX);
-    } else {
+    }*/ else {
         return false;
     }
 #else

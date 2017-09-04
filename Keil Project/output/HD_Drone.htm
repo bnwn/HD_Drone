@@ -3,9 +3,9 @@
 <title>Static Call Graph - [.\output\HD_Drone.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\output\HD_Drone.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060183: Last Updated: Mon Sep 04 20:45:58 2017
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060183: Last Updated: Mon Sep 04 21:41:01 2017
 <BR><P>
-<H3>Maximum Stack Usage =       1320 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =        552 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
 UART0_IRQHandler &rArr; console_input_handle &rArr; AHRS_set_complementary_filter_ki &rArr; accel_offset &rArr; bmi160_read_raw &rArr; read_fifo &rArr; I2C_WriteByte &rArr; __2printf
 <P>
@@ -126,8 +126,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;peripheral_init
 </UL>
 
-<P><STRONG><a name="[2f]"></a>read_fifo</STRONG> (Thumb, 1004 bytes, Stack size 1168 bytes, bmi160.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 1224<LI>Call Chain = read_fifo &rArr; I2C_WriteByte &rArr; __2printf
+<P><STRONG><a name="[2f]"></a>read_fifo</STRONG> (Thumb, 982 bytes, Stack size 400 bytes, bmi160.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 456<LI>Call Chain = read_fifo &rArr; I2C_WriteByte &rArr; __2printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[29]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_WriteByte
 <LI><a href="#[30]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_SequentialRead
@@ -138,13 +138,13 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[33]"></a>bmi160_read_raw</STRONG> (Thumb, 8 bytes, Stack size 8 bytes, bmi160.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 1232<LI>Call Chain = bmi160_read_raw &rArr; read_fifo &rArr; I2C_WriteByte &rArr; __2printf
+<BR><BR>[Stack]<UL><LI>Max Depth = 464<LI>Call Chain = bmi160_read_raw &rArr; read_fifo &rArr; I2C_WriteByte &rArr; __2printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[2f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;read_fifo
 </UL>
 <BR>[Called By]<UL><LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gyro_offset
 <LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;accel_offset
-<LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;inertial_sensor_read
+<LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;inertial_sensor_read
 </UL>
 
 <P><STRONG><a name="[37]"></a>calculate</STRONG> (Thumb, 602 bytes, Stack size 84 bytes, fbm320.o(.text))
@@ -204,7 +204,7 @@ Global Symbols
 <LI><a href="#[37]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;calculate
 <LI><a href="#[29]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_WriteByte
 </UL>
-<BR>[Called By]<UL><LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_50Hzloop
+<BR>[Called By]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_50Hzloop
 </UL>
 
 <P><STRONG><a name="[40]"></a>motor_init</STRONG> (Thumb, 128 bytes, Stack size 24 bytes, motor.o(.text))
@@ -227,7 +227,7 @@ Global Symbols
 <LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
 </UL>
 <BR>[Called By]<UL><LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motors_output
-<LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_1Hzloop
+<LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_1Hzloop
 </UL>
 
 <P><STRONG><a name="[8d]"></a>motor_stop</STRONG> (Thumb, 36 bytes, Stack size 0 bytes, motor.o(.text))
@@ -254,7 +254,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[50]"></a>peripheral_init</STRONG> (Thumb, 94 bytes, Stack size 8 bytes, common.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 1296<LI>Call Chain = peripheral_init &rArr; gyro_offset &rArr; bmi160_read_raw &rArr; read_fifo &rArr; I2C_WriteByte &rArr; __2printf
+<BR><BR>[Stack]<UL><LI>Max Depth = 528<LI>Call Chain = peripheral_init &rArr; gyro_offset &rArr; bmi160_read_raw &rArr; read_fifo &rArr; I2C_WriteByte &rArr; __2printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uart_console_init
 <LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;scheduler_init
@@ -277,7 +277,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[1f]"></a>main</STRONG> (Thumb, 28 bytes, Stack size 0 bytes, main.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 1296<LI>Call Chain = main &rArr; peripheral_init &rArr; gyro_offset &rArr; bmi160_read_raw &rArr; read_fifo &rArr; I2C_WriteByte &rArr; __2printf
+<BR><BR>[Stack]<UL><LI>Max Depth = 528<LI>Call Chain = main &rArr; peripheral_init &rArr; gyro_offset &rArr; bmi160_read_raw &rArr; read_fifo &rArr; I2C_WriteByte &rArr; __2printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;scheduler_run
 <LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fc_status_reset
@@ -389,7 +389,7 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup_pn020series.o(RESET)
 </UL>
 <P><STRONG><a name="[5a]"></a>LPF2pSetCutoffFreq</STRONG> (Thumb, 178 bytes, Stack size 32 bytes, algorithm_filter.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 148<LI>Call Chain = LPF2pSetCutoffFreq &rArr; tanf &rArr; __mathlib_rredf2 &rArr; __aeabi_frsub &rArr; __aeabi_fadd &rArr; _float_epilogue
+<BR><BR>[Stack]<UL><LI>Max Depth = 148<LI>Call Chain = LPF2pSetCutoffFreq &rArr; cosf &rArr; __mathlib_rredf2 &rArr; __aeabi_frsub &rArr; __aeabi_fadd &rArr; _float_epilogue
 </UL>
 <BR>[Calls]<UL><LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_frsub
 <LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_scalbnf
@@ -397,8 +397,8 @@ Global Symbols
 <LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
 <LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fdiv
 <LI><a href="#[3f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fadd
-<LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tanf
 <LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cosf
+<LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tanf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;inertial_sensor_init
 </UL>
@@ -411,7 +411,7 @@ Global Symbols
 <LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
 <LI><a href="#[3f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fadd
 </UL>
-<BR>[Called By]<UL><LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;inertial_sensor_read
+<BR>[Called By]<UL><LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;inertial_sensor_read
 </UL>
 
 <P><STRONG><a name="[60]"></a>LPF_1st</STRONG> (Thumb, 42 bytes, Stack size 16 bytes, algorithm_filter.o(.text))
@@ -433,7 +433,7 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_desired_leans_angles
 <LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Quaternion_Normalize
-<LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_GetQ
+<LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_GetQ
 </UL>
 
 <P><STRONG><a name="[46]"></a>data_limit</STRONG> (Thumb, 34 bytes, Stack size 16 bytes, algorithm_math.o(.text))
@@ -448,8 +448,8 @@ Global Symbols
 <LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;norm_input_dz
 </UL>
 
-<P><STRONG><a name="[a1]"></a>VariableParameter</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, algorithm_math.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_GetQ
+<P><STRONG><a name="[a0]"></a>VariableParameter</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, algorithm_math.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_GetQ
 </UL>
 
 <P><STRONG><a name="[64]"></a>Rad</STRONG> (Thumb, 22 bytes, Stack size 8 bytes, algorithm_math.o(.text))
@@ -459,7 +459,7 @@ Global Symbols
 <LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 </UL>
 <BR>[Called By]<UL><LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;axis_target_pid_cal
-<LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_GetQ
+<LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_GetQ
 </UL>
 
 <P><STRONG><a name="[67]"></a>Degree</STRONG> (Thumb, 22 bytes, Stack size 8 bytes, algorithm_math.o(.text))
@@ -468,7 +468,7 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
 <LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 </UL>
-<BR>[Called By]<UL><LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_Update
+<BR>[Called By]<UL><LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_Update
 </UL>
 
 <P><STRONG><a name="[68]"></a>set_pid_filt_hz</STRONG> (Thumb, 28 bytes, Stack size 8 bytes, algorithm_pid.o(.text))
@@ -489,17 +489,17 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;param_load
 </UL>
 
-<P><STRONG><a name="[ad]"></a>set_pid_param_p</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, algorithm_pid.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;console_input_handle
+<P><STRONG><a name="[ac]"></a>set_pid_param_p</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, algorithm_pid.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;console_input_handle
 </UL>
 
-<P><STRONG><a name="[ae]"></a>set_pid_param_i</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, algorithm_pid.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;console_input_handle
+<P><STRONG><a name="[ad]"></a>set_pid_param_i</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, algorithm_pid.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;console_input_handle
 <LI><a href="#[c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;switch_event_trigger
 </UL>
 
-<P><STRONG><a name="[af]"></a>set_pid_param_d</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, algorithm_pid.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;console_input_handle
+<P><STRONG><a name="[ae]"></a>set_pid_param_d</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, algorithm_pid.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;console_input_handle
 <LI><a href="#[c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;switch_event_trigger
 </UL>
 
@@ -553,7 +553,7 @@ Global Symbols
 <LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
 <LI><a href="#[3f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fadd
 </UL>
-<BR>[Called By]<UL><LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_GetQ
+<BR>[Called By]<UL><LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_GetQ
 </UL>
 
 <P><STRONG><a name="[6e]"></a>Quaternion_ToMatrix</STRONG> (Thumb, 374 bytes, Stack size 24 bytes, algorithm_quaternion.o(.text))
@@ -574,7 +574,7 @@ Global Symbols
 <LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;atan2f
 <LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;asinf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_Update
+<BR>[Called By]<UL><LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_Update
 </UL>
 
 <P><STRONG><a name="[72]"></a>Quaternion_Normalize</STRONG> (Thumb, 108 bytes, Stack size 24 bytes, algorithm_quaternion.o(.text))
@@ -584,7 +584,7 @@ Global Symbols
 <LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
 <LI><a href="#[3f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fadd
 </UL>
-<BR>[Called By]<UL><LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_GetQ
+<BR>[Called By]<UL><LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_GetQ
 </UL>
 
 <P><STRONG><a name="[73]"></a>Quaternion_RungeKutta</STRONG> (Thumb, 240 bytes, Stack size 48 bytes, algorithm_quaternion.o(.text))
@@ -594,7 +594,7 @@ Global Symbols
 <LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
 <LI><a href="#[3f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fadd
 </UL>
-<BR>[Called By]<UL><LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_GetQ
+<BR>[Called By]<UL><LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_GetQ
 </UL>
 
 <P><STRONG><a name="[74]"></a>axis_target_pid_cal</STRONG> (Thumb, 42 bytes, Stack size 8 bytes, attitude_control.o(.text))
@@ -620,7 +620,7 @@ Global Symbols
 <LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;axis_target_pid_cal
 <LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fsub
 </UL>
-<BR>[Called By]<UL><LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fast_loop
+<BR>[Called By]<UL><LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fast_loop
 </UL>
 
 <P><STRONG><a name="[7b]"></a>attitude_angle_euler_controller</STRONG> (Thumb, 84 bytes, Stack size 40 bytes, attitude_control.o(.text))
@@ -666,7 +666,7 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_flight_mode
 <LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stabilize_init
-<LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_motor_armed
+<LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_motor_armed
 </UL>
 
 <P><STRONG><a name="[83]"></a>stabilize_init</STRONG> (Thumb, 12 bytes, Stack size 8 bytes, flight_mode_control.o(.text))
@@ -720,7 +720,7 @@ Global Symbols
 <LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stabilize_run
 <LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;acro_run
 </UL>
-<BR>[Called By]<UL><LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fast_loop
+<BR>[Called By]<UL><LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fast_loop
 </UL>
 
 <P><STRONG><a name="[8c]"></a>motors_output</STRONG> (Thumb, 168 bytes, Stack size 32 bytes, motor_control.o(.text))
@@ -732,7 +732,7 @@ Global Symbols
 <LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fsub
 <LI><a href="#[3f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fadd
 </UL>
-<BR>[Called By]<UL><LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fast_loop
+<BR>[Called By]<UL><LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fast_loop
 </UL>
 
 <P><STRONG><a name="[78]"></a>set_motor_roll</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, motor_control.o(.text))
@@ -751,24 +751,19 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;attitude_throttle_controller
 </UL>
 
-<P><STRONG><a name="[8e]"></a>set_trace_throttle</STRONG> (Thumb, 22 bytes, Stack size 8 bytes, motor_control.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = set_trace_throttle &rArr; __2printf
-</UL>
-<BR>[Calls]<UL><LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
-<LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
-</UL>
-<BR>[Called By]<UL><LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;console_input_handle
+<P><STRONG><a name="[af]"></a>set_trace_throttle</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, motor_control.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;console_input_handle
 </UL>
 
 <P><STRONG><a name="[53]"></a>scheduler_init</STRONG> (Thumb, 76 bytes, Stack size 8 bytes, scheduler.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 44<LI>Call Chain = scheduler_init &rArr; TIMER_Open &rArr; __aeabi_uidivmod
 </UL>
-<BR>[Calls]<UL><LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIMER_Open
+<BR>[Calls]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIMER_Open
 </UL>
 <BR>[Called By]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;peripheral_init
 </UL>
 
-<P><STRONG><a name="[90]"></a>time_slice</STRONG> (Thumb, 164 bytes, Stack size 32 bytes, scheduler.o(.text))
+<P><STRONG><a name="[8f]"></a>time_slice</STRONG> (Thumb, 164 bytes, Stack size 32 bytes, scheduler.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = time_slice
 </UL>
 <BR>[Called By]<UL><LI><a href="#[10]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TMR1_IRQHandler
@@ -777,15 +772,15 @@ Global Symbols
 <P><STRONG><a name="[10]"></a>TMR1_IRQHandler</STRONG> (Thumb, 32 bytes, Stack size 4 bytes, scheduler.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = TMR1_IRQHandler &rArr; time_slice
 </UL>
-<BR>[Calls]<UL><LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;time_slice
+<BR>[Calls]<UL><LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;time_slice
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_pn020series.o(RESET)
 </UL>
-<P><STRONG><a name="[91]"></a>sched_1Hzloop</STRONG> (Thumb, 172 bytes, Stack size 24 bytes, scheduler.o(.text))
+<P><STRONG><a name="[90]"></a>sched_1Hzloop</STRONG> (Thumb, 172 bytes, Stack size 24 bytes, scheduler.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = sched_1Hzloop &rArr; __aeabi_dadd &rArr; _double_epilogue &rArr; __aeabi_llsl
 </UL>
 <BR>[Calls]<UL><LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
-<LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
+<LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 <LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PWM_Start
 <LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PWM_EnableOutput
 <LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PWM_ConfigOutputChannel
@@ -793,27 +788,27 @@ Global Symbols
 <LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;low_priority_loop
+<BR>[Called By]<UL><LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;low_priority_loop
 </UL>
 
-<P><STRONG><a name="[93]"></a>sched_10Hzloop</STRONG> (Thumb, 20 bytes, Stack size 8 bytes, scheduler.o(.text))
+<P><STRONG><a name="[92]"></a>sched_10Hzloop</STRONG> (Thumb, 20 bytes, Stack size 8 bytes, scheduler.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = sched_10Hzloop &rArr; check_motor_armed &rArr; reset_pid_param
 </UL>
-<BR>[Calls]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_motor_armed
+<BR>[Calls]<UL><LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_motor_armed
 </UL>
-<BR>[Called By]<UL><LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;low_priority_loop
+<BR>[Called By]<UL><LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;low_priority_loop
 </UL>
 
-<P><STRONG><a name="[95]"></a>sched_20Hzloop</STRONG> (Thumb, 20 bytes, Stack size 8 bytes, scheduler.o(.text))
+<P><STRONG><a name="[94]"></a>sched_20Hzloop</STRONG> (Thumb, 20 bytes, Stack size 8 bytes, scheduler.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 68<LI>Call Chain = sched_20Hzloop &rArr; update_home_pos &rArr; __aeabi_fsub &rArr; __aeabi_fadd &rArr; _float_epilogue
 </UL>
-<BR>[Calls]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;update_home_pos
+<BR>[Calls]<UL><LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;update_home_pos
 </UL>
-<BR>[Called By]<UL><LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;low_priority_loop
+<BR>[Called By]<UL><LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;low_priority_loop
 </UL>
 
-<P><STRONG><a name="[97]"></a>sched_50Hzloop</STRONG> (Thumb, 992 bytes, Stack size 48 bytes, scheduler.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 248<LI>Call Chain = sched_50Hzloop &rArr; inertial_nav_update &rArr; position_z_update &rArr; inertial_filter_correct &rArr; __aeabi_dadd &rArr; _double_epilogue &rArr; __aeabi_llsl
+<P><STRONG><a name="[96]"></a>sched_50Hzloop</STRONG> (Thumb, 988 bytes, Stack size 48 bytes, scheduler.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 256<LI>Call Chain = sched_50Hzloop &rArr; inertial_nav_update &rArr; position_z_update &rArr; inertial_filter_correct &rArr; __aeabi_dadd &rArr; _double_epilogue &rArr; __aeabi_llsl
 </UL>
 <BR>[Calls]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_inertial_vel
 <LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_scalbnf
@@ -822,53 +817,53 @@ Global Symbols
 <LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
 <LI><a href="#[3f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fadd
 <LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fbm320_timer_procedure
-<LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rc_channel_read
-<LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;inertial_nav_update
-<LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2iz
+<LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rc_channel_read
+<LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;inertial_nav_update
+<LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2iz
 <LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 <LI><a href="#[31]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uidivmod
 </UL>
-<BR>[Called By]<UL><LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;low_priority_loop
+<BR>[Called By]<UL><LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;low_priority_loop
 </UL>
 
-<P><STRONG><a name="[9c]"></a>sched_100Hzloop</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, scheduler.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;low_priority_loop
+<P><STRONG><a name="[9b]"></a>sched_100Hzloop</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, scheduler.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;low_priority_loop
 </UL>
 
-<P><STRONG><a name="[9b]"></a>low_priority_loop</STRONG> (Thumb, 24 bytes, Stack size 8 bytes, scheduler.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 256<LI>Call Chain = low_priority_loop &rArr; sched_50Hzloop &rArr; inertial_nav_update &rArr; position_z_update &rArr; inertial_filter_correct &rArr; __aeabi_dadd &rArr; _double_epilogue &rArr; __aeabi_llsl
+<P><STRONG><a name="[9a]"></a>low_priority_loop</STRONG> (Thumb, 24 bytes, Stack size 8 bytes, scheduler.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 264<LI>Call Chain = low_priority_loop &rArr; sched_50Hzloop &rArr; inertial_nav_update &rArr; position_z_update &rArr; inertial_filter_correct &rArr; __aeabi_dadd &rArr; _double_epilogue &rArr; __aeabi_llsl
 </UL>
-<BR>[Calls]<UL><LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_100Hzloop
-<LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_50Hzloop
-<LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_20Hzloop
-<LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_10Hzloop
-<LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_1Hzloop
+<BR>[Calls]<UL><LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_100Hzloop
+<LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_50Hzloop
+<LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_20Hzloop
+<LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_10Hzloop
+<LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_1Hzloop
 </UL>
 <BR>[Called By]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;scheduler_run
 </UL>
 
-<P><STRONG><a name="[9d]"></a>fast_loop</STRONG> (Thumb, 36 bytes, Stack size 8 bytes, scheduler.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 1256<LI>Call Chain = fast_loop &rArr; inertial_sensor_read &rArr; bmi160_read_raw &rArr; read_fifo &rArr; I2C_WriteByte &rArr; __2printf
+<P><STRONG><a name="[9c]"></a>fast_loop</STRONG> (Thumb, 36 bytes, Stack size 8 bytes, scheduler.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 488<LI>Call Chain = fast_loop &rArr; inertial_sensor_read &rArr; bmi160_read_raw &rArr; read_fifo &rArr; I2C_WriteByte &rArr; __2printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motors_output
 <LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;update_flight_mode
 <LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;attitude_angle_rate_controller
-<LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;inertial_sensor_read
-<LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_Update
+<LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;inertial_sensor_read
+<LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_Update
 </UL>
 <BR>[Called By]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;scheduler_run
 </UL>
 
 <P><STRONG><a name="[59]"></a>scheduler_run</STRONG> (Thumb, 12 bytes, Stack size 8 bytes, scheduler.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 1264<LI>Call Chain = scheduler_run &rArr; fast_loop &rArr; inertial_sensor_read &rArr; bmi160_read_raw &rArr; read_fifo &rArr; I2C_WriteByte &rArr; __2printf
+<BR><BR>[Stack]<UL><LI>Max Depth = 496<LI>Call Chain = scheduler_run &rArr; fast_loop &rArr; inertial_sensor_read &rArr; bmi160_read_raw &rArr; read_fifo &rArr; I2C_WriteByte &rArr; __2printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fast_loop
-<LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;low_priority_loop
+<BR>[Calls]<UL><LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fast_loop
+<LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;low_priority_loop
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[a0]"></a>AHRS_GetQ</STRONG> (Thumb, 460 bytes, Stack size 48 bytes, ahrs.o(.text))
+<P><STRONG><a name="[9f]"></a>AHRS_GetQ</STRONG> (Thumb, 460 bytes, Stack size 48 bytes, ahrs.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 184<LI>Call Chain = AHRS_GetQ &rArr; Rad &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; __aeabi_llsl
 </UL>
 <BR>[Calls]<UL><LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
@@ -876,130 +871,130 @@ Global Symbols
 <LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Quaternion_Normalize
 <LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Quaternion_vectorGravity
 <LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Rad
-<LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;VariableParameter
+<LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;VariableParameter
 <LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Q_rsqrt
-<LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
+<LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 <LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fsub
 <LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
 <LI><a href="#[3f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fadd
 <LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 </UL>
-<BR>[Called By]<UL><LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_Update
+<BR>[Called By]<UL><LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_Update
 </UL>
 
-<P><STRONG><a name="[9f]"></a>AHRS_Update</STRONG> (Thumb, 102 bytes, Stack size 16 bytes, ahrs.o(.text))
+<P><STRONG><a name="[9e]"></a>AHRS_Update</STRONG> (Thumb, 102 bytes, Stack size 16 bytes, ahrs.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 200<LI>Call Chain = AHRS_Update &rArr; AHRS_GetQ &rArr; Rad &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; __aeabi_llsl
 </UL>
 <BR>[Calls]<UL><LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
 <LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Quaternion_ToAngE
 <LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Degree
 <LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
-<LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_GetQ
+<LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_GetQ
 </UL>
-<BR>[Called By]<UL><LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fast_loop
+<BR>[Called By]<UL><LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fast_loop
 </UL>
 
-<P><STRONG><a name="[a2]"></a>AHRS_set_complementary_filter_kp</STRONG> (Thumb, 78 bytes, Stack size 16 bytes, ahrs.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 1272<LI>Call Chain = AHRS_set_complementary_filter_kp &rArr; accel_offset &rArr; bmi160_read_raw &rArr; read_fifo &rArr; I2C_WriteByte &rArr; __2printf
+<P><STRONG><a name="[a1]"></a>AHRS_set_complementary_filter_kp</STRONG> (Thumb, 78 bytes, Stack size 16 bytes, ahrs.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 504<LI>Call Chain = AHRS_set_complementary_filter_kp &rArr; accel_offset &rArr; bmi160_read_raw &rArr; read_fifo &rArr; I2C_WriteByte &rArr; __2printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;accel_offset
 <LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;console_input_handle
+<BR>[Called By]<UL><LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;console_input_handle
 </UL>
 
-<P><STRONG><a name="[a3]"></a>AHRS_set_complementary_filter_ki</STRONG> (Thumb, 78 bytes, Stack size 16 bytes, ahrs.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 1272<LI>Call Chain = AHRS_set_complementary_filter_ki &rArr; accel_offset &rArr; bmi160_read_raw &rArr; read_fifo &rArr; I2C_WriteByte &rArr; __2printf
+<P><STRONG><a name="[a2]"></a>AHRS_set_complementary_filter_ki</STRONG> (Thumb, 78 bytes, Stack size 16 bytes, ahrs.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 504<LI>Call Chain = AHRS_set_complementary_filter_ki &rArr; accel_offset &rArr; bmi160_read_raw &rArr; read_fifo &rArr; I2C_WriteByte &rArr; __2printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;accel_offset
 <LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;console_input_handle
+<BR>[Called By]<UL><LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;console_input_handle
 </UL>
 
 <P><STRONG><a name="[57]"></a>inertial_sensor_init</STRONG> (Thumb, 78 bytes, Stack size 16 bytes, inertial_sensor.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 164<LI>Call Chain = inertial_sensor_init &rArr; LPF2pSetCutoffFreq &rArr; tanf &rArr; __mathlib_rredf2 &rArr; __aeabi_frsub &rArr; __aeabi_fadd &rArr; _float_epilogue
+<BR><BR>[Stack]<UL><LI>Max Depth = 164<LI>Call Chain = inertial_sensor_init &rArr; LPF2pSetCutoffFreq &rArr; cosf &rArr; __mathlib_rredf2 &rArr; __aeabi_frsub &rArr; __aeabi_fadd &rArr; _float_epilogue
 </UL>
 <BR>[Calls]<UL><LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LPF2pSetCutoffFreq
 </UL>
 <BR>[Called By]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;peripheral_init
 </UL>
 
-<P><STRONG><a name="[9e]"></a>inertial_sensor_read</STRONG> (Thumb, 234 bytes, Stack size 16 bytes, inertial_sensor.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 1248<LI>Call Chain = inertial_sensor_read &rArr; bmi160_read_raw &rArr; read_fifo &rArr; I2C_WriteByte &rArr; __2printf
+<P><STRONG><a name="[9d]"></a>inertial_sensor_read</STRONG> (Thumb, 234 bytes, Stack size 16 bytes, inertial_sensor.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 480<LI>Call Chain = inertial_sensor_read &rArr; bmi160_read_raw &rArr; read_fifo &rArr; I2C_WriteByte &rArr; __2printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LPF2pApply
 <LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2f
 <LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
 <LI><a href="#[33]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;bmi160_read_raw
 </UL>
-<BR>[Called By]<UL><LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fast_loop
+<BR>[Called By]<UL><LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fast_loop
 </UL>
 
-<P><STRONG><a name="[a4]"></a>gyro_caloffest</STRONG> (Thumb, 64 bytes, Stack size 24 bytes, inertial_sensor.o(.text))
+<P><STRONG><a name="[a3]"></a>gyro_caloffest</STRONG> (Thumb, 64 bytes, Stack size 24 bytes, inertial_sensor.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 44<LI>Call Chain = gyro_caloffest &rArr; __aeabi_ui2f &rArr; _float_epilogue
 </UL>
 <BR>[Calls]<UL><LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2f
 <LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fdiv
-<LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2iz
+<LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2iz
 </UL>
 <BR>[Called By]<UL><LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gyro_offset
 </UL>
 
 <P><STRONG><a name="[55]"></a>gyro_offset</STRONG> (Thumb, 266 bytes, Stack size 56 bytes, inertial_sensor.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 1288<LI>Call Chain = gyro_offset &rArr; bmi160_read_raw &rArr; read_fifo &rArr; I2C_WriteByte &rArr; __2printf
+<BR><BR>[Stack]<UL><LI>Max Depth = 520<LI>Call Chain = gyro_offset &rArr; bmi160_read_raw &rArr; read_fifo &rArr; I2C_WriteByte &rArr; __2printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2f
 <LI><a href="#[2a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIMER_Delay
 <LI><a href="#[33]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;bmi160_read_raw
-<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gyro_caloffest
+<LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gyro_caloffest
 </UL>
 <BR>[Called By]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;peripheral_init
 </UL>
 
 <P><STRONG><a name="[56]"></a>accel_offset</STRONG> (Thumb, 108 bytes, Stack size 24 bytes, inertial_sensor.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 1256<LI>Call Chain = accel_offset &rArr; bmi160_read_raw &rArr; read_fifo &rArr; I2C_WriteByte &rArr; __2printf
+<BR><BR>[Stack]<UL><LI>Max Depth = 488<LI>Call Chain = accel_offset &rArr; bmi160_read_raw &rArr; read_fifo &rArr; I2C_WriteByte &rArr; __2printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[2a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIMER_Delay
 <LI><a href="#[33]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;bmi160_read_raw
 <LI><a href="#[32]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_idivmod
 </UL>
 <BR>[Called By]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;peripheral_init
-<LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_set_complementary_filter_ki
-<LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_set_complementary_filter_kp
+<LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_set_complementary_filter_ki
+<LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_set_complementary_filter_kp
 </UL>
 
 <P><STRONG><a name="[77]"></a>get_inertial_vel</STRONG> (Thumb, 26 bytes, Stack size 8 bytes, inertial_sensor.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = get_inertial_vel
 </UL>
 <BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;attitude_angle_rate_controller
-<LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_50Hzloop
+<LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_50Hzloop
 </UL>
 
-<P><STRONG><a name="[a6]"></a>position_z_update</STRONG> (Thumb, 466 bytes, Stack size 72 bytes, inertial_nav.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 200<LI>Call Chain = position_z_update &rArr; inertial_filter_correct &rArr; __aeabi_dadd &rArr; _double_epilogue &rArr; __aeabi_llsl
+<P><STRONG><a name="[a5]"></a>position_z_update</STRONG> (Thumb, 470 bytes, Stack size 80 bytes, inertial_nav.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 208<LI>Call Chain = position_z_update &rArr; inertial_filter_correct &rArr; __aeabi_dadd &rArr; _double_epilogue &rArr; __aeabi_llsl
 </UL>
 <BR>[Calls]<UL><LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_frsub
 <LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_scalbnf
 <LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fsub
 <LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
 <LI><a href="#[3f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fadd
-<LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;inertial_filter_correct
+<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;inertial_filter_correct
 </UL>
-<BR>[Called By]<UL><LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;inertial_nav_update
-</UL>
-
-<P><STRONG><a name="[99]"></a>inertial_nav_update</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, inertial_nav.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 200<LI>Call Chain = inertial_nav_update &rArr; position_z_update &rArr; inertial_filter_correct &rArr; __aeabi_dadd &rArr; _double_epilogue &rArr; __aeabi_llsl
-</UL>
-<BR>[Calls]<UL><LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;position_z_update
-</UL>
-<BR>[Called By]<UL><LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_50Hzloop
+<BR>[Called By]<UL><LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;inertial_nav_update
 </UL>
 
-<P><STRONG><a name="[96]"></a>update_home_pos</STRONG> (Thumb, 122 bytes, Stack size 24 bytes, inertial_nav.o(.text))
+<P><STRONG><a name="[98]"></a>inertial_nav_update</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, inertial_nav.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 208<LI>Call Chain = inertial_nav_update &rArr; position_z_update &rArr; inertial_filter_correct &rArr; __aeabi_dadd &rArr; _double_epilogue &rArr; __aeabi_llsl
+</UL>
+<BR>[Calls]<UL><LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;position_z_update
+</UL>
+<BR>[Called By]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_50Hzloop
+</UL>
+
+<P><STRONG><a name="[95]"></a>update_home_pos</STRONG> (Thumb, 122 bytes, Stack size 24 bytes, inertial_nav.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 60<LI>Call Chain = update_home_pos &rArr; __aeabi_fsub &rArr; __aeabi_fadd &rArr; _float_epilogue
 </UL>
 <BR>[Calls]<UL><LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fsub
@@ -1007,13 +1002,13 @@ Global Symbols
 <LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fdiv
 <LI><a href="#[3f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fadd
 </UL>
-<BR>[Called By]<UL><LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_20Hzloop
+<BR>[Called By]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_20Hzloop
 </UL>
 
 <P><STRONG><a name="[52]"></a>I2C_Init</STRONG> (Thumb, 8 bytes, Stack size 8 bytes, bsp_i2c.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = I2C_Init &rArr; I2C_Open &rArr; __aeabi_uidivmod
 </UL>
-<BR>[Calls]<UL><LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_Open
+<BR>[Calls]<UL><LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_Open
 </UL>
 <BR>[Called By]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;peripheral_init
 </UL>
@@ -1021,7 +1016,7 @@ Global Symbols
 <P><STRONG><a name="[29]"></a>I2C_WriteByte</STRONG> (Thumb, 150 bytes, Stack size 32 bytes, bsp_i2c.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = I2C_WriteByte &rArr; __2printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CLK_SysTickDelay
+<BR>[Calls]<UL><LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CLK_SysTickDelay
 <LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fbm320_timer_procedure
@@ -1037,7 +1032,7 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 76<LI>Call Chain = I2C_ReadByte &rArr; TIMER_Delay &rArr; __aeabi_ui2f &rArr; _float_epilogue
 </UL>
 <BR>[Calls]<UL><LI><a href="#[2a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIMER_Delay
-<LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CLK_SysTickDelay
+<LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CLK_SysTickDelay
 <LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[36]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fbm320_init
@@ -1048,7 +1043,7 @@ Global Symbols
 <P><STRONG><a name="[30]"></a>I2C_SequentialRead</STRONG> (Thumb, 224 bytes, Stack size 40 bytes, bsp_i2c.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = I2C_SequentialRead
 </UL>
-<BR>[Calls]<UL><LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CLK_SysTickDelay
+<BR>[Calls]<UL><LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CLK_SysTickDelay
 </UL>
 <BR>[Called By]<UL><LI><a href="#[34]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fbm320_read_long_data
 <LI><a href="#[2f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;read_fifo
@@ -1057,12 +1052,12 @@ Global Symbols
 <P><STRONG><a name="[51]"></a>uart_console_init</STRONG> (Thumb, 38 bytes, Stack size 8 bytes, uart_console.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 52<LI>Call Chain = uart_console_init &rArr; UART_Open &rArr; CLK_GetHCLKFreq &rArr; SystemCoreClockUpdate &rArr; __aeabi_uidivmod
 </UL>
-<BR>[Calls]<UL><LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART_Open
+<BR>[Calls]<UL><LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART_Open
 </UL>
 <BR>[Called By]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;peripheral_init
 </UL>
 
-<P><STRONG><a name="[aa]"></a>get_float</STRONG> (Thumb, 126 bytes, Stack size 24 bytes, uart_console.o(.text))
+<P><STRONG><a name="[a9]"></a>get_float</STRONG> (Thumb, 126 bytes, Stack size 24 bytes, uart_console.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 152<LI>Call Chain = get_float &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; __aeabi_llsl
 </UL>
 <BR>[Calls]<UL><LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
@@ -1072,31 +1067,31 @@ Global Symbols
 <LI><a href="#[3f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fadd
 <LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 </UL>
-<BR>[Called By]<UL><LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;console_input_handle
+<BR>[Called By]<UL><LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;console_input_handle
 </UL>
 
-<P><STRONG><a name="[ab]"></a>console_input_handle</STRONG> (Thumb, 1768 bytes, Stack size 24 bytes, uart_console.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 1296<LI>Call Chain = console_input_handle &rArr; AHRS_set_complementary_filter_ki &rArr; accel_offset &rArr; bmi160_read_raw &rArr; read_fifo &rArr; I2C_WriteByte &rArr; __2printf
+<P><STRONG><a name="[aa]"></a>console_input_handle</STRONG> (Thumb, 1768 bytes, Stack size 24 bytes, uart_console.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 528<LI>Call Chain = console_input_handle &rArr; AHRS_set_complementary_filter_ki &rArr; accel_offset &rArr; bmi160_read_raw &rArr; read_fifo &rArr; I2C_WriteByte &rArr; __2printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_trace_throttle
-<LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_pid_param_d
-<LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_pid_param_i
-<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_pid_param_p
+<BR>[Calls]<UL><LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_trace_throttle
+<LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_pid_param_d
+<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_pid_param_i
+<LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_pid_param_p
 <LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
-<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_float
-<LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_set_complementary_filter_ki
-<LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_set_complementary_filter_kp
-<LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uread4
+<LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_float
+<LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_set_complementary_filter_ki
+<LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_set_complementary_filter_kp
+<LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uread4
 <LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[13]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART0_IRQHandler
 </UL>
 
-<P><STRONG><a name="[13]"></a>UART0_IRQHandler</STRONG> (Thumb, 142 bytes, Stack size 24 bytes, uart_console.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 1320<LI>Call Chain = UART0_IRQHandler &rArr; console_input_handle &rArr; AHRS_set_complementary_filter_ki &rArr; accel_offset &rArr; bmi160_read_raw &rArr; read_fifo &rArr; I2C_WriteByte &rArr; __2printf
+<P><STRONG><a name="[13]"></a>UART0_IRQHandler</STRONG> (Thumb, 138 bytes, Stack size 24 bytes, uart_console.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 552<LI>Call Chain = UART0_IRQHandler &rArr; console_input_handle &rArr; AHRS_set_complementary_filter_ki &rArr; accel_offset &rArr; bmi160_read_raw &rArr; read_fifo &rArr; I2C_WriteByte &rArr; __2printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART_Read
-<LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;console_input_handle
+<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;console_input_handle
 <LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 <LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr
 </UL>
@@ -1152,7 +1147,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemCoreClockUpdate
 </UL>
-<BR>[Called By]<UL><LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART_Open
+<BR>[Called By]<UL><LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART_Open
 <LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_SetBusClock
 </UL>
 
@@ -1166,7 +1161,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;system_init
 </UL>
 
-<P><STRONG><a name="[a8]"></a>CLK_SysTickDelay</STRONG> (Thumb, 28 bytes, Stack size 0 bytes, clk.o(.text))
+<P><STRONG><a name="[a7]"></a>CLK_SysTickDelay</STRONG> (Thumb, 28 bytes, Stack size 0 bytes, clk.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[29]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_WriteByte
 <LI><a href="#[30]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_SequentialRead
 <LI><a href="#[2e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_ReadByte
@@ -1178,7 +1173,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;system_init
 </UL>
 
-<P><STRONG><a name="[a7]"></a>I2C_Open</STRONG> (Thumb, 48 bytes, Stack size 16 bytes, i2c.o(.text))
+<P><STRONG><a name="[a6]"></a>I2C_Open</STRONG> (Thumb, 48 bytes, Stack size 16 bytes, i2c.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = I2C_Open &rArr; __aeabi_uidivmod
 </UL>
 <BR>[Calls]<UL><LI><a href="#[31]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uidivmod
@@ -1192,19 +1187,19 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[31]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uidivmod
 </UL>
 <BR>[Called By]<UL><LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motor_init
-<LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_1Hzloop
+<LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_1Hzloop
 </UL>
 
 <P><STRONG><a name="[43]"></a>PWM_Start</STRONG> (Thumb, 40 bytes, Stack size 12 bytes, pwm.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = PWM_Start
 </UL>
 <BR>[Called By]<UL><LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motor_init
-<LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_1Hzloop
+<LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_1Hzloop
 </UL>
 
 <P><STRONG><a name="[42]"></a>PWM_EnableOutput</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, pwm.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motor_init
-<LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_1Hzloop
+<LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_1Hzloop
 </UL>
 
 <P><STRONG><a name="[24]"></a>stackDump</STRONG> (Thumb, 70 bytes, Stack size 8 bytes, retarget.o(.text))
@@ -1253,10 +1248,10 @@ Global Symbols
 
 <P><STRONG><a name="[bb]"></a>TIMER_GetModuleClock</STRONG> (Thumb, 74 bytes, Stack size 0 bytes, timer.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[2a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIMER_Delay
-<LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIMER_Open
+<LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIMER_Open
 </UL>
 
-<P><STRONG><a name="[8f]"></a>TIMER_Open</STRONG> (Thumb, 94 bytes, Stack size 24 bytes, timer.o(.text))
+<P><STRONG><a name="[8e]"></a>TIMER_Open</STRONG> (Thumb, 94 bytes, Stack size 24 bytes, timer.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = TIMER_Open &rArr; __aeabi_uidivmod
 </UL>
 <BR>[Calls]<UL><LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIMER_GetModuleClock
@@ -1287,7 +1282,7 @@ Global Symbols
 <LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RF_RxMode
 </UL>
 
-<P><STRONG><a name="[a9]"></a>UART_Open</STRONG> (Thumb, 42 bytes, Stack size 16 bytes, uart.o(.text))
+<P><STRONG><a name="[a8]"></a>UART_Open</STRONG> (Thumb, 42 bytes, Stack size 16 bytes, uart.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 44<LI>Call Chain = UART_Open &rArr; CLK_GetHCLKFreq &rArr; SystemCoreClockUpdate &rArr; __aeabi_uidivmod
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CLK_GetHCLKFreq
@@ -1313,8 +1308,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rc_channel_read
-<LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;auto_code_matching
+<BR>[Called By]<UL><LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;auto_code_matching
 </UL>
 
 <P><STRONG><a name="[bd]"></a>auto_code_matching</STRONG> (Thumb, 58 bytes, Stack size 8 bytes, rc_channel.o(.text))
@@ -1324,7 +1318,7 @@ Global Symbols
 <LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_roll_code
 </UL>
 <BR>[Called By]<UL><LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rc_channel_init
-<LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rc_channel_read
+<LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rc_channel_read
 </UL>
 
 <P><STRONG><a name="[54]"></a>rc_channel_init</STRONG> (Thumb, 44 bytes, Stack size 8 bytes, rc_channel.o(.text))
@@ -1340,16 +1334,15 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;peripheral_init
 </UL>
 
-<P><STRONG><a name="[98]"></a>rc_channel_read</STRONG> (Thumb, 268 bytes, Stack size 24 bytes, rc_channel.o(.text))
+<P><STRONG><a name="[97]"></a>rc_channel_read</STRONG> (Thumb, 236 bytes, Stack size 24 bytes, rc_channel.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = rc_channel_read &rArr; switch_event_trigger &rArr; set_flight_mode &rArr; stabilize_init &rArr; reset_pid_param
 </UL>
 <BR>[Calls]<UL><LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ucRF_DumpRxData
 <LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;auto_code_matching
-<LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_roll_code
 <LI><a href="#[c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;switch_event_trigger
 <LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr
 </UL>
-<BR>[Called By]<UL><LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_50Hzloop
+<BR>[Called By]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_50Hzloop
 </UL>
 
 <P><STRONG><a name="[c3]"></a>norm_input_dz</STRONG> (Thumb, 132 bytes, Stack size 24 bytes, rc_channel.o(.text))
@@ -1373,7 +1366,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_desired_leans_angles
 </UL>
 
-<P><STRONG><a name="[88]"></a>get_desired_leans_angles</STRONG> (Thumb, 274 bytes, Stack size 24 bytes, rc_channel.o(.text))
+<P><STRONG><a name="[88]"></a>get_desired_leans_angles</STRONG> (Thumb, 138 bytes, Stack size 24 bytes, rc_channel.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 76<LI>Call Chain = get_desired_leans_angles &rArr; Q_rsqrt &rArr; __aeabi_frsub &rArr; __aeabi_fadd &rArr; _float_epilogue
 </UL>
 <BR>[Calls]<UL><LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cfcmple
@@ -1386,12 +1379,12 @@ Global Symbols
 <LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;acro_run
 </UL>
 
-<P><STRONG><a name="[87]"></a>get_desired_throttle_expo</STRONG> (Thumb, 94 bytes, Stack size 24 bytes, rc_channel.o(.text))
+<P><STRONG><a name="[87]"></a>get_desired_throttle_expo</STRONG> (Thumb, 242 bytes, Stack size 24 bytes, rc_channel.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 152<LI>Call Chain = get_desired_throttle_expo &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; __aeabi_llsl
 </UL>
 <BR>[Calls]<UL><LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
 <LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
-<LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
+<LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 <LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_scalbnf
 <LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;data_limit
 <LI><a href="#[3f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fadd
@@ -1402,12 +1395,12 @@ Global Symbols
 <LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;acro_run
 </UL>
 
-<P><STRONG><a name="[94]"></a>check_motor_armed</STRONG> (Thumb, 242 bytes, Stack size 32 bytes, rc_channel.o(.text))
+<P><STRONG><a name="[93]"></a>check_motor_armed</STRONG> (Thumb, 240 bytes, Stack size 32 bytes, rc_channel.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = check_motor_armed &rArr; reset_pid_param
 </UL>
 <BR>[Calls]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;reset_pid_param
 </UL>
-<BR>[Called By]<UL><LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_10Hzloop
+<BR>[Called By]<UL><LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_10Hzloop
 </UL>
 
 <P><STRONG><a name="[c0]"></a>RF_RxMode</STRONG> (Thumb, 38 bytes, Stack size 8 bytes, rf.o(.text))
@@ -1452,7 +1445,7 @@ Global Symbols
 <LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RF_ClearStatus
 <LI><a href="#[c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ucRF_GetStatus
 </UL>
-<BR>[Called By]<UL><LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rc_channel_read
+<BR>[Called By]<UL><LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rc_channel_read
 <LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;auto_code_matching
 </UL>
 
@@ -1474,10 +1467,10 @@ Global Symbols
 <LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PWM_ConfigOutputChannel
 <LI><a href="#[2a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIMER_Delay
 <LI><a href="#[2f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;read_fifo
-<LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART_Open
-<LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_Open
-<LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIMER_Open
-<LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_50Hzloop
+<LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART_Open
+<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_Open
+<LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIMER_Open
+<LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_50Hzloop
 <LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_SetBusClock
 <LI><a href="#[dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_core
 <LI><a href="#[32]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_idivmod
@@ -1507,7 +1500,7 @@ Global Symbols
 <BR><BR>[Calls]<UL><LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memset
 </UL>
 <BR>[Called By]<UL><LI><a href="#[13]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART0_IRQHandler
-<LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rc_channel_read
+<LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rc_channel_read
 </UL>
 
 <P><STRONG><a name="[ff]"></a>__aeabi_memclr4</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memseta.o(.text), UNUSED)
@@ -1518,8 +1511,8 @@ Global Symbols
 <BR><BR>[Calls]<UL><LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memset
 </UL>
 
-<P><STRONG><a name="[ac]"></a>__aeabi_uread4</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, uread4.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;console_input_handle
+<P><STRONG><a name="[ab]"></a>__aeabi_uread4</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, uread4.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;console_input_handle
 </UL>
 
 <P><STRONG><a name="[101]"></a>__rt_uread4</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, uread4.o(.text), UNUSED)
@@ -1549,19 +1542,19 @@ Global Symbols
 <LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LPF2pSetCutoffFreq
 <LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fsub
 <LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fbm320_timer_procedure
-<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_float
-<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;position_z_update
-<LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;inertial_filter_correct
-<LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_GetQ
-<LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;update_home_pos
-<LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_50Hzloop
+<LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_float
+<LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;position_z_update
+<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;inertial_filter_correct
+<LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_GetQ
+<LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;update_home_pos
+<LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_50Hzloop
+<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cosf
 <LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;atan2f
 <LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;asinf
 <LI><a href="#[c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;switch_event_trigger
 <LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_rredf2
 <LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_flt_infnan2
 <LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tanf
-<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cosf
 </UL>
 
 <P><STRONG><a name="[3c]"></a>__aeabi_fsub</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, fadd.o(.text))
@@ -1580,15 +1573,15 @@ Global Symbols
 <LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LPF2pApply
 <LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LPF2pSetCutoffFreq
 <LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fbm320_timer_procedure
-<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;position_z_update
-<LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_GetQ
-<LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;update_home_pos
-<LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_50Hzloop
+<LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;position_z_update
+<LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_GetQ
+<LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;update_home_pos
+<LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_50Hzloop
+<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cosf
 <LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;atan2f
 <LI><a href="#[c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;switch_event_trigger
 <LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_rredf2
 <LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tanf
-<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cosf
 </UL>
 
 <P><STRONG><a name="[5e]"></a>__aeabi_frsub</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, fadd.o(.text))
@@ -1600,12 +1593,12 @@ Global Symbols
 <LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Q_rsqrt
 <LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LPF2pApply
 <LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LPF2pSetCutoffFreq
-<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;position_z_update
+<LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;position_z_update
+<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cosf
 <LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;atan2f
 <LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;asinf
 <LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_rredf2
 <LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tanf
-<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cosf
 </UL>
 
 <P><STRONG><a name="[3e]"></a>__aeabi_fmul</STRONG> (Thumb, 122 bytes, Stack size 16 bytes, fmul.o(.text))
@@ -1628,13 +1621,14 @@ Global Symbols
 <LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motor_update
 <LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fbm320_timer_procedure
 <LI><a href="#[2a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIMER_Delay
-<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_float
-<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;position_z_update
-<LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;inertial_filter_correct
-<LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_GetQ
-<LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;update_home_pos
-<LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;inertial_sensor_read
-<LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_50Hzloop
+<LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_float
+<LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;position_z_update
+<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;inertial_filter_correct
+<LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_GetQ
+<LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;update_home_pos
+<LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;inertial_sensor_read
+<LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_50Hzloop
+<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cosf
 <LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;atan2f
 <LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;asinf
 <LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;channel_input_to_target
@@ -1642,7 +1636,6 @@ Global Symbols
 <LI><a href="#[c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;switch_event_trigger
 <LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_rredf2
 <LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tanf
-<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cosf
 </UL>
 
 <P><STRONG><a name="[3b]"></a>__aeabi_fdiv</STRONG> (Thumb, 124 bytes, Stack size 16 bytes, fdiv.o(.text))
@@ -1656,8 +1649,8 @@ Global Symbols
 <LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LPF2pSetCutoffFreq
 <LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fbm320_timer_procedure
 <LI><a href="#[2a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIMER_Delay
-<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gyro_caloffest
-<LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;update_home_pos
+<LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gyro_caloffest
+<LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;update_home_pos
 <LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;atan2f
 <LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;norm_input_dz
 <LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_flt_invalid
@@ -1671,8 +1664,8 @@ Global Symbols
 <LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Quaternion_vectorGravity
 <LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Q_rsqrt
 <LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LPF2pSetCutoffFreq
-<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;position_z_update
-<LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_50Hzloop
+<LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;position_z_update
+<LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_50Hzloop
 <LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;asinf
 <LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_rredf2
 <LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_flt_underflow
@@ -1681,7 +1674,7 @@ Global Symbols
 
 <P><STRONG><a name="[103]"></a>scalbnf</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, fscalb.o(.text), UNUSED)
 
-<P><STRONG><a name="[92]"></a>__aeabi_dadd</STRONG> (Thumb, 328 bytes, Stack size 48 bytes, dadd.o(.text))
+<P><STRONG><a name="[91]"></a>__aeabi_dadd</STRONG> (Thumb, 328 bytes, Stack size 48 bytes, dadd.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = __aeabi_dadd &rArr; _double_epilogue &rArr; __aeabi_llsl
 </UL>
 <BR>[Calls]<UL><LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_lasr
@@ -1691,9 +1684,9 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_desired_throttle_expo
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dsub
-<LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;inertial_filter_correct
-<LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_GetQ
-<LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_1Hzloop
+<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;inertial_filter_correct
+<LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_GetQ
+<LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_1Hzloop
 <LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_sin
 <LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ieee754_rem_pio2
 <LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_drsub
@@ -1704,7 +1697,7 @@ Global Symbols
 <P><STRONG><a name="[d0]"></a>__aeabi_dsub</STRONG> (Thumb, 12 bytes, Stack size 8 bytes, dadd.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 112<LI>Call Chain = __aeabi_dsub &rArr; __aeabi_dadd &rArr; _double_epilogue &rArr; __aeabi_llsl
 </UL>
-<BR>[Calls]<UL><LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
+<BR>[Calls]<UL><LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 </UL>
 <BR>[Called By]<UL><LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_sin
 <LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ieee754_rem_pio2
@@ -1714,7 +1707,7 @@ Global Symbols
 <P><STRONG><a name="[d1]"></a>__aeabi_drsub</STRONG> (Thumb, 12 bytes, Stack size 8 bytes, dadd.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 112<LI>Call Chain = __aeabi_drsub &rArr; __aeabi_dadd &rArr; _double_epilogue &rArr; __aeabi_llsl
 </UL>
-<BR>[Calls]<UL><LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
+<BR>[Calls]<UL><LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 </UL>
 <BR>[Called By]<UL><LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_sin
 <LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ieee754_rem_pio2
@@ -1730,7 +1723,7 @@ Global Symbols
 <LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_throttle_boosted
 <LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Degree
 <LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Rad
-<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_float
+<LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_float
 <LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_sin
 <LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ieee754_rem_pio2
 <LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_cos
@@ -1745,7 +1738,7 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Degree
 <LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Rad
-<LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;inertial_filter_correct
+<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;inertial_filter_correct
 <LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_invalid
 <LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_fp_digits
 </UL>
@@ -1758,8 +1751,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[68]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_pid_filt_hz
 <LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gyro_offset
 <LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fbm320_timer_procedure
-<LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;inertial_sensor_read
-<LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_50Hzloop
+<LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;inertial_sensor_read
+<LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_50Hzloop
 <LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;norm_input_dz
 <LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_rredf2
 </UL>
@@ -1771,17 +1764,17 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motor_update
 <LI><a href="#[2a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIMER_Delay
-<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_float
-<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gyro_caloffest
+<LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_float
+<LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gyro_caloffest
 <LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_rredf2
 </UL>
 
-<P><STRONG><a name="[9a]"></a>__aeabi_f2iz</STRONG> (Thumb, 50 bytes, Stack size 0 bytes, ffixi.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gyro_caloffest
-<LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_50Hzloop
+<P><STRONG><a name="[99]"></a>__aeabi_f2iz</STRONG> (Thumb, 50 bytes, Stack size 0 bytes, ffixi.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gyro_caloffest
+<LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_50Hzloop
+<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cosf
 <LI><a href="#[c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;switch_event_trigger
 <LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tanf
-<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cosf
 </UL>
 
 <P><STRONG><a name="[48]"></a>__aeabi_f2uiz</STRONG> (Thumb, 40 bytes, Stack size 0 bytes, ffixui.o(.text))
@@ -1790,20 +1783,19 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[3d]"></a>__aeabi_f2d</STRONG> (Thumb, 40 bytes, Stack size 0 bytes, f2d.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_trace_throttle
-<LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_desired_throttle_expo
+<BR><BR>[Called By]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_desired_throttle_expo
 <LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_throttle_boosted
 <LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;axis_target_pid_cal
 <LI><a href="#[68]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_pid_filt_hz
 <LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fbm320_timer_procedure
-<LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;console_input_handle
-<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_float
-<LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;inertial_filter_correct
-<LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_set_complementary_filter_ki
-<LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_set_complementary_filter_kp
-<LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_GetQ
-<LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_Update
-<LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_1Hzloop
+<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;console_input_handle
+<LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_float
+<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;inertial_filter_correct
+<LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_set_complementary_filter_ki
+<LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_set_complementary_filter_kp
+<LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_GetQ
+<LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_Update
+<LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_1Hzloop
 </UL>
 
 <P><STRONG><a name="[ee]"></a>__aeabi_cdrcmple</STRONG> (Thumb, 38 bytes, Stack size 0 bytes, cdrcmple.o(.text), UNUSED)
@@ -1818,11 +1810,11 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_desired_throttle_expo
 <LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_throttle_boosted
 <LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;axis_target_pid_cal
-<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_float
-<LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;inertial_filter_correct
-<LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_GetQ
-<LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_Update
-<LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_1Hzloop
+<LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_float
+<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;inertial_filter_correct
+<LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_GetQ
+<LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_Update
+<LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_1Hzloop
 </UL>
 
 <P><STRONG><a name="[104]"></a>__aeabi_cfcmpeq</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, cfcmple.o(.text), UNUSED)
@@ -1848,7 +1840,7 @@ Global Symbols
 <P><STRONG><a name="[cc]"></a>__aeabi_llsl</STRONG> (Thumb, 32 bytes, Stack size 8 bytes, llshl.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = __aeabi_llsl
 </UL>
-<BR>[Called By]<UL><LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
+<BR>[Called By]<UL><LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 <LI><a href="#[d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uldivmod
 <LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_double_epilogue
 <LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2ulz
@@ -1859,7 +1851,7 @@ Global Symbols
 <P><STRONG><a name="[cd]"></a>__aeabi_lasr</STRONG> (Thumb, 38 bytes, Stack size 8 bytes, llsshr.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = __aeabi_lasr
 </UL>
-<BR>[Called By]<UL><LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
+<BR>[Called By]<UL><LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 </UL>
 
 <P><STRONG><a name="[106]"></a>_ll_sshift_r</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, llsshr.o(.text), UNUSED)
@@ -1887,28 +1879,28 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_float_round
 </UL>
-<BR>[Called By]<UL><LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tanf
-<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cosf
+<BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cosf
+<LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tanf
 </UL>
 
 <P><STRONG><a name="[cf]"></a>_double_round</STRONG> (Thumb, 26 bytes, Stack size 8 bytes, depilogue.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = _double_round
 </UL>
 <BR>[Called By]<UL><LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
-<LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
+<LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 <LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_double_epilogue
 </UL>
 
 <P><STRONG><a name="[ce]"></a>_double_epilogue</STRONG> (Thumb, 164 bytes, Stack size 48 bytes, depilogue.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = _double_epilogue &rArr; __aeabi_llsl
 </UL>
-<BR>[Calls]<UL><LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_llsl
+<BR>[Calls]<UL><LI><a href="#[d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_clz
+<LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_llsl
 <LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_double_round
 <LI><a href="#[d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_llsr
-<LI><a href="#[d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_clz
 </UL>
 <BR>[Called By]<UL><LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
-<LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
+<LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 <LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2d
 <LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2d
 </UL>
@@ -2008,18 +2000,17 @@ Global Symbols
 <P><STRONG><a name="[44]"></a>__2printf</STRONG> (Thumb, 0 bytes, Stack size 24 bytes, printfa.o(i.__0printf))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = __2printf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_trace_throttle
-<LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rc_channel_init
+<BR>[Called By]<UL><LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rc_channel_init
 <LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;peripheral_init
 <LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motor_init
 <LI><a href="#[29]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_WriteByte
 <LI><a href="#[2e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_ReadByte
 <LI><a href="#[13]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART0_IRQHandler
-<LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;console_input_handle
-<LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_set_complementary_filter_ki
-<LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_set_complementary_filter_kp
-<LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_50Hzloop
-<LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_1Hzloop
+<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;console_input_handle
+<LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_set_complementary_filter_ki
+<LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_set_complementary_filter_kp
+<LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_50Hzloop
+<LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sched_1Hzloop
 <LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_roll_code
 <LI><a href="#[c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;switch_event_trigger
 <LI><a href="#[24]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stackDump
@@ -2064,7 +2055,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dsub
 <LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
-<LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
+<LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 <LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2d
 <LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2d
 <LI><a href="#[df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_common_ll_muluu
@@ -2092,7 +2083,7 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 152<LI>Call Chain = __kernel_poly &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; __aeabi_llsl
 </UL>
 <BR>[Calls]<UL><LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
-<LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
+<LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 </UL>
 <BR>[Called By]<UL><LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_sin
 <LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_cos
@@ -2103,7 +2094,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dsub
 <LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
-<LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
+<LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 <LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_underflow
 <LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_scalbn
 <LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_drsub
@@ -2142,9 +2133,9 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_scalbnf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;asinf
+<BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cosf
+<LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;asinf
 <LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tanf
-<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cosf
 </UL>
 
 <P><STRONG><a name="[e9]"></a>__mathlib_flt_infnan2</STRONG> (Thumb, 8 bytes, Stack size 8 bytes, funder.o(i.__mathlib_flt_infnan2))
@@ -2160,9 +2151,9 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fdiv
 </UL>
-<BR>[Called By]<UL><LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;asinf
+<BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cosf
+<LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;asinf
 <LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tanf
-<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cosf
 </UL>
 
 <P><STRONG><a name="[eb]"></a>__mathlib_flt_underflow</STRONG> (Thumb, 14 bytes, Stack size 8 bytes, funder.o(i.__mathlib_flt_underflow))
@@ -2187,8 +2178,8 @@ Global Symbols
 <LI><a href="#[3f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fadd
 <LI><a href="#[df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_common_ll_muluu
 </UL>
-<BR>[Called By]<UL><LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tanf
-<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cosf
+<BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cosf
+<LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tanf
 </UL>
 
 <P><STRONG><a name="[10f]"></a>__scatterload_copy</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_copy), UNUSED)
@@ -2198,11 +2189,11 @@ Global Symbols
 <P><STRONG><a name="[111]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
 
 <P><STRONG><a name="[f3]"></a>__set_errno</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, errno.o(i.__set_errno))
-<BR><BR>[Called By]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cos
+<BR><BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cosf
+<LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cos
 <LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;asinf
 <LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sqrtf
 <LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tanf
-<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cosf
 </UL>
 
 <P><STRONG><a name="[70]"></a>asinf</STRONG> (Thumb, 242 bytes, Stack size 24 bytes, asinf.o(i.asinf))
@@ -2257,7 +2248,7 @@ Global Symbols
 <LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fsub
 <LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
 <LI><a href="#[3f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fadd
-<LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2iz
+<LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2iz
 <LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__set_errno
 <LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_rredf2
 <LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_flt_invalid
@@ -2292,7 +2283,7 @@ Global Symbols
 <LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
 <LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fdiv
 <LI><a href="#[3f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fadd
-<LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2iz
+<LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2iz
 <LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__set_errno
 <LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_rredf2
 <LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_flt_underflow
@@ -2314,17 +2305,17 @@ Local Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_pn020series.o(RESET)
 </UL>
-<P><STRONG><a name="[a5]"></a>inertial_filter_correct</STRONG> (Thumb, 126 bytes, Stack size 24 bytes, inertial_nav.o(.text))
+<P><STRONG><a name="[a4]"></a>inertial_filter_correct</STRONG> (Thumb, 126 bytes, Stack size 24 bytes, inertial_nav.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = inertial_filter_correct &rArr; __aeabi_dadd &rArr; _double_epilogue &rArr; __aeabi_llsl
 </UL>
 <BR>[Calls]<UL><LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
 <LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
-<LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
+<LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 <LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
 <LI><a href="#[3f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fadd
 <LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 </UL>
-<BR>[Called By]<UL><LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;position_z_update
+<BR>[Called By]<UL><LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;position_z_update
 </UL>
 
 <P><STRONG><a name="[c2]"></a>switch_event_trigger</STRONG> (Thumb, 240 bytes, Stack size 24 bytes, rc_channel.o(.text))
@@ -2332,22 +2323,22 @@ Local Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_common_switch8
 <LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_flight_mode
-<LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_pid_param_d
-<LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_pid_param_i
+<LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_pid_param_d
+<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_pid_param_i
 <LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fsub
 <LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
 <LI><a href="#[3f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fadd
-<LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2iz
+<LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2iz
 <LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rc_channel_read
+<BR>[Called By]<UL><LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rc_channel_read
 </UL>
 
 <P><STRONG><a name="[ed]"></a>_fp_digits</STRONG> (Thumb, 316 bytes, Stack size 56 bytes, printfa.o(i._fp_digits), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
 <LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cdrcmple
 <LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
-<LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
+<LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 <LI><a href="#[d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uldivmod
 <LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2ulz
 </UL>

@@ -213,6 +213,7 @@ void sched_5Hzloop(void)
 
 void sched_1Hzloop(void)
 {
+	static float trace_throttle = 0.0f;
 	if (!slice_flag.loop_1Hz) {
 		return;
 	}

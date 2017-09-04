@@ -5,7 +5,7 @@
 #include "Algorithm_pid.h"
 
 Thrust thrust = {0};
-float target_throttle = 0, trace_throttle = 0;
+float target_throttle = 0;
 
 /*====================================================================================================*/
 /*====================================================================================================*
@@ -61,7 +61,6 @@ void throttle_control(float dt)
 {
     //thrust.throttle	= (target_throttle - 1000)/cos(ahrs.Roll/RtA)/cos(ahrs.Pitch/RtA);
 		//thrust.throttle = target_throttle; 
-		thrust.throttle = trace_throttle;
 #if 0
 ///////////////////////////////////////////////////////////////////////////
     static float thr;
@@ -119,8 +118,5 @@ void set_motor_throttle(float _thrust, float _cutoff)
 
 void set_trace_throttle(float _thr)
 {
-		trace_throttle = _thr;
-#ifdef __DEVELOP__
-	printf("trace throttle: %.3f\n", trace_throttle);
-#endif
+	thrust.throttle = _thr;
 }

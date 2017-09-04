@@ -331,19 +331,19 @@ bool console_input_handle(void)
 										switch (tmp_buf) {
 												case ASCII_RLL: 
 														_data = get_float(tmp_index);
-														trace_attitude_ang.roll = _data;
+														attitude_target_ang.roll = _data;
 														printf("set roll angle : %.6f\n", _data);
 														return true;
 														break;
 												case ASCII_PTH:
 														_data = get_float(tmp_index);
-														trace_attitude_ang.pitch = _data;
+														attitude_target_ang.pitch = _data;
 														printf("set pitch angle : %.6f\n", _data);
 														return true;
 														break;
 												case ASCII_YAW:
 														_data = get_float(tmp_index);
-														trace_attitude_ang.yaw = _data;
+														attitude_target_ang.yaw = _data;
 														printf("set yaw angle : %.6f\n", _data);
 														return true;
 														break;
@@ -358,19 +358,19 @@ bool console_input_handle(void)
 										switch (tmp_buf) {
 												case ASCII_RLL: 
 														_data = get_float(tmp_index);
-														trace_attituce_ang_vel.roll = _data;
+														attitude_target_ang_vel.roll = _data;
 														printf("set roll rate : %.6f\n", _data);
 														return true;
 														break;
 												case ASCII_PTH:
 														_data = get_float(tmp_index);
-														trace_attituce_ang_vel.pitch = _data;
+														attitude_target_ang_vel.pitch = _data;
 														printf("set pitch rate : %.6f\n", _data);
 														return true;
 														break;
 												case ASCII_YAW:
 														_data = get_float(tmp_index);
-														trace_attituce_ang_vel.yaw = _data;
+														attitude_target_ang_vel.yaw = _data;
 														printf("set yaw rate : %.6f\n", _data);
 														return true;
 														break;

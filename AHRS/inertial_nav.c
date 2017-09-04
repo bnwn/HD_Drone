@@ -96,7 +96,7 @@ void position_z_update(float dt)
     }
 
     /* inertial filter prediction for altitude */
-    inertial_filter_predict(dt, z_est, accel_NED[2]);
+    inertial_filter_predict(dt, z_est, z_est[2]);//accel_NED[2]);
     /* inertial filter correction for altitude */
     inertial_filter_correct(corr_baro, dt, z_est, 0, w_z_baro);	//0.5f
     inertial_filter_correct(corr_acc[2], dt, z_est, 2, w_z_acc);		//20.0f

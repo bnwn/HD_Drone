@@ -9,7 +9,7 @@
 #include "uart.h"
 
 #define CONSOLE_BAUDRATE 115200
-#define CONSOLE_BUF_SIZE 1024
+#define CONSOLE_BUF_SIZE 50
 
 #define ASCII_A 0x61
 //#define ASCII_B 0x62

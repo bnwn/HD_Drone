@@ -1,4 +1,4 @@
-;#<FEEDBACK># ARM Linker, 5060183: Last Updated: Mon Sep 04 20:45:21 2017
+;#<FEEDBACK># ARM Linker, 5060183: Last Updated: Mon Sep 04 21:40:21 2017
 ;VERSION 0.2
 ;FILE acmp.o
 ACMP_Close <= USED 0
@@ -133,8 +133,8 @@ __asm___14_inertial_nav_c_nav____REV16 <= USED 0
 __asm___14_inertial_nav_c_nav____REVSH <= USED 0
 inertial_nav_init <= USED 0
 ;FILE inertial_sensor.o
-__asm___17_inertial_sensor_c_b_IIR____REV16 <= USED 0
-__asm___17_inertial_sensor_c_b_IIR____REVSH <= USED 0
+__asm___17_inertial_sensor_c_e05d5c6f____REV16 <= USED 0
+__asm___17_inertial_sensor_c_e05d5c6f____REVSH <= USED 0
 ;FILE main.o
 __asm___6_main_c_main____REV16 <= USED 0
 __asm___6_main_c_main____REVSH <= USED 0

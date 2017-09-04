@@ -80,7 +80,7 @@
 /* This number of samples should provide only one read burst operation on the
  * FIFO most of the time (99.99%). */
 #define BMI160_MAX_FIFO_SAMPLES 20
-#define BMI160_MAX_FIFO_FRAME 1024
+#define BMI160_MAX_FIFO_FRAME 256
 
 #define BMI160_READ_FLAG 0x80
 #define BMI160_HARDWARE_INIT_MAX_TRIES 5

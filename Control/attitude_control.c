@@ -9,8 +9,6 @@ _Ctrl ctrl_loop = {0};
 
 _Target_Attitude attitude_target_ang_vel = {0};
 _Target_Attitude attitude_target_ang = {0};
-_Target_Attitude trace_attitude_ang = {0};
-_Target_Attitude trace_attituce_ang_vel = {0};
 
 void attitude_angle_rate_controller(void)
 {

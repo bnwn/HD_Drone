@@ -5,11 +5,11 @@
 #include "../Algorithm/Algorithm_math/Algorithm_math.h"
 #include "common.h"
 
-#define  IIR_ORDER     4      //使用IIR滤波器的阶数
-double b_IIR[IIR_ORDER+1] ={0.0008f, 0.0032f, 0.0048f, 0.0032f, 0.0008f};  //系数b
-double a_IIR[IIR_ORDER+1] ={1.0000f, -3.0176f, 3.5072f, -1.8476f, 0.3708f};//系数a
-double InPut_IIR[3][IIR_ORDER+1] = {0};
-double OutPut_IIR[3][IIR_ORDER+1] = {0};
+//#define  IIR_ORDER     4      //使用IIR滤波器的阶数
+//double b_IIR[IIR_ORDER+1] ={0.0008f, 0.0032f, 0.0048f, 0.0032f, 0.0008f};  //系数b
+//double a_IIR[IIR_ORDER+1] ={1.0000f, -3.0176f, 3.5072f, -1.8476f, 0.3708f};//系数a
+//double InPut_IIR[3][IIR_ORDER+1] = {0};
+//double OutPut_IIR[3][IIR_ORDER+1] = {0};
 
 Inertial_Sensor inertial_sensor;
 
