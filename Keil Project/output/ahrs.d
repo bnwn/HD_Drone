@@ -22,7 +22,6 @@
 .\output\ahrs.o: ..\AHRS\../Algorithm/Algorithm_quaternion/Algorithm_quaternion.h
 .\output\ahrs.o: ..\AHRS\inertial_sensor.h
 .\output\ahrs.o: ..\Algorithm\Algorithm_filter\Algorithm_filter.h
-.\output\ahrs.o: ..\AHRS\../Algorithm/Algorithm_filter/Algorithm_filter.h
 .\output\ahrs.o: ..\AHRS\../Algorithm/Algorithm_math/Algorithm_math.h
 .\output\ahrs.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\output\ahrs.o: ..\Scheduler\scheduler.h

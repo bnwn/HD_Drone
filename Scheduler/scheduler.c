@@ -20,9 +20,10 @@
 #include "../Scheduler/scheduler.h"
 #include "../RC/rc_channel.h"
 
-uint32_t micro_ticker = 0;
+static uint32_t main_isr_ticker = 0;
 Slice_Flag slice_flag;
 extern _Target_Attitude attitude_target_ang_vel;
+extern float accel_NED[3];
 
 void scheduler_init(void)
 {
@@ -36,20 +37,21 @@ void scheduler_init(void)
     slice_flag.loop_400Hz = false;
     slice_flag.main_loop = false;
 
+	if (systick_config(CyclesPerUs*1000) == 0)  printf ("systick init success\n");
     TIMER_Open(TIMER1, TIMER_PERIODIC_MODE, MAIN_ISR_FREQ);
 
     /* enable timer1 interrupt */
     TIMER_EnableInt(TIMER1);
 	NVIC_EnableIRQ(TMR1_IRQn);
-    NVIC_SetPriority(TMR1_IRQn, 0);
+    NVIC_SetPriority(TMR1_IRQn, 2);
 
     TIMER_Stop(TIMER1);
-}
+}   
 
 void TMR1_IRQHandler(void)
 {
-	micro_ticker++;
-	if (micro_ticker >= 0xFFFFFFF8) micro_ticker = 0;
+	main_isr_ticker++;
+	if (main_isr_ticker >= 0xFFFFFFF8) main_isr_ticker = 0;
 	
     time_slice();
 
@@ -59,25 +61,17 @@ void TMR1_IRQHandler(void)
 
 void scheduler_run(void)
 {
-	static uint32_t test = 0;
-	
-	//test = micro_ticker;
 	/* main loop */
 	fast_loop();
-#ifdef __DEVELOP__
-	//test = micro_ticker - test;
-	
-//		test = micro_ticker;
-//		test = micro_ticker - test;
-//		printf("using time:%d\n", test);
-#endif
 
 	/* low priority task call in 200Hz, 100Hz, 50Hz, 20Hz, 10Hz, 5Hz, 1Hz */
 	low_priority_loop();
 }
 
 void fast_loop(void)
-{ 
+{ 	
+	static uint32_t loop_tick = 0;	
+	loop_tick = sys_micro();
 	/* run out maximum cost 5.8ms */
 	if (!slice_flag.main_loop) {
 		return;
@@ -94,6 +88,25 @@ void fast_loop(void)
 	update_flight_mode();
 		
 	slice_flag.main_loop = false;
+	
+#ifdef __DEVELOP__
+	loop_tick = sys_micro() - loop_tick;
+	//printf("using time:%d\n", sys_micro()-loop_tick);
+	//using time:3798
+	//using time:1479
+	//261,213,208,-200,-200,-200,
+	//using time:4081
+	//using time:2718
+	//262,213,208,-200,-200,-200,
+	//using time:5827
+	//using time:2839
+	//262,213,207,-200,-200,-200,
+	//using time:4340
+	//using time:4334
+	//262,212,208,-200,-200,-200,
+	//using time:3840
+	//using time:2972
+#endif
 }
 
 void low_priority_loop(void)
@@ -159,7 +172,8 @@ void sched_50Hzloop(void)
 	else if (fc_status.printf_flag == 5)
 		printf ("%d, %d, %d, %d,\n", (int16_t)(rc_channels[0].rc_in/5), (int16_t)(rc_channels[1].rc_in/5), (int16_t)(rc_channels[2].rc_in/5), (int16_t)(rc_channels[3].rc_in/5));
 	else if (fc_status.printf_flag == 6)
-		printf("%d, %d, %d,\n", (int16_t)(fbm320_packet.altitude*100 - 11000), (int16_t)(nav.z*100), (int16_t)(home_absolute_pos.z*100 - 11000));
+		printf("%d, %d, %d, %d, %d, %d, %d,\n", (int16_t)((fbm320_packet.altitude-home_absolute_pos.z)*100), (int16_t)(-nav.z*100), (int16_t)(nav.vz*100), \
+											(int16_t)(nav.az*100), (int16_t)(accel_NED[2]*100), (int16_t)((inertial_sensor.accel.filter.z-GRAVITY_MSS)*100), (int16_t)(home_absolute_pos.z*100));
 #endif	
 	slice_flag.loop_50Hz = false;
 }

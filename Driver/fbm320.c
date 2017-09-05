@@ -55,6 +55,8 @@ int32_t fbm320_read_long_data(void)
 void fbm320_timer_procedure(void)
 {
     static uint16_t timer_count = 0;
+	static float fbm320_alt_filter[5];
+	
 	float new_alt;
 	
     switch (timer_count) {
@@ -80,6 +82,7 @@ void fbm320_timer_procedure(void)
 			}
 			
 		} else {
+			new_alt = Moving_Average(fbm320_alt_filter, 5, new_alt);
 			if (fabs(new_alt - fbm320_packet.altitude) < 10) {
 				fbm320_packet.altitude += (new_alt - fbm320_packet.altitude) * 0.2736f; // 2Hz LPF
 			} else if (fabs(new_alt - fbm320_packet.altitude) < 50) {

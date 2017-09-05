@@ -83,9 +83,18 @@ typedef struct {
 }_Tache;
 
 typedef struct {
+    Pid_t x;
+    Pid_t y;
+    Pid_t z;
+}_Pid_Vector;
+
+typedef struct {
     _Tache rate;
     _Tache angle;
     _Tache acro_sensibility;
+	_Pid_Vector pos;
+	_Pid_Vector pos_vel;
+	_Pid_Vector pos_accel;
 }_Ctrl;
 
 extern _Ctrl ctrl_loop;

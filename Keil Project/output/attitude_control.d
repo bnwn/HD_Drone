@@ -30,4 +30,3 @@
 .\output\attitude_control.o: ..\Control\../Driver/motor.h
 .\output\attitude_control.o: ..\RC\rc_channel.h
 .\output\attitude_control.o: ..\User\common.h
-.\output\attitude_control.o: ..\Algorithm\Algorithm_filter\Algorithm_filter.h

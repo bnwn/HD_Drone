@@ -19,3 +19,15 @@
 .\output\position_control.o: ..\Library\StdDriver\inc\wdt.h
 .\output\position_control.o: ..\Library\StdDriver\inc\wwdt.h
 .\output\position_control.o: ..\Control\position_control.h
+.\output\position_control.o: ..\Control\attitude_control.h
+.\output\position_control.o: ..\Control\../AHRS/inertial_sensor.h
+.\output\position_control.o: ..\Algorithm\Algorithm_filter\Algorithm_filter.h
+.\output\position_control.o: ..\Control\../AHRS/ahrs.h
+.\output\position_control.o: ..\Control\../AHRS/../Algorithm/Algorithm_quaternion/Algorithm_quaternion.h
+.\output\position_control.o: ..\Control\../Algorithm/Algorithm_math/Algorithm_math.h
+.\output\position_control.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\output\position_control.o: ..\Control\../Algorithm/Algorithm_pid/Algorithm_pid.h
+.\output\position_control.o: ..\Control\motor_control.h
+.\output\position_control.o: ..\Control\../Driver/motor.h
+.\output\position_control.o: ..\AHRS\inertial_nav.h
+.\output\position_control.o: ..\User\common.h

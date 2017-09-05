@@ -6,6 +6,7 @@
 
 Thrust thrust = {0};
 float target_throttle = 0;
+float throttle_hover = THROTTLE_HOVER_DEFAULT;
 
 /*====================================================================================================*/
 /*====================================================================================================*
@@ -119,4 +120,9 @@ void set_motor_throttle(float _thrust, float _cutoff)
 void set_trace_throttle(float _thr)
 {
 	thrust.throttle = _thr;
+}
+
+float get_throttle_hover(void)
+{
+	return throttle_hover;
 }

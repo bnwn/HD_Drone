@@ -1,4 +1,4 @@
-;#<FEEDBACK># ARM Linker, 5060183: Last Updated: Mon Sep 04 21:40:21 2017
+;#<FEEDBACK># ARM Linker, 5060183: Last Updated: Tue Sep 05 22:29:07 2017
 ;VERSION 0.2
 ;FILE acmp.o
 ACMP_Close <= USED 0
@@ -34,7 +34,6 @@ constrain <= USED 0
 ;FILE algorithm_pid.o
 __asm___15_Algorithm_pid_c_61a19061____REV16 <= USED 0
 __asm___15_Algorithm_pid_c_61a19061____REVSH <= USED 0
-get_integrator <= USED 0
 set_input_filter_all <= USED 0
 ;FILE algorithm_quaternion.o
 Quaternion_Multiply <= USED 0
@@ -75,6 +74,7 @@ __asm___5_clk_c_93d8d263____REVSH <= USED 0
 ;FILE common.o
 __asm___8_common_c_d7b85782____REV16 <= USED 0
 __asm___8_common_c_d7b85782____REVSH <= USED 0
+sys_milli <= USED 0
 ;FILE fbm320.o
 __asm___8_fbm320_c_8c0545fd____REV16 <= USED 0
 __asm___8_fbm320_c_8c0545fd____REVSH <= USED 0
@@ -131,6 +131,9 @@ __asm___5_i2c_c_I2C_Open____REVSH <= USED 0
 ;FILE inertial_nav.o
 __asm___14_inertial_nav_c_nav____REV16 <= USED 0
 __asm___14_inertial_nav_c_nav____REVSH <= USED 0
+get_inertial_accel <= USED 0
+get_inertial_alt <= USED 0
+get_inertial_velocity <= USED 0
 inertial_nav_init <= USED 0
 ;FILE inertial_sensor.o
 __asm___17_inertial_sensor_c_e05d5c6f____REV16 <= USED 0
@@ -144,10 +147,18 @@ __asm___7_motor_c_d71f47f0____REVSH <= USED 0
 ;FILE motor_control.o
 __asm___15_motor_control_c_thrust____REV16 <= USED 0
 __asm___15_motor_control_c_thrust____REVSH <= USED 0
+get_throttle_hover <= USED 0
 throttle_control <= USED 0
 ;FILE position_control.o
-__asm___18_position_control_c____REV16 <= USED 0
-__asm___18_position_control_c____REVSH <= USED 0
+__asm___18_position_control_c_2463169a____REV16 <= USED 0
+__asm___18_position_control_c_2463169a____REVSH <= USED 0
+accel_to_throttle <= USED 0
+calc_leash_length <= USED 0
+calc_leash_length_z <= USED 0
+pos_to_rate_z <= USED 0
+position_z_control <= USED 0
+rate_to_accel_z <= USED 0
+sqrt_controller <= USED 0
 ;FILE pwm.o
 PWM_ClearADCTriggerFlag <= USED 0
 PWM_ClearCMPDIntFlag <= USED 0
@@ -209,8 +220,8 @@ __asm___4_rf_c_f3462bf4____REV16 <= USED 0
 __asm___4_rf_c_f3462bf4____REVSH <= USED 0
 ucRF_GetRSSI <= USED 0
 ;FILE scheduler.o
-__asm___11_scheduler_c_1163d568____REV16 <= USED 0
-__asm___11_scheduler_c_1163d568____REVSH <= USED 0
+__asm___11_scheduler_c_dc3a42db____REV16 <= USED 0
+__asm___11_scheduler_c_dc3a42db____REVSH <= USED 0
 sched_200Hzloop <= USED 0
 sched_5Hzloop <= USED 0
 ;FILE spi.o

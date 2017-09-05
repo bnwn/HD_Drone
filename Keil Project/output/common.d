@@ -25,7 +25,6 @@
 .\output\common.o: ..\AHRS\inertial_sensor.h
 .\output\common.o: ..\Algorithm\Algorithm_filter\Algorithm_filter.h
 .\output\common.o: ..\User\../AHRS/inertial_nav.h
-.\output\common.o: ..\User\../Algorithm/Algorithm_filter/Algorithm_filter.h
 .\output\common.o: ..\User\../Algorithm/Algorithm_math/Algorithm_math.h
 .\output\common.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\output\common.o: ..\User\../Algorithm/Algorithm_pid/Algorithm_pid.h

@@ -26,9 +26,62 @@
 #define POSCONTROL_ACTIVE_TIMEOUT_MS            200     // position controller is considered active if it has been called within the past 0.2 seconds
 
 #define POSCONTROL_VEL_ERROR_CUTOFF_FREQ        4.0f    // low-pass filter on velocity error (unit: hz)
-#define POSCONTROL_THROTTLE_CUTOFF_FREQ         0.11f    // low-pass filter on accel error (unit: 2hz)
+#define POSCONTROL_THROTTLE_CUTOFF_FREQ         0.059f    // low-pass filter on accel error (unit: 2hz)
 #define POSCONTROL_ACCEL_FILTER_HZ              2.0f    // low-pass filter on acceleration (unit: hz)
 #define POSCONTROL_JERK_RATIO                   1.0f    // Defines the time it takes to reach the requested acceleration
+
+// Throttle control gains
+#ifndef THR_DZ_DEFAULT
+# define THR_DZ_DEFAULT         100             // the deadzone above and below mid throttle while in althold or loiter
+#endif
+
+#ifndef ALT_HOLD_P
+ # define ALT_HOLD_P            1.0f
+#endif
+
+// Velocity (vertical) control gains
+#ifndef VEL_Z_P
+ # define VEL_Z_P       5.0f
+#endif
+
+// Accel (vertical) control gains
+#ifndef ACCEL_Z_P
+ # define ACCEL_Z_P     0.50f
+#endif
+#ifndef ACCEL_Z_I
+ # define ACCEL_Z_I     1.00f
+#endif
+#ifndef ACCEL_Z_D
+ # define ACCEL_Z_D     0.0f
+#endif
+#ifndef ACCEL_Z_IMAX
+ # define ACCEL_Z_IMAX  800
+#endif
+#ifndef ACCEL_Z_FILT_HZ
+ # define ACCEL_Z_FILT_HZ   20.0f
+#endif
+
+// default maximum vertical velocity and acceleration the pilot may request
+#ifndef PILOT_VELZ_MAX
+ # define PILOT_VELZ_MAX    250     // maximum vertical velocity in cm/s
+#endif
+#ifndef PILOT_ACCEL_Z_DEFAULT
+ # define PILOT_ACCEL_Z_DEFAULT 250 // vertical acceleration in cm/s/s while altitude is under pilot control
+#endif
+
+// max distance in cm above or below current location that will be used for the alt target when transitioning to alt-hold mode
+#ifndef ALT_HOLD_INIT_MAX_OVERSHOOT
+ # define ALT_HOLD_INIT_MAX_OVERSHOOT 200
+#endif
+// the acceleration used to define the distance-velocity curve
+#ifndef ALT_HOLD_ACCEL_MAX
+ # define ALT_HOLD_ACCEL_MAX 250    // if you change this you must also update the duplicate declaration in AC_WPNav.h
+#endif
+
+#ifndef AUTO_DISARMING_DELAY
+# define AUTO_DISARMING_DELAY  10
+#endif
+
 
 /* function prototype */
 void position_z_control(void);
@@ -39,5 +92,7 @@ void rate_to_accel_z(void);
 void accel_to_throttle(float _accel_target_z);
 void calc_leash_length_z(void);
 float calc_leash_length(float speed_cms, float accel_cms, float kP);
+// Proportional controller with piecewise sqrt sections to constrain second derivative
+float sqrt_controller(float error, float p, float second_ord_lim);
 
 #endif

@@ -31,9 +31,9 @@ Clean started - Project: 'HD_Drone'
    deleting intermediate output files for target 'HD_Drone'
 compiling bmi160.c...
 compiling fbm320.c...
-..\Driver\fbm320.c(78): warning:  #223-D: function "fabs" declared implicitly
+..\Driver\fbm320.c(80): warning:  #223-D: function "fabs" declared implicitly
                         } else if (fabs(new_alt - fbm320_packet.altitude) < 0.1f) {
-..\Driver\fbm320.c(83): warning:  #223-D: function "fabs" declared implicitly
+..\Driver\fbm320.c(86): warning:  #223-D: function "fabs" declared implicitly
                         if (fabs(new_alt - fbm320_packet.altitude) < 10) {
 ..\Driver\fbm320.c: 2 warnings, 0 errors
 compiling motor.c...
@@ -41,6 +41,9 @@ compiling motor.c...
         printf("period0:%d, period1:%d, period2:%d, period3:%d, motor_duty_range:%d\n", PWM->PERIOD0, PWM->PERIOD1, PWM->PERIOD2, PWM->PERIOD3, motor_duty_range);
 ..\Driver\motor.c: 1 warning, 0 errors
 compiling common.c...
+..\User\../AHRS/inertial_nav.h(21): warning:  #1295-D: Deprecated declaration position_z_update - give arg types
+  void position_z_update();
+..\User\common.c: 1 warning, 0 errors
 compiling main.c...
 ..\User\main.c(20): warning:  #111-D: statement is unreachable
           return 0;
@@ -63,24 +66,29 @@ compiling Algorithm_quaternion.c...
 compiling attitude_control.c...
 compiling flight_mode_control.c...
 compiling motor_control.c...
-..\Control\motor_control.c(122): warning:  #1-D: last line of file ends without a newline
+..\Control\motor_control.c(128): warning:  #1-D: last line of file ends without a newline
   }
 ..\Control\motor_control.c: 1 warning, 0 errors
 compiling position_control.c...
+..\AHRS\inertial_nav.h(21): warning:  #1295-D: Deprecated declaration position_z_update - give arg types
+  void position_z_update();
+..\Control\position_control.c: 1 warning, 0 errors
 compiling scheduler.c...
-..\Scheduler\scheduler.c(62): warning:  #177-D: variable "test" was declared but never referenced
-        static uint32_t test = 0;
-..\Scheduler\scheduler.c(169): warning:  #177-D: variable "_ahrs" was declared but never referenced
+..\Scheduler\../AHRS/inertial_nav.h(21): warning:  #1295-D: Deprecated declaration position_z_update - give arg types
+  void position_z_update();
+..\Scheduler\scheduler.c(183): warning:  #177-D: variable "_ahrs" was declared but never referenced
         EulerAngle _ahrs;
-..\Scheduler\scheduler.c: 2 warnings, 0 errors
+..\Scheduler\scheduler.c(314): warning:  #1-D: last line of file ends without a newline
+  }
+..\Scheduler\scheduler.c: 3 warnings, 0 errors
 compiling ahrs.c...
-..\AHRS\ahrs.c(165): warning:  #223-D: function "printf" declared implicitly
+..\AHRS\ahrs.c(170): warning:  #223-D: function "printf" declared implicitly
                 printf("kp: %.6f\n", cmp_kp);
-..\AHRS\ahrs.c(167): warning:  #223-D: function "memset" declared implicitly
+..\AHRS\ahrs.c(172): warning:  #223-D: function "memset" declared implicitly
                 memset(&NumQ, 0, sizeof(Quaternion));
-..\AHRS\ahrs.c(183): warning:  #223-D: function "printf" declared implicitly
+..\AHRS\ahrs.c(188): warning:  #223-D: function "printf" declared implicitly
                 printf("ki: %.6f\n", cmp_ki);
-..\AHRS\ahrs.c(185): warning:  #223-D: function "memset" declared implicitly
+..\AHRS\ahrs.c(190): warning:  #223-D: function "memset" declared implicitly
                 memset(&NumQ, 0, sizeof(Quaternion));
 ..\AHRS\ahrs.c: 4 warnings, 0 errors
 compiling inertial_sensor.c...
@@ -88,6 +96,17 @@ compiling inertial_sensor.c...
       static _Vector_Int16 last_gyro;
 ..\AHRS\inertial_sensor.c: 1 warning, 0 errors
 compiling inertial_nav.c...
+..\AHRS\inertial_nav.h(21): warning:  #1295-D: Deprecated declaration position_z_update - give arg types
+  void position_z_update();
+..\AHRS\inertial_nav.c(31): warning:  #177-D: variable "w_z_acc" was declared but never referenced
+        static float w_z_acc = 20.0f;
+..\AHRS\inertial_nav.c(34): warning:  #550-D: variable "corr_acc" was set but never used
+        static float corr_acc[3] = {0.0f, 0.0f, 0.0f};  // N E D ,  m/s2
+..\AHRS\inertial_nav.c(171): warning:  #177-D: variable "count" was declared but never referenced
+        static uint8_t count = 0;
+..\AHRS\inertial_nav.c(239): warning:  #1-D: last line of file ends without a newline
+  }
+..\AHRS\inertial_nav.c: 5 warnings, 0 errors
 compiling timer_delay.c...
 compiling bsp_i2c.c...
 compiling uart_console.c...
@@ -187,15 +206,15 @@ compiling rc_channel.c...
 ..\RC\rc_channel.c: 6 warnings, 0 errors
 compiling rf.c...
 linking...
-Program Size: Code=30408 RO-data=704 RW-data=200 ZI-data=1140  
-".\output\HD_Drone.axf" - 0 Error(s), 53 Warning(s).
+Program Size: Code=31236 RO-data=684 RW-data=216 ZI-data=1652  
+".\output\HD_Drone.axf" - 0 Error(s), 61 Warning(s).
 
 *** Performing Cross-Module-Optimization:
 compiling bmi160.c...
 compiling fbm320.c...
-..\Driver\fbm320.c(78): warning:  #223-D: function "fabs" declared implicitly
+..\Driver\fbm320.c(80): warning:  #223-D: function "fabs" declared implicitly
                         } else if (fabs(new_alt - fbm320_packet.altitude) < 0.1f) {
-..\Driver\fbm320.c(83): warning:  #223-D: function "fabs" declared implicitly
+..\Driver\fbm320.c(86): warning:  #223-D: function "fabs" declared implicitly
                         if (fabs(new_alt - fbm320_packet.altitude) < 10) {
 ..\Driver\fbm320.c: 2 warnings, 0 errors
 compiling motor.c...
@@ -203,6 +222,9 @@ compiling motor.c...
         printf("period0:%d, period1:%d, period2:%d, period3:%d, motor_duty_range:%d\n", PWM->PERIOD0, PWM->PERIOD1, PWM->PERIOD2, PWM->PERIOD3, motor_duty_range);
 ..\Driver\motor.c: 1 warning, 0 errors
 compiling common.c...
+..\User\../AHRS/inertial_nav.h(21): warning:  #1295-D: Deprecated declaration position_z_update - give arg types
+  void position_z_update();
+..\User\common.c: 1 warning, 0 errors
 compiling main.c...
 ..\User\main.c(20): warning:  #111-D: statement is unreachable
           return 0;
@@ -224,24 +246,29 @@ compiling Algorithm_quaternion.c...
 compiling attitude_control.c...
 compiling flight_mode_control.c...
 compiling motor_control.c...
-..\Control\motor_control.c(122): warning:  #1-D: last line of file ends without a newline
+..\Control\motor_control.c(128): warning:  #1-D: last line of file ends without a newline
   }
 ..\Control\motor_control.c: 1 warning, 0 errors
 compiling position_control.c...
+..\AHRS\inertial_nav.h(21): warning:  #1295-D: Deprecated declaration position_z_update - give arg types
+  void position_z_update();
+..\Control\position_control.c: 1 warning, 0 errors
 compiling scheduler.c...
-..\Scheduler\scheduler.c(62): warning:  #177-D: variable "test" was declared but never referenced
-        static uint32_t test = 0;
-..\Scheduler\scheduler.c(169): warning:  #177-D: variable "_ahrs" was declared but never referenced
+..\Scheduler\../AHRS/inertial_nav.h(21): warning:  #1295-D: Deprecated declaration position_z_update - give arg types
+  void position_z_update();
+..\Scheduler\scheduler.c(183): warning:  #177-D: variable "_ahrs" was declared but never referenced
         EulerAngle _ahrs;
-..\Scheduler\scheduler.c: 2 warnings, 0 errors
+..\Scheduler\scheduler.c(314): warning:  #1-D: last line of file ends without a newline
+  }
+..\Scheduler\scheduler.c: 3 warnings, 0 errors
 compiling ahrs.c...
-..\AHRS\ahrs.c(165): warning:  #223-D: function "printf" declared implicitly
+..\AHRS\ahrs.c(170): warning:  #223-D: function "printf" declared implicitly
                 printf("kp: %.6f\n", cmp_kp);
-..\AHRS\ahrs.c(167): warning:  #223-D: function "memset" declared implicitly
+..\AHRS\ahrs.c(172): warning:  #223-D: function "memset" declared implicitly
                 memset(&NumQ, 0, sizeof(Quaternion));
-..\AHRS\ahrs.c(183): warning:  #223-D: function "printf" declared implicitly
+..\AHRS\ahrs.c(188): warning:  #223-D: function "printf" declared implicitly
                 printf("ki: %.6f\n", cmp_ki);
-..\AHRS\ahrs.c(185): warning:  #223-D: function "memset" declared implicitly
+..\AHRS\ahrs.c(190): warning:  #223-D: function "memset" declared implicitly
                 memset(&NumQ, 0, sizeof(Quaternion));
 ..\AHRS\ahrs.c: 4 warnings, 0 errors
 compiling inertial_sensor.c...
@@ -249,6 +276,17 @@ compiling inertial_sensor.c...
       static _Vector_Int16 last_gyro;
 ..\AHRS\inertial_sensor.c: 1 warning, 0 errors
 compiling inertial_nav.c...
+..\AHRS\inertial_nav.h(21): warning:  #1295-D: Deprecated declaration position_z_update - give arg types
+  void position_z_update();
+..\AHRS\inertial_nav.c(31): warning:  #177-D: variable "w_z_acc" was declared but never referenced
+        static float w_z_acc = 20.0f;
+..\AHRS\inertial_nav.c(34): warning:  #550-D: variable "corr_acc" was set but never used
+        static float corr_acc[3] = {0.0f, 0.0f, 0.0f};  // N E D ,  m/s2
+..\AHRS\inertial_nav.c(171): warning:  #177-D: variable "count" was declared but never referenced
+        static uint8_t count = 0;
+..\AHRS\inertial_nav.c(239): warning:  #1-D: last line of file ends without a newline
+  }
+..\AHRS\inertial_nav.c: 5 warnings, 0 errors
 compiling timer_delay.c...
 compiling bsp_i2c.c...
 compiling uart_console.c...
@@ -348,12 +386,12 @@ compiling rc_channel.c...
 ..\RC\rc_channel.c: 6 warnings, 0 errors
 compiling rf.c...
 linking...
-Program Size: Code=26652 RO-data=700 RW-data=200 ZI-data=1140  
+Program Size: Code=27356 RO-data=684 RW-data=216 ZI-data=1652  
 compiling bmi160.c...
 compiling fbm320.c...
-..\Driver\fbm320.c(78): warning:  #223-D: function "fabs" declared implicitly
+..\Driver\fbm320.c(80): warning:  #223-D: function "fabs" declared implicitly
                         } else if (fabs(new_alt - fbm320_packet.altitude) < 0.1f) {
-..\Driver\fbm320.c(83): warning:  #223-D: function "fabs" declared implicitly
+..\Driver\fbm320.c(86): warning:  #223-D: function "fabs" declared implicitly
                         if (fabs(new_alt - fbm320_packet.altitude) < 10) {
 ..\Driver\fbm320.c: 2 warnings, 0 errors
 compiling motor.c...
@@ -361,6 +399,9 @@ compiling motor.c...
         printf("period0:%d, period1:%d, period2:%d, period3:%d, motor_duty_range:%d\n", PWM->PERIOD0, PWM->PERIOD1, PWM->PERIOD2, PWM->PERIOD3, motor_duty_range);
 ..\Driver\motor.c: 1 warning, 0 errors
 compiling common.c...
+..\User\../AHRS/inertial_nav.h(21): warning:  #1295-D: Deprecated declaration position_z_update - give arg types
+  void position_z_update();
+..\User\common.c: 1 warning, 0 errors
 compiling main.c...
 ..\User\main.c(20): warning:  #111-D: statement is unreachable
           return 0;
@@ -382,24 +423,29 @@ compiling Algorithm_quaternion.c...
 compiling attitude_control.c...
 compiling flight_mode_control.c...
 compiling motor_control.c...
-..\Control\motor_control.c(122): warning:  #1-D: last line of file ends without a newline
+..\Control\motor_control.c(128): warning:  #1-D: last line of file ends without a newline
   }
 ..\Control\motor_control.c: 1 warning, 0 errors
 compiling position_control.c...
+..\AHRS\inertial_nav.h(21): warning:  #1295-D: Deprecated declaration position_z_update - give arg types
+  void position_z_update();
+..\Control\position_control.c: 1 warning, 0 errors
 compiling scheduler.c...
-..\Scheduler\scheduler.c(62): warning:  #177-D: variable "test" was declared but never referenced
-        static uint32_t test = 0;
-..\Scheduler\scheduler.c(169): warning:  #177-D: variable "_ahrs" was declared but never referenced
+..\Scheduler\../AHRS/inertial_nav.h(21): warning:  #1295-D: Deprecated declaration position_z_update - give arg types
+  void position_z_update();
+..\Scheduler\scheduler.c(183): warning:  #177-D: variable "_ahrs" was declared but never referenced
         EulerAngle _ahrs;
-..\Scheduler\scheduler.c: 2 warnings, 0 errors
+..\Scheduler\scheduler.c(314): warning:  #1-D: last line of file ends without a newline
+  }
+..\Scheduler\scheduler.c: 3 warnings, 0 errors
 compiling ahrs.c...
-..\AHRS\ahrs.c(165): warning:  #223-D: function "printf" declared implicitly
+..\AHRS\ahrs.c(170): warning:  #223-D: function "printf" declared implicitly
                 printf("kp: %.6f\n", cmp_kp);
-..\AHRS\ahrs.c(167): warning:  #223-D: function "memset" declared implicitly
+..\AHRS\ahrs.c(172): warning:  #223-D: function "memset" declared implicitly
                 memset(&NumQ, 0, sizeof(Quaternion));
-..\AHRS\ahrs.c(183): warning:  #223-D: function "printf" declared implicitly
+..\AHRS\ahrs.c(188): warning:  #223-D: function "printf" declared implicitly
                 printf("ki: %.6f\n", cmp_ki);
-..\AHRS\ahrs.c(185): warning:  #223-D: function "memset" declared implicitly
+..\AHRS\ahrs.c(190): warning:  #223-D: function "memset" declared implicitly
                 memset(&NumQ, 0, sizeof(Quaternion));
 ..\AHRS\ahrs.c: 4 warnings, 0 errors
 compiling inertial_sensor.c...
@@ -407,6 +453,17 @@ compiling inertial_sensor.c...
       static _Vector_Int16 last_gyro;
 ..\AHRS\inertial_sensor.c: 1 warning, 0 errors
 compiling inertial_nav.c...
+..\AHRS\inertial_nav.h(21): warning:  #1295-D: Deprecated declaration position_z_update - give arg types
+  void position_z_update();
+..\AHRS\inertial_nav.c(31): warning:  #177-D: variable "w_z_acc" was declared but never referenced
+        static float w_z_acc = 20.0f;
+..\AHRS\inertial_nav.c(34): warning:  #550-D: variable "corr_acc" was set but never used
+        static float corr_acc[3] = {0.0f, 0.0f, 0.0f};  // N E D ,  m/s2
+..\AHRS\inertial_nav.c(171): warning:  #177-D: variable "count" was declared but never referenced
+        static uint8_t count = 0;
+..\AHRS\inertial_nav.c(239): warning:  #1-D: last line of file ends without a newline
+  }
+..\AHRS\inertial_nav.c: 5 warnings, 0 errors
 compiling timer_delay.c...
 compiling bsp_i2c.c...
 compiling uart_console.c...
@@ -506,10 +563,10 @@ compiling rc_channel.c...
 ..\RC\rc_channel.c: 6 warnings, 0 errors
 compiling rf.c...
 linking...
-Program Size: Code=26652 RO-data=700 RW-data=200 ZI-data=1140  
+Program Size: Code=27356 RO-data=684 RW-data=216 ZI-data=1652  
 After Build - User command #1: fromelf --bin ".\output\HD_Drone.axf" --output ".\output\HD_Drone.bin"
 After Build - User command #2: fromelf --text -c ".\output\HD_Drone.axf" --output ".\output\HD_Drone.txt"
-".\output\HD_Drone.axf" - 0 Error(s), 53 Warning(s).
+".\output\HD_Drone.axf" - 0 Error(s), 61 Warning(s).
 *** Completed Cross-Module-Optimization after 3 iteration(s).
 
 <h2>Software Packages used:</h2>
@@ -528,7 +585,7 @@ Package Vendor: ARM
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.0.2
-Build Time Elapsed:  00:01:04
+Build Time Elapsed:  00:00:41
 </pre>
 </body>
 </html>

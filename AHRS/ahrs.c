@@ -7,7 +7,7 @@
 #include "common.h"
 
 #if SENSOR_TYPE == SENSOR_BMI160
-#define KpDef 0.8f
+#define KpDef 0.87f
 #define KiDef 0.0005f
 #define SampleRateHalf 0.005 //0.00125f  //0.001
 #else
@@ -111,8 +111,13 @@ void AHRS_GetQ(void)
     float AccX, AccY, AccZ;
     float GyrX, GyrY, GyrZ;
     float Normalize;
-
 	_Vector_Float V;//重力分量
+	
+	static uint32_t timestamp = 0;
+	uint32_t now = sys_micro();
+	float dt = (timestamp>0) ? ((float)(now-timestamp)/1000000.0f) : 0;
+	timestamp = now;
+	
 	
 #ifdef __DEVELOP__
 		//printf(" filter : acc.x:%.3f, acc.y:%.3f, acc.z:%.3f \n", inertial_sensor.accel.filter.x, inertial_sensor.accel.filter.y, inertial_sensor.accel.filter.z);
@@ -144,7 +149,7 @@ void AHRS_GetQ(void)
 
 
     // 一阶龙格库塔法, 更新四元数
-    Quaternion_RungeKutta(&NumQ, GyrX, GyrY, GyrZ, SampleRateHalf);
+    Quaternion_RungeKutta(&NumQ, GyrX, GyrY, GyrZ, (float)(dt/2.0f));
 
     // 四元数归一化
     Quaternion_Normalize(&NumQ);

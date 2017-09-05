@@ -106,8 +106,12 @@ bool stabilize_init(bool _ignore_checks)
 // should be called at 100hz or more
 void stabilize_run(void)
 {
+	static uint32_t timestamp = 0;
     float target_throttle;
-
+	uint32_t now = sys_micro();
+	float dt = (timestamp>0) ? ((float)(now-timestamp)/1000000.0f) : 0;
+	timestamp = now;
+	
 	if (fc_status.armed != DISARMED) {
 		return;
 	}
@@ -117,7 +121,7 @@ void stabilize_run(void)
 //    target_throttle = trace_throttle;
 //    attitude_angle_euler_controller(trace_attitude_ang.roll, trace_attitude_ang.pitch, trace_attitude_ang.yaw, get_smoothing_gain(), 0.0025f);
 
-    attitude_angle_euler_controller(target_attitude.roll, target_attitude.pitch, target_attitude.yaw, get_smoothing_gain(), LOOP_DT);
+    attitude_angle_euler_controller(target_attitude.roll, target_attitude.pitch, target_attitude.yaw, get_smoothing_gain(), dt);
     attitude_throttle_controller(target_throttle, true, 0.0f);
 
 #if 0

@@ -21,6 +21,7 @@
 #include "../RC/rc_channel.h"
 
 _Status_t fc_status;
+static uint32_t milli_ticker = 0;
 
 void system_init(void)
 {
@@ -145,7 +146,16 @@ void param_load(void)
 																				CONTROL_RATE_LOOP_YAW_KD, OONTROL_RATE_LOOP_YAW_INTEGRATOR_MAX, 0.5, LOOP_DT);
 
 	set_pid_param(&ctrl_loop.acro_sensibility.yaw, CONTROL_ACRO_SENSITITY_LOOP_YAW_KP, 0, \
-																			0, 0, 0.5, LOOP_DT);
+																			0, 0, 0, LOOP_DT);
+	
+	set_pid_param(&ctrl_loop.pos.z, ALT_HOLD_P, 0, \
+																			0, 0, 0, LOOP_DT);
+																			
+	set_pid_param(&ctrl_loop.pos.z, VEL_Z_P, 0, \
+																			0, 0, 0, LOOP_DT);
+																			
+	set_pid_param(&ctrl_loop.pos.z, ACCEL_Z_P, ACCEL_Z_I, \
+																			ACCEL_Z_D, ACCEL_Z_FILT_HZ, ACCEL_Z_IMAX, LOOP_DT);																			
 }
 
 void fc_status_reset(void)
@@ -158,5 +168,36 @@ void fc_status_reset(void)
     fc_status.accel_updated = false;
 	fc_status.position_z_ok = false;
 	fc_status.baro_initialize = false;
+	fc_status.printf_flag = 6;
 	fc_status.motor_control_Hz = 2000;
 }
+
+uint32_t systick_config(uint32_t ticks)
+{
+  if (ticks > SysTick_LOAD_RELOAD_Msk)  return (1);            /* Reload value impossible */
+
+  SysTick->LOAD  = (ticks & SysTick_LOAD_RELOAD_Msk) - 1;      /* set reload register */
+  NVIC_SetPriority (SysTick_IRQn, (1<<__NVIC_PRIO_BITS) - 1);  /* set Priority for Systick Interrupt */
+  SysTick->VAL   = 0;                                          /* Load the SysTick Counter Value */
+  SysTick->CTRL  = SysTick_CTRL_CLKSOURCE_Msk |
+                   SysTick_CTRL_TICKINT_Msk   |
+                   SysTick_CTRL_ENABLE_Msk;                    /* Enable SysTick IRQ and SysTick Timer */
+  return (0);                                                  /* Function successful */
+}
+
+void SysTick_Handler(void)
+{
+	if (SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk)
+		milli_ticker++;	
+}
+
+uint32_t sys_micro(void)
+{
+	return (uint32_t)(milli_ticker * 1000 + SysTick->VAL / CyclesPerUs);
+}
+
+uint32_t sys_milli(void)
+{
+	return milli_ticker;
+}
+

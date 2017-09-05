@@ -52,7 +52,7 @@ void set_pid_input(Pid_t *_pid, float _input)
 
     _pid->input = _input;
 
-    get_pid_output(_pid);
+    get_pd_output(_pid);
 }
 
 // set_input_filter_all - set input to PID controller
@@ -68,13 +68,19 @@ void set_input_filter_all(Pid_t *_pid, float _input)
     }
     _pid->input = _input;
 
-    get_pid_output(_pid);
+    get_pd_output(_pid);
 }
 
-void get_pid_output(Pid_t *_pid)
+void get_pd_output(Pid_t *_pid)
 {
     _pid->P_Item_Output = _pid->kp * _pid->input;
 
+    // derivative component
+    _pid->D_Item_Output = _pid->kd * _pid->derivative;
+}
+
+float get_i_output(Pid_t *_pid)
+{
     if((_pid->ki != 0) && (_pid->dt != 0)) {
         _pid->integrator += ((float)_pid->input * _pid->ki) * _pid->dt;
         if (_pid->integrator < -_pid->imax) {
@@ -84,9 +90,8 @@ void get_pid_output(Pid_t *_pid)
         }
         _pid->I_Item_Output = _pid->integrator;
     }
-
-    // derivative component
-    _pid->D_Item_Output = _pid->kd * _pid->derivative;
+	
+	return _pid->I_Item_Output;
 }
 
 void reset_pid_I(Pid_t *_pid)

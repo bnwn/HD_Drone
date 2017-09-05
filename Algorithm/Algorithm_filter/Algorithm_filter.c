@@ -118,3 +118,20 @@ float LPF_1st(float oldData, float newData, float lpf_factor)
 {
 	return oldData * (1 - lpf_factor) + newData * lpf_factor;
 }
+
+
+float Moving_Average(float _filter_arr[], uint8_t _width, float _data)
+{
+	uint8_t i;
+	float sum = 0.0f;
+	
+	for (i=1; i<_width; i++) {
+		sum += _filter_arr[i];
+		_filter_arr[i-1] = _filter_arr[i];
+	}
+	_filter_arr[_width-1] = _data;
+	sum += _data;
+	
+	return (float)(sum/_width);
+}
+

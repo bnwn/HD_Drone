@@ -25,13 +25,17 @@ void attitude_angle_rate_controller(void)
 float axis_target_pid_cal(Pid_t *_pid, float _error)
 {
     float rate_error_rads = Rad(_error);
-	float output;
+	float output, integrator;
 	
     set_pid_input(_pid, rate_error_rads);
-
+	integrator = get_integrator(_pid);
+	
+	if ((integrator > 0 && rate_error_rads < 0) || (integrator < 0 && rate_error_rads > 0)) {
+		integrator = get_i_output(_pid);
+	}
 //    // Compute output in range -1 ~ +1
 //    float output = get_rate_pitch_pid().get_p() + integrator + get_rate_pitch_pid().get_d() + get_rate_pitch_pid().get_ff(rate_target_rads);
-    output = _pid->P_Item_Output + _pid->I_Item_Output + _pid->D_Item_Output;
+    output = _pid->P_Item_Output + integrator + _pid->D_Item_Output;
 
     return output;
 }

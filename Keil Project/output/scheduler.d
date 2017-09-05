@@ -25,7 +25,6 @@
 .\output\scheduler.o: ..\AHRS\inertial_sensor.h
 .\output\scheduler.o: ..\Algorithm\Algorithm_filter\Algorithm_filter.h
 .\output\scheduler.o: ..\Scheduler\../AHRS/inertial_nav.h
-.\output\scheduler.o: ..\Scheduler\../Algorithm/Algorithm_filter/Algorithm_filter.h
 .\output\scheduler.o: ..\Scheduler\../Algorithm/Algorithm_math/Algorithm_math.h
 .\output\scheduler.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\output\scheduler.o: ..\Scheduler\../Algorithm/Algorithm_pid/Algorithm_pid.h

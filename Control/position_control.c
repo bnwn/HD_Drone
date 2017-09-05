@@ -1,5 +1,9 @@
 #include "PN020Series.h"
 #include "position_control.h"
+#include "attitude_control.h"
+#include "inertial_nav.h"
+
+_Nav_t pos_target, pos_error;
 
 // general purpose flags
 struct poscontrol_flags {
@@ -25,6 +29,189 @@ struct poscontrol_limit_flags {
     uint8_t accel_xy    : 1;    // 1 if we have hit the horizontal accel limit
 } pos_limit;
 
+float leash_up_z = POSCONTROL_LEASH_LENGTH_MIN, leash_down_z = POSCONTROL_LEASH_LENGTH_MIN;
+float speed_up_cms = POSCONTROL_SPEED_UP, speed_down_cms = POSCONTROL_SPEED_DOWN;
+float accel_z_cms = POSCONTROL_ACCEL_Z;
+_Vector_Float vel_desired, vel_last, accel_feedforward;
+
+/* altitude control */
+void position_z_control(void)
+{
+	static uint32_t timestamp = 0;
+	uint32_t now = sys_milli();
+	uint32_t dt = (timestamp>0) ? (now-timestamp) : 0;
+	timestamp = now;
+	
+	if (dt > POSCONTROL_ACTIVE_TIMEOUT_MS) {
+		pos_flags.reset_accel_to_throttle = true;
+		pos_flags.reset_rate_to_accel_z = true;
+	}
+	
+    // check if leash lengths need to be recalculated
+    calc_leash_length_z();
+
+    // call position controller
+    pos_to_rate_z();
+}
+
+// pos_to_rate_z - position to rate controller for Z axis
+// calculates desired rate in earth-frame z axis and passes to rate controller
+// vel_up_max, vel_down_max should have already been set before calling this method
+void pos_to_rate_z(void)
+{
+    float curr_alt = get_inertial_alt();
+
+    // clear position limit flags
+    pos_limit.pos_up = false;
+    pos_limit.pos_down = false;
+
+    // calculate altitude error
+    pos_error.z = pos_target.z - curr_alt;
+
+    // do not let target altitude get too far from current altitude
+    if (pos_error.z > leash_up_z) {
+        pos_target.z = curr_alt + leash_up_z;
+        pos_error.z = leash_up_z;
+        pos_limit.pos_up = true;
+    }
+    if (pos_error.z < -leash_down_z) {
+        pos_target.z = curr_alt - leash_down_z;
+        pos_error.z = -leash_down_z;
+        pos_limit.pos_down = true;
+    }
+
+    // calculate _vel_target.z using from _pos_error.z using sqrt controller
+    pos_target.vz = sqrt_controller(pos_error.z, ctrl_loop.pos.z.kp, accel_z_cms);
+
+    // check speed limits
+    // To-Do: check these speed limits here or in the pos->rate controller
+    pos_limit.vel_up = false;
+    pos_limit.vel_down = false;
+    if (pos_target.vz < speed_down_cms) {
+        pos_target.vz = speed_down_cms;
+        pos_limit.vel_down = true;
+    }
+    if (pos_target.vz > speed_up_cms) {
+        pos_target.vz = speed_up_cms;
+        pos_limit.vel_up = true;
+    }
+
+    // add feed forward component
+    if (pos_flags.use_desvel_ff_z) {
+        pos_target.vz += vel_desired.z;
+    }
+
+    // call rate based throttle controller which will update accel based throttle controller targets
+    rate_to_accel_z();
+}
+
+// rate_to_accel_z - calculates desired accel required to achieve the velocity target
+// calculates desired acceleration and calls accel throttle controller
+void rate_to_accel_z(void)
+{
+    const _Vector_Float curr_vel = get_inertial_velocity();
+    float p;                                // used to capture pid values for logging
+	static float last_vel_error = 0.0f;
+	
+	static uint32_t timestamp = 0;
+	uint32_t now = sys_micro();
+	float dt = (timestamp>0) ? ((float)(now-timestamp)/1000000.0f) : 0;
+	timestamp = now;
+	
+    // reset last velocity target to current target
+    if (pos_flags.reset_rate_to_accel_z) {
+        vel_last.z = pos_target.vz;
+    }
+
+    // feed forward desired acceleration calculation
+    if (dt > 0.0f) {
+        if (!pos_flags.freeze_ff_z) {
+            accel_feedforward.z = (pos_target.vz - vel_last.z) / dt;
+        } else {
+            // stop the feed forward being calculated during a known discontinuity
+            pos_flags.freeze_ff_z = false;
+        }
+    } else {
+        accel_feedforward.z = 0.0f;
+    }
+
+    // store this iteration's velocities for the next iteration
+    vel_last.z = pos_target.vz;
+
+    // reset velocity error and filter if this controller has just been engaged
+    if (pos_flags.reset_rate_to_accel_z) {
+        // Reset Filter
+        pos_error.vz = 0;
+		last_vel_error = 0.0f;
+        pos_flags.reset_rate_to_accel_z = false;
+    } else {
+        // calculate rate error and filter with cut off frequency of 2 Hz, 100Hz loop
+        pos_error.vz = LPF_1st(last_vel_error, pos_target.vz - curr_vel.z, 0.059f);
+		last_vel_error = pos_error.vz;
+    }
+
+    // calculate p
+    p = ctrl_loop.pos_vel.z.kp * pos_error.vz;
+
+    // consolidate and constrain target acceleration
+    pos_target.az = accel_feedforward.z + p;
+
+    // set target for accel based throttle controller
+    accel_to_throttle(pos_target.az);
+}
+
+// accel_to_throttle - alt hold's acceleration controller
+// calculates a desired throttle which is sent directly to the motors
+void accel_to_throttle(float accel_target_z)
+{
+    float z_accel_meas;         // actual acceleration
+    float p,i,d;              // used to capture pid values for logging
+	float thr_out;
+
+    // Calculate Earth Frame Z acceleration
+    z_accel_meas = get_inertial_accel().z;
+
+    // reset target altitude if this controller has just been engaged
+    if (pos_flags.reset_accel_to_throttle) {
+        // Reset Filter
+        pos_error.az = 0;
+        pos_flags.reset_accel_to_throttle = false;
+    } else {
+        // calculate accel error
+        pos_error.az = accel_target_z - z_accel_meas;
+    }
+
+    // set input to PID
+	set_pid_input(&ctrl_loop.pos_accel.z, pos_error.az);
+
+    // separately calculate p, i, d values for logging
+    p = ctrl_loop.pos_accel.z.P_Item_Output;
+
+    // get i term
+    i = get_integrator(&ctrl_loop.pos_accel.z);
+
+    // ensure imax is always large enough to overpower hover throttle
+    if (get_throttle_hover() * 1000.0f > ctrl_loop.pos_accel.z.imax) {
+        ctrl_loop.pos_accel.z.imax = get_throttle_hover() * 1000.0f;
+    }
+	
+	if ((i > 0 && pos_error.az < 0) || (i < 0 && pos_error.az > 0)) {
+		i = get_i_output(&ctrl_loop.pos_accel.z);
+	}
+    // update i term as long as we haven't breached the limits or the I term will certainly reduce
+    // To-Do: should this be replaced with limits check from attitude_controller?
+//    if ((!_motors.limit.throttle_lower && !_motors.limit.throttle_upper) || (i>0&&_accel_error.z<0) || (i<0&&_accel_error.z>0)) {
+//        i = _pid_accel_z.get_i();
+//    }
+
+    // get d term
+    d = ctrl_loop.pos_accel.z.D_Item_Output;
+
+    thr_out = (p+i+d)/1000.0f + get_throttle_hover();
+
+    // send throttle to attitude controller with angle boost
+    attitude_throttle_controller(thr_out, true, POSCONTROL_THROTTLE_CUTOFF_FREQ);
+}
 
 #if 0
 //cut deadband, move linear
@@ -289,172 +476,16 @@ if(!satZ )//&& fabs(thrustZSp)<THR_MAX
         if (thrustZInt > 0.0f)
                         thrustZInt = 0.0f;
 }
-/* altitude control */
-void position_z_control(void)
-{
-    // check if leash lengths need to be recalculated
-    calc_leash_length_z();
 
-    // call position controller
-    pos_to_rate_z();
-}
 
-// pos_to_rate_z - position to rate controller for Z axis
-// calculates desired rate in earth-frame z axis and passes to rate controller
-// vel_up_max, vel_down_max should have already been set before calling this method
-void pos_to_rate_z(void)
-{
-    float curr_alt = _inav.get_altitude();
-
-    // clear position limit flags
-    _limit.pos_up = false;
-    _limit.pos_down = false;
-
-    // calculate altitude error
-    _pos_error.z = _pos_target.z - curr_alt;
-
-    // do not let target altitude get too far from current altitude
-    if (_pos_error.z > _leash_up_z) {
-        _pos_target.z = curr_alt + _leash_up_z;
-        _pos_error.z = _leash_up_z;
-        _limit.pos_up = true;
-    }
-    if (_pos_error.z < -_leash_down_z) {
-        _pos_target.z = curr_alt - _leash_down_z;
-        _pos_error.z = -_leash_down_z;
-        _limit.pos_down = true;
-    }
-
-    // calculate _vel_target.z using from _pos_error.z using sqrt controller
-    _vel_target.z = AC_AttitudeControl::sqrt_controller(_pos_error.z, _p_pos_z.kP(), _accel_z_cms);
-
-    // check speed limits
-    // To-Do: check these speed limits here or in the pos->rate controller
-    _limit.vel_up = false;
-    _limit.vel_down = false;
-    if (_vel_target.z < _speed_down_cms) {
-        _vel_target.z = _speed_down_cms;
-        _limit.vel_down = true;
-    }
-    if (_vel_target.z > _speed_up_cms) {
-        _vel_target.z = _speed_up_cms;
-        _limit.vel_up = true;
-    }
-
-    // add feed forward component
-    if (_flags.use_desvel_ff_z) {
-        _vel_target.z += _vel_desired.z;
-    }
-
-    // call rate based throttle controller which will update accel based throttle controller targets
-    rate_to_accel_z();
-}
-
-// rate_to_accel_z - calculates desired accel required to achieve the velocity target
-// calculates desired acceleration and calls accel throttle controller
-void AC_PosControl::rate_to_accel_z(void)
-{
-    const Vector3f& curr_vel = _inav.get_velocity();
-    float p;                                // used to capture pid values for logging
-
-    // reset last velocity target to current target
-    if (_flags.reset_rate_to_accel_z) {
-        _vel_last.z = _vel_target.z;
-    }
-
-    // feed forward desired acceleration calculation
-    if (_dt > 0.0f) {
-        if (!_flags.freeze_ff_z) {
-            _accel_feedforward.z = (_vel_target.z - _vel_last.z)/_dt;
-        } else {
-            // stop the feed forward being calculated during a known discontinuity
-            _flags.freeze_ff_z = false;
-        }
-    } else {
-        _accel_feedforward.z = 0.0f;
-    }
-
-    // store this iteration's velocities for the next iteration
-    _vel_last.z = _vel_target.z;
-
-    // reset velocity error and filter if this controller has just been engaged
-    if (_flags.reset_rate_to_accel_z) {
-        // Reset Filter
-        _vel_error.z = 0;
-        _vel_error_filter.reset(0);
-        _flags.reset_rate_to_accel_z = false;
-    } else {
-        // calculate rate error and filter with cut off frequency of 2 Hz
-        _vel_error.z = _vel_error_filter.apply(_vel_target.z - curr_vel.z, _dt);
-    }
-
-    // calculate p
-    p = _p_vel_z.kP() * _vel_error.z;
-
-    // consolidate and constrain target acceleration
-    _accel_target.z = _accel_feedforward.z + p;
-
-    // set target for accel based throttle controller
-    accel_to_throttle(_accel_target.z);
-}
-
-// accel_to_throttle - alt hold's acceleration controller
-// calculates a desired throttle which is sent directly to the motors
-void AC_PosControl::accel_to_throttle(float accel_target_z)
-{
-    float z_accel_meas;         // actual acceleration
-    float p,i,d;              // used to capture pid values for logging
-
-    // Calculate Earth Frame Z acceleration
-    z_accel_meas = -(_ahrs.get_accel_ef_blended().z + GRAVITY_MSS) * 100.0f;
-
-    // reset target altitude if this controller has just been engaged
-    if (_flags.reset_accel_to_throttle) {
-        // Reset Filter
-        _accel_error.z = 0;
-        _flags.reset_accel_to_throttle = false;
-    } else {
-        // calculate accel error
-        _accel_error.z = accel_target_z - z_accel_meas;
-    }
-
-    // set input to PID
-    _pid_accel_z.set_input_filter_all(_accel_error.z);
-    _pid_accel_z.set_desired_rate(accel_target_z);
-
-    // separately calculate p, i, d values for logging
-    p = _pid_accel_z.get_p();
-
-    // get i term
-    i = _pid_accel_z.get_integrator();
-
-    // ensure imax is always large enough to overpower hover throttle
-    if (_motors.get_throttle_hover() * 1000.0f > _pid_accel_z.imax()) {
-        _pid_accel_z.imax(_motors.get_throttle_hover() * 1000.0f);
-    }
-
-    // update i term as long as we haven't breached the limits or the I term will certainly reduce
-    // To-Do: should this be replaced with limits check from attitude_controller?
-    if ((!_motors.limit.throttle_lower && !_motors.limit.throttle_upper) || (i>0&&_accel_error.z<0) || (i<0&&_accel_error.z>0)) {
-        i = _pid_accel_z.get_i();
-    }
-
-    // get d term
-    d = _pid_accel_z.get_d();
-
-    float thr_out = (p+i+d)/1000.0f +_motors.get_throttle_hover();
-
-    // send throttle to attitude controller with angle boost
-    _attitude_control.set_throttle_out(thr_out, true, POSCONTROL_THROTTLE_CUTOFF_FREQ);
-}
-
+#endif
 /// calc_leash_length - calculates the vertical leash lengths from maximum speed, acceleration
 ///     called by pos_to_rate_z if z-axis speed or accelerations are changed
 void calc_leash_length_z(void)
 {
     if (pos_flags.recalc_leash_z) {
-        _leash_up_z = calc_leash_length(_speed_up_cms, _accel_z_cms, _p_pos_z.kP());
-        _leash_down_z = calc_leash_length(-_speed_down_cms, _accel_z_cms, _p_pos_z.kP());
+        leash_up_z = calc_leash_length(speed_up_cms, accel_z_cms, ctrl_loop.pos.z.kp);
+        leash_down_z = calc_leash_length(-speed_down_cms, accel_z_cms, ctrl_loop.pos.z.kp);
         pos_flags.recalc_leash_z = false;
     }
 }
@@ -490,4 +521,22 @@ float calc_leash_length(float speed_cms, float accel_cms, float kP)
 
     return leash_length;
 }
-#endif
+
+// Proportional controller with piecewise sqrt sections to constrain second derivative
+float sqrt_controller(float error, float p, float second_ord_lim)
+{
+	float linear_dist;
+    if (second_ord_lim < 0.0f || (second_ord_lim == 0.0f) || (p == 0.0f)) {
+        return error*p;
+    }
+
+    linear_dist = second_ord_lim / (p * p);
+
+    if (error > linear_dist) {
+        return sqrtf(2.0f*second_ord_lim*(error-(linear_dist/2.0f)));
+    } else if (error < -linear_dist) {
+        return sqrtf(2.0f*second_ord_lim*(-error-(linear_dist/2.0f)));
+    } else {
+        return error*p;
+    }
+}

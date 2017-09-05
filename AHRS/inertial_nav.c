@@ -9,6 +9,9 @@
 _Nav_t nav = {0}; // NED frame in earth
 _Vector_Float home_absolute_pos;
 
+/* acceleration in NED frame */
+float accel_NED[3] = {0.0f, 0.0f, -GRAVITY_MSS};
+
 void inertial_nav_init(void)
 {
 	home_absolute_pos.x = 0.0f;
@@ -18,17 +21,15 @@ void inertial_nav_init(void)
 	
 void inertial_nav_update(void)
 {
-    position_z_update(0.005f);
+    position_z_update(0.02f);
 }
 
-void position_z_update(float dt)
+void position_z_update()
 {
 	static float z_est[3] = {0.0f, 0.0f, 0.0f};	// estimate z Vz  Az
-	static float w_z_baro = 0.5f;
+	static float w_z_baro = 0.0f;
 	static float w_z_acc = 20.0f;
-	static float w_acc_bias = 0.05f;
-	/* acceleration in NED frame */
-	static float accel_NED[3] = {0.0f, 0.0f, -GRAVITY_MSS};
+	static float w_acc_bias = 0.19f;
 	/* store error when sensor updates, but correct on each time step to avoid jumps in estimated value */
 	static float corr_acc[3] = {0.0f, 0.0f, 0.0f};	// N E D ,  m/s2
 	static float acc_bias[3] = {0.0f, 0.0f, 0.0f};	// body frame ,
@@ -37,25 +38,32 @@ void position_z_update(float dt)
 	float corr_baro;//m
     /* accelerometer bias correction */
     float accel_bias_corr[3] = { 0.0f, 0.0f, 0.0f };
-	float co_factor[3] = {IMU_SENSOR_X_FACTOR, IMU_SENSOR_Y_FACTOR, IMU_SENSOR_Z_FACTOR};
+	int8_t co_factor[3] = {IMU_SENSOR_X_FACTOR, IMU_SENSOR_Y_FACTOR, IMU_SENSOR_Z_FACTOR};
 	
-	if (!fc_status.position_z_ok)
+	static uint32_t timestamp = 0;
+	uint32_t now = sys_micro();
+	float dt = (timestamp>0) ? ((float)(now-timestamp)/1000000.0f) : 0;
+	timestamp = now;
+	
+	if (!fc_status.position_z_ok || (dt == 0))
 	{
 		return;
 	}
+	
+	if (w_z_baro < 1.5f) w_z_baro += 0.05;
+	if (w_acc_bias > 0.075f) w_acc_bias -= 0.01f;
 		
     if (fc_status.altitude_updated) { // update altitude in 16.67Hz
         float new_alt = fbm320_packet.altitude - home_absolute_pos.z;
-        corr_baro = 0 - new_alt - z_est[0];
-//        new_alt = Moving_Median(0, 5, new_alt);
-
-//        if (ABS(new_alt - nav_pos.z) < 10) {
-//            nav_pos.z += (new_alt - nav_pos.z) * 0.2736f; // 2Hz LPF
-//        } else if (ABS(new_alt - nav_pos.z) < 50) {
-//            nav_pos.z += (new_alt - nav_pos.z) * 0.1585f; // 1Hz LPF
+//		if (fabs(new_alt) < 10) {
+//            nav_pos.z += (new_alt) * 0.2736f; // 2Hz LPF
+//        } else if (fabs(new_alt) < 50) {
+//            nav_pos.z += (new_alt) * 0.1585f; // 1Hz LPF
 //        } else {
-//            nav_pos.z += (new_alt - nav_pos.z) * 0.086f; // 0.5Hz LPF
+//            nav_pos.z += (new_alt) * 0.086f; // 0.5Hz LPF
 //        }
+        corr_baro = 0 - new_alt - z_est[0];
+
         fc_status.altitude_updated = false;
     }
 
@@ -96,14 +104,14 @@ void position_z_update(float dt)
     }
 
     /* inertial filter prediction for altitude */
-    inertial_filter_predict(dt, z_est, z_est[2]);//accel_NED[2]);
+    inertial_filter_predict(dt, z_est, accel_NED[2]);//accel_NED[2]);
     /* inertial filter correction for altitude */
     inertial_filter_correct(corr_baro, dt, z_est, 0, w_z_baro);	//0.5f
-    inertial_filter_correct(corr_acc[2], dt, z_est, 2, w_z_acc);		//20.0f
+//    inertial_filter_correct(corr_acc[2], dt, z_est, 2, w_z_acc);		//20.0f
 
     nav.z = z_est[0];
     nav.vz = z_est[1];
-    nav.az = z_est[2];
+    nav.az = accel_NED[2];
 
 ///* Complementary filter */
 //    height_thr = LIMIT( thr , 0, 700 );
@@ -161,40 +169,71 @@ void position_z_update(float dt)
 void update_home_pos(void)
 {
 	static uint8_t count = 0;
+	static float filter_arr[15] = {0};
+	
 	if ((!fc_status.position_z_ok) && fc_status.home_abs_alt_updated) {
-		count++;
-		if (count > 4)
-			home_absolute_pos.z += fbm320_packet.altitude;
-		if (count == 14) {
-			home_absolute_pos.z = home_absolute_pos.z / (count - 4);
-			count = 0;
+		if (Moving_Average(filter_arr, 15, (fbm320_packet.altitude - home_absolute_pos.z)) < 0.8f) {
 			fc_status.position_z_ok = true;
 		}
-		fc_status.home_abs_alt_updated = false;;
-	} else if (fc_status.armed == ARMED && fc_status.home_abs_alt_updated) {
+		home_absolute_pos.z = fbm320_packet.altitude;
+		fc_status.home_abs_alt_updated = false;
+	}/* else if (fc_status.armed == ARMED && fc_status.home_abs_alt_updated) {
 		home_absolute_pos.z += (fbm320_packet.altitude - home_absolute_pos.z) * 0.2736f; // 2Hz LPF
 		fc_status.home_abs_alt_updated = false;
-	}
+	}*/
 }
 
 //Combine Filter to correct err
 static void inertial_filter_predict(float dt, float *x, float acc)
 {
-    x[0] += x[1] * dt + acc * dt * dt / 2.0f;
-    x[1] += acc * dt;
+	if (isfinite(dt)) {
+		if (!isfinite(acc)) {
+			acc = 0.0f;
+		}
+		x[0] += x[1] * dt + acc * dt * dt / 2.0f;
+		x[1] += acc * dt;
+	}
 }
 
 static void inertial_filter_correct(float e, float dt, float *x, int i, float w)
 {
-    float ewdt = e * w * dt;
-    x[i] += ewdt;
+	if (isfinite(e) && isfinite(w) && isfinite(dt)) {
+		float ewdt = e * w * dt;
+		x[i] += ewdt;
 
-    if (i == 0) {
-        x[1] += w * ewdt;
-        x[2] += w * w * ewdt / 3.0;
+		if (i == 0) {
+			x[1] += w * ewdt;
+			x[2] += w * w * ewdt / 3.0;
 
-    } else if (i == 1) {
-        x[2] += w * ewdt;
-    }
+		} else if (i == 1) {
+			x[2] += w * ewdt;
+		}
+	}
 }
 
+float get_inertial_alt(void)
+{
+	return (float)(-nav.z * 100);
+}
+
+_Vector_Float get_inertial_velocity(void)
+{
+	_Vector_Float vec;
+	
+	vec.x = nav.vx * 100;
+	vec.y = nav.vy * 100;
+	vec.z = -nav.vz * 100;
+	
+	return vec;
+}
+
+_Vector_Float get_inertial_accel(void)
+{	
+	_Vector_Float vec;
+	
+	vec.x = nav.ax * 100;
+	vec.y = nav.ay * 100;
+	vec.z = -nav.az * 100;
+	
+	return vec;
+}

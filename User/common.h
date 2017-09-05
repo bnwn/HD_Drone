@@ -14,6 +14,10 @@ void param_load(void);
 
 void fc_status_reset(void);
 
+uint32_t systick_config(uint32_t ticks);
+uint32_t sys_micro(void);
+uint32_t sys_milli(void);
+
 enum Armed_t{
 	ARMED = 0,
 	IDLED = 1,
