@@ -64,15 +64,15 @@ float get_throttle_boosted(float _throttle_in)
     // inverted_factor reduces from 1 to 0 for tilt angles between 60 and 90 degrees
 
     float cos_tilt = cos(AngE.Pitch) * cos(AngE.Roll);
-    float inverted_factor = data_limit(2.0f*cos_tilt, 1.0f, 0.0f);
-    float boost_factor = 1.0f / data_limit(cos_tilt, 1.0f, 0.5f);
+    float inverted_factor = (float)constrain_float(2.0f*cos_tilt, 0.0f, 1.0f);
+    float boost_factor = 1.0f / (float)constrain_float(cos_tilt, 0.5f, 1.0f);
 
     float throttle_out = _throttle_in*inverted_factor*boost_factor;
-    data_limit(throttle_out, RC_THROTTLE_OUT_LIMIT, 0.0f);
+    throttle_out = (float)constrain_float(throttle_out, 0.0f, RC_THROTTLE_OUT_LIMIT);
     return throttle_out;
 }
 
-void reset_pid_param(void)
+void reset_rate_controller(void)
 {
 	reset_pid_I(&ctrl_loop.rate.roll);
 	reset_pid_I(&ctrl_loop.rate.pitch);

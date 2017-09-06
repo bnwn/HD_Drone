@@ -1,22 +1,31 @@
-#include "PN020Series.h"
+#include "PN020Series.h"s
 #include "flight_mode_control.h"
 #include "motor_control.h"
 #include "attitude_control.h"
 #include "position_control.h"
 #include "common.h"
 #include "rc_channel.h"
+#include "inertial_nav.h"
+
+struct {
+    bool running;
+    float max_speed;
+    float alt_delta;
+    uint32_t start_ms;
+} takeoff_state;
 
 enum Flight_Mode control_mode, prev_control_mode;
 _Target_Attitude target_attitude = {0};
+float simple_cos_yaw, simple_sin_yaw;
+float super_simple_last_bearing, super_simple_cos_yaw, super_simple_sin_yaw ;
 
 bool set_flight_mode(enum Flight_Mode _mode)
 {
     bool success = false;
-    bool ignore_checks = true;
-    // bool ignore_checks = !armed();
+    bool ignore_checks = (fc_status.armed == DISARMED);
 
     if (_mode == control_mode) {
-        prev_control_mode = control_mode;
+        //prev_control_mode = control_mode;
         return true;
     }
 
@@ -25,7 +34,7 @@ bool set_flight_mode(enum Flight_Mode _mode)
             success = stabilize_init(ignore_checks);
             break;
         case AltHold:
-            //success = althold_init(ignore_checks);
+            success = althold_init(ignore_checks);
             break;
         case OneKeyFlip:
             break;
@@ -58,7 +67,7 @@ void update_flight_mode(void)
             stabilize_run();
             break;
         case AltHold:
-            //althold_run();
+            althold_run();
             break;
         case OneKeyFlip:
             break;
@@ -84,20 +93,10 @@ void exit_mode(enum Flight_Mode _mode)
 // stabilize_init - initialise stabilize controller
 bool stabilize_init(bool _ignore_checks)
 {
-	reset_pid_param();
-    if (_ignore_checks) {
-        return true;
-    }
-
-#if 0
     // if landed and the mode we're switching from does not have manual throttle and the throttle stick is too high
-    if (motors->armed() && ap.land_complete &&
-            (get_pilot_desired_throttle(channel_throttle->get_control_in()) > get_non_takeoff_throttle())) {
+    if (fc_status.land_complete && !check_throttle_is_safe()) {
         return false;
     }
-    // set target altitude to zero for reporting
-    pos_control->set_alt_target(0);
-#endif
 
     return true;
 }
@@ -112,36 +111,35 @@ void stabilize_run(void)
 	float dt = (timestamp>0) ? ((float)(now-timestamp)/1000000.0f) : 0;
 	timestamp = now;
 	
-	if (fc_status.armed != DISARMED) {
+    if (fc_status.armed == DISARMED) {
+        set_motor_state(Motor_ShutDown);
 		return;
-	}
+    } else if (fc_status.armed == IDLED) {
+        set_motor_state(Motor_Spin);
+        return;
+    }
+
+    set_motor_state(Motor_Unlimited);
+
     target_throttle = get_desired_throttle_expo();
     get_desired_leans_angles(&target_attitude, CONTROL_LEANS_ANGLE_MAX_DEFAULT);
-
-//    target_throttle = trace_throttle;
-//    attitude_angle_euler_controller(trace_attitude_ang.roll, trace_attitude_ang.pitch, trace_attitude_ang.yaw, get_smoothing_gain(), 0.0025f);
 
     attitude_angle_euler_controller(target_attitude.roll, target_attitude.pitch, target_attitude.yaw, get_smoothing_gain(), dt);
     attitude_throttle_controller(target_throttle, true, 0.0f);
 
-#if 0
-    // if not armed set throttle to zero and exit immediately
-    if (!motors->armed() || ap.throttle_zero || !motors->get_interlock()) {
-        motors->set_desired_spool_state(AP_Motors::DESIRED_SPIN_WHEN_ARMED);
-        attitude_control->set_throttle_out_unstabilized(0,true,g.throttle_filt);
-        return;
-    }
-
     // clear landing flag
     set_land_complete(false);
-    // apply SIMPLE mode transform to pilot inputs
-    update_simple_mode();
-#endif
 }
 
 bool acro_init(bool ignore_checks)
 {
-	reset_pid_param();
+    // if landed and the mode we're switching from does not have manual throttle and the throttle stick is too high
+    if (fc_status.land_complete && !check_throttle_is_safe()) {
+        return false;
+    }
+
+    reset_rate_controller();
+
 	return true;
 }
 
@@ -149,39 +147,43 @@ void acro_run(void)
 {
 	float target_throttle;
 
-	if (fc_status.armed != DISARMED) {
-		return;
-	}
-	
+    if (fc_status.armed == DISARMED) {
+        set_motor_state(Motor_ShutDown);
+        return;
+    } else if (fc_status.armed == IDLED) {
+        set_motor_state(Motor_Spin);
+        return;
+    }
+
+    set_motor_state(Motor_Unlimited);
+
     target_throttle = get_desired_throttle_expo();
 	
 	get_desired_leans_angles(&target_attitude, CONTROL_LEANS_ANGLE_MAX_DEFAULT);
-	
+    update_simple_mode(&target_attitude);
+
     attitude_throttle_controller(target_throttle, true, 0.0f);
 	attitude_target_ang_vel.roll = target_attitude.roll;
 	attitude_target_ang_vel.pitch = target_attitude.pitch;
-	attitude_target_ang_vel.yaw = target_attitude.yaw;
+    attitude_target_ang_vel.yaw = target_attitude.yaw;
 }
 
-#if 0
 // althold_init - initialise althold controller
-bool Copter::althold_init(bool ignore_checks)
+bool althold_init(bool ignore_checks)
 {
-#if FRAME_CONFIG == HELI_FRAME
-    // do not allow helis to enter Alt Hold if the Rotor Runup is not complete
-    if (!ignore_checks && !motors->rotor_runup_complete()){
+    // if landed and the mode we're switching from does not have manual throttle and the throttle stick is too high
+    if ((fc_status.land_complete && !check_throttle_is_safe()) || !fc_status.inav_z_estimate_ok) {
         return false;
     }
-#endif
 
     // initialize vertical speeds and leash lengths
-    pos_control->set_speed_z(-g.pilot_velocity_z_max, g.pilot_velocity_z_max);
-    pos_control->set_accel_z(g.pilot_accel_z);
+    set_speed_z(-POSCONTROL_VELZ_MAX, POSCONTROL_VELZ_MAX);
+    set_accel_z(POSCONTROL_ACCEL_Z_DEFAULT);
 
     // initialise position and desired velocity
-    if (!pos_control->is_active_z()) {
-        pos_control->set_alt_target_to_current_alt();
-        pos_control->set_desired_velocity_z(inertial_nav.get_velocity_z());
+    if (!is_active_z()) {
+        set_alt_target_to_current_alt();
+        set_desired_vel_z(get_inav_velocity().z);
     }
 
     // stop takeoff if running
@@ -192,42 +194,35 @@ bool Copter::althold_init(bool ignore_checks)
 
 // althold_run - runs the althold controller
 // should be called at 100hz or more
-void Copter::althold_run()
+void althold_run(void)
 {
-    AltHoldModeState althold_state;
+    enum AltHold_Mode_State althold_state;
     float takeoff_climb_rate = 0.0f;
+    float target_climb_rate = 0.0f;
+    bool takeoff_triggered;
+    static uint32_t timestamp = 0;
+    uint32_t now = sys_micro();
+    float dt = (timestamp>0) ? ((float)(now-timestamp)/1000000.0f) : 0;
+    timestamp = now;
 
-    // initialize vertical speeds and acceleration
-    pos_control->set_speed_z(-g.pilot_velocity_z_max, g.pilot_velocity_z_max);
-    pos_control->set_accel_z(g.pilot_accel_z);
+    get_desired_leans_angles(&target_attitude, CONTROL_LEANS_ANGLE_MAX_DEFAULT);
 
     // apply SIMPLE mode transform to pilot inputs
-    update_simple_mode();
+    update_simple_mode(&target_attitude);
 
-    // get pilot desired lean angles
-    float target_roll, target_pitch;
-    get_pilot_desired_lean_angles(channel_roll->get_control_in(), channel_pitch->get_control_in(), target_roll, target_pitch, attitude_control->get_althold_lean_angle_max());
+    // get desired climb rate
+    target_climb_rate = get_desired_climb_rate();
+    target_climb_rate = (float)constrain_float(target_climb_rate, -POSCONTROL_VELZ_MAX, POSCONTROL_VELZ_MAX);
 
-    // get pilot's desired yaw rate
-    float target_yaw_rate = get_pilot_desired_yaw_rate(channel_yaw->get_control_in());
+    takeoff_triggered = fc_status.land_complete && (target_climb_rate > 0.0f);
 
-    // get pilot desired climb rate
-    float target_climb_rate = get_pilot_desired_climb_rate(channel_throttle->get_control_in());
-    target_climb_rate = constrain_float(target_climb_rate, -g.pilot_velocity_z_max, g.pilot_velocity_z_max);
-
-#if FRAME_CONFIG == HELI_FRAME
-    // helicopters are held on the ground until rotor speed runup has finished
-    bool takeoff_triggered = (ap.land_complete && (target_climb_rate > 0.0f) && motors->rotor_runup_complete());
-#else
-    bool takeoff_triggered = ap.land_complete && (target_climb_rate > 0.0f);
-#endif
 
     // Alt Hold State Machine Determination
-    if (!motors->armed() || !motors->get_interlock()) {
+    if (fc_status.armed == DISARMED || !fc_status.inav_z_estimate_ok) {
         althold_state = AltHold_MotorStopped;
     } else if (takeoff_state.running || takeoff_triggered) {
         althold_state = AltHold_Takeoff;
-    } else if (!ap.auto_armed || ap.land_complete) {
+    } else if (fc_status.land_complete) {
         althold_state = AltHold_Landed;
     } else {
         althold_state = AltHold_Flying;
@@ -238,89 +233,165 @@ void Copter::althold_run()
 
     case AltHold_MotorStopped:
 
-        motors->set_desired_spool_state(AP_Motors::DESIRED_SHUT_DOWN);
-        attitude_control->input_euler_angle_roll_pitch_euler_rate_yaw(target_roll, target_pitch, target_yaw_rate, get_smoothing_gain());
-#if FRAME_CONFIG == HELI_FRAME
-        // force descent rate and call position controller
-        pos_control->set_alt_target_from_climb_rate(-abs(g.land_speed), G_Dt, false);
-#else
-        attitude_control->reset_rate_controller_I_terms();
-        attitude_control->set_yaw_target_to_current_heading();
-        pos_control->relax_alt_hold_controllers(0.0f);   // forces throttle output to go to zero
-#endif
-        pos_control->update_z_controller();
+        set_motor_state(Motor_ShutDown);
+        attitude_angle_euler_controller(target_attitude.roll, target_attitude.pitch, target_attitude.yaw, get_smoothing_gain(), dt);
+
+        reset_rate_controller();
+        target_attitude.yaw = 0.0f;
+        relax_alt_controller(0.0f);   // forces throttle output to go to zero
+
+        position_z_controller();
         break;
 
     case AltHold_Takeoff:
         // set motors to full range
-        motors->set_desired_spool_state(AP_Motors::DESIRED_THROTTLE_UNLIMITED);
+        set_motor_state(Motor_Unlimited);
 
         // initiate take-off
         if (!takeoff_state.running) {
-            takeoff_timer_start(constrain_float(g.pilot_takeoff_alt,0.0f,1000.0f));
+            takeoff_timer_start((float)constrain_float(VEHIVLE_TAKEOFF_DEFAULT_ALT,0.0f,1000.0f));
             // indicate we are taking off
             set_land_complete(false);
             // clear i terms
-            set_throttle_takeoff();
+            poscontrol_init_takeoff();
         }
 
         // get take-off adjusted pilot and takeoff climb rates
-        takeoff_get_climb_rates(target_climb_rate, takeoff_climb_rate);
-
-        // get avoidance adjusted climb rate
-        target_climb_rate = get_avoidance_adjusted_climbrate(target_climb_rate);
+        takeoff_get_climb_rates(&target_climb_rate, &takeoff_climb_rate);
 
         // call attitude controller
-        attitude_control->input_euler_angle_roll_pitch_euler_rate_yaw(target_roll, target_pitch, target_yaw_rate, get_smoothing_gain());
+        attitude_angle_euler_controller(target_attitude.roll, target_attitude.pitch, target_attitude.yaw, get_smoothing_gain(), dt);
 
         // call position controller
-        pos_control->set_alt_target_from_climb_rate_ff(target_climb_rate, G_Dt, false);
-        pos_control->add_takeoff_climb_rate(takeoff_climb_rate, G_Dt);
-        pos_control->update_z_controller();
+        set_alt_target_from_climb_rate_ff(target_climb_rate, dt, false);
+        add_takeoff_climb_rate(takeoff_climb_rate, dt);
+        position_z_controller();
         break;
 
     case AltHold_Landed:
         // set motors to spin-when-armed if throttle below deadzone, otherwise full range (but motors will only spin at min throttle)
-        if (target_climb_rate < 0.0f) {
-            motors->set_desired_spool_state(AP_Motors::DESIRED_SPIN_WHEN_ARMED);
+        if (target_climb_rate <= 0.0f) {
+            set_motor_state(Motor_Spin);
         } else {
-            motors->set_desired_spool_state(AP_Motors::DESIRED_THROTTLE_UNLIMITED);
+            set_motor_state(Motor_Unlimited);;
         }
 
-        attitude_control->reset_rate_controller_I_terms();
-        attitude_control->set_yaw_target_to_current_heading();
-        attitude_control->input_euler_angle_roll_pitch_euler_rate_yaw(target_roll, target_pitch, target_yaw_rate, get_smoothing_gain());
-        pos_control->relax_alt_hold_controllers(0.0f);   // forces throttle output to go to zero
-        pos_control->update_z_controller();
+        attitude_angle_euler_controller(target_attitude.roll, target_attitude.pitch, target_attitude.yaw, get_smoothing_gain(), dt);
+
+        reset_rate_controller();
+        target_attitude.yaw = 0.0f;
+        relax_alt_controller(0.0f);   // forces throttle output to go to zero
+
+        position_z_controller();
         break;
 
     case AltHold_Flying:
-        motors->set_desired_spool_state(AP_Motors::DESIRED_THROTTLE_UNLIMITED);
-
-#if AC_AVOID_ENABLED == ENABLED
-        // apply avoidance
-        avoid.adjust_roll_pitch(target_roll, target_pitch, aparm.angle_max);
-#endif
+        set_motor_state(Motor_Unlimited);
 
         // call attitude controller
-        attitude_control->input_euler_angle_roll_pitch_euler_rate_yaw(target_roll, target_pitch, target_yaw_rate, get_smoothing_gain());
+        attitude_angle_euler_controller(target_attitude.roll, target_attitude.pitch, target_attitude.yaw, get_smoothing_gain(), dt);
 
         // adjust climb rate using rangefinder
-        if (rangefinder_alt_ok()) {
-            // if rangefinder is ok, use surface tracking
-            target_climb_rate = get_surface_tracking_climb_rate(target_climb_rate, pos_control->get_alt_target(), G_Dt);
-        }
-
-        // get avoidance adjusted climb rate
-        target_climb_rate = get_avoidance_adjusted_climbrate(target_climb_rate);
+//        if (rangefinder_alt_ok()) {
+//            // if rangefinder is ok, use surface tracking
+//            target_climb_rate = get_surface_tracking_climb_rate(target_climb_rate, pos_control->get_alt_target(), G_Dt);
+//        }
 
         // call position controller
-        pos_control->set_alt_target_from_climb_rate_ff(target_climb_rate, G_Dt, false);
-        pos_control->update_z_controller();
+        set_alt_target_from_climb_rate_ff(target_climb_rate, dt, false);
+        position_z_controller();
         break;
     }
 }
-#endif
+
+// start takeoff to specified altitude above home in centimeters
+void takeoff_timer_start(float alt_cm)
+{
+    // calculate climb rate
+    float speed = MIN(POSCONTROL_SPEED_UP, MAX(POSCONTROL_VELZ_MAX*2.0f/3.0f, POSCONTROL_VELZ_MAX-50.0f));
+
+    // sanity check speed and target
+    if (takeoff_state.running || speed <= 0.0f || alt_cm <= 0.0f) {
+        return;
+    }
+
+    // initialise takeoff state
+    takeoff_state.running = true;
+    takeoff_state.max_speed = speed;
+    takeoff_state.start_ms = sys_milli();
+    takeoff_state.alt_delta = alt_cm;
+}
+
+// stop takeoff
+void takeoff_stop()
+{
+    takeoff_state.running = false;
+    takeoff_state.start_ms = 0;
+}
+
+// returns pilot and takeoff climb rates
+//  pilot_climb_rate is both an input and an output
+//  takeoff_climb_rate is only an output
+//  has side-effect of turning takeoff off when timeout as expired
+void takeoff_get_climb_rates(float *pilot_climb_rate, float *takeoff_climb_rate)
+{
+    // acceleration of 50cm/s/s
+    static const float takeoff_accel = 50.0f;
+    float takeoff_minspeed = MIN(50.0f,takeoff_state.max_speed);
+    float time_elapsed = (sys_milli()-takeoff_state.start_ms)*1.0e-3f;
+    float speed = MIN(time_elapsed*takeoff_accel+takeoff_minspeed, takeoff_state.max_speed);
+
+    float time_to_max_speed = (takeoff_state.max_speed-takeoff_minspeed)/takeoff_accel;
+    float height_gained;
+	
+    // return pilot_climb_rate if take-off inactive
+    if (!takeoff_state.running) {
+        *takeoff_climb_rate = 0.0f;
+        return;
+    }
+
+    if (time_elapsed <= time_to_max_speed) {
+        height_gained = 0.5f*takeoff_accel*squa(time_elapsed) + takeoff_minspeed*time_elapsed;
+    } else {
+        height_gained = 0.5f*takeoff_accel*squa(time_to_max_speed) + takeoff_minspeed*time_to_max_speed +
+                        (time_elapsed-time_to_max_speed)*takeoff_state.max_speed;
+    }
+
+    // check if the takeoff is over
+    if (height_gained >= takeoff_state.alt_delta) {
+        takeoff_stop();
+    }
+
+    // if takeoff climb rate is zero return
+    if (speed <= 0.0f) {
+        *takeoff_climb_rate = 0.0f;
+        return;
+    }
+
+    // default take-off climb rate to maximum speed
+    *takeoff_climb_rate = speed;
+
+    // if pilot's commands descent
+    if (*pilot_climb_rate < 0.0f) {
+        // if overall climb rate is still positive, move to take-off climb rate
+        if (*takeoff_climb_rate + *pilot_climb_rate > 0.0f) {
+            *takeoff_climb_rate = *takeoff_climb_rate + *pilot_climb_rate;
+            *pilot_climb_rate = 0;
+        } else {
+            // if overall is negative, move to pilot climb rate
+            *pilot_climb_rate = *pilot_climb_rate + *takeoff_climb_rate;
+            *takeoff_climb_rate = 0.0f;
+        }
+    } else { // pilot commands climb
+        // pilot climb rate is zero until it surpasses the take-off climb rate
+        if (*pilot_climb_rate > *takeoff_climb_rate) {
+            *pilot_climb_rate = *pilot_climb_rate - *takeoff_climb_rate;
+        } else {
+            *pilot_climb_rate = 0.0f;
+        }
+    }
+}
+
 float get_smoothing_gain(void)
 {
     float sense_gain = 1;
@@ -336,3 +407,39 @@ float get_smoothing_gain(void)
 
     return sense_gain;
 }
+
+void init_simple_bearing()
+{
+    // capture current cos_yaw and sin_yaw values
+    simple_cos_yaw = cosf(AngE.Yaw);
+    simple_sin_yaw = sinf(AngE.Yaw);
+
+    // initialise super simple heading (i.e. heading towards home) to be 180 deg from simple mode heading
+    super_simple_last_bearing = wrap_360_degree(ahrs.Yaw+180.0f);
+    super_simple_cos_yaw = simple_cos_yaw;
+    super_simple_sin_yaw = simple_sin_yaw;
+}
+
+// update_simple_mode - rotates pilot input if we are in simple mode
+void update_simple_mode(_Target_Attitude *_target_att)
+{
+    // exit immediately if no new radio frame or not in simple mode
+    if (fc_status.simple_mode == Normal) {
+        return;
+    }
+
+    if (fc_status.simple_mode == Simple) {
+        // rotate roll, pitch input by -initial simple heading (i.e. north facing)
+        _target_att->roll = _target_att->roll*simple_cos_yaw - _target_att->pitch*simple_sin_yaw;
+        _target_att->pitch = _target_att->roll*simple_sin_yaw + _target_att->pitch*simple_cos_yaw;
+    }else{
+        // rotate roll, pitch input by -super simple heading (reverse of heading to home)
+        _target_att->roll = _target_att->roll*super_simple_cos_yaw - _target_att->pitch*super_simple_sin_yaw;
+        _target_att->pitch = _target_att->roll*super_simple_sin_yaw + _target_att->pitch*super_simple_cos_yaw;
+    }
+
+    // rotate roll, pitch input from north facing to vehicle's perspective
+    _target_att->roll = _target_att->roll*cosf(AngE.Yaw) + _target_att->pitch*sinf(AngE.Yaw);
+    _target_att->pitch = -_target_att->roll*sinf(AngE.Yaw) + _target_att->pitch*cosf(AngE.Yaw);
+}
+

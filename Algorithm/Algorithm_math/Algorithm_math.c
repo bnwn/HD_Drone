@@ -25,22 +25,6 @@ float Q_rsqrt(float number)
 	return y;
 } 
 
-/**************************实现函数********************************************
-*函数原型:    data_limit(float data,flaot toplimit,float lowerlimit)
-*功　　能:    数据限幅
-输入参数：    data       要操作的数据 
-*             toplimit   上限
-*             lowerlimit 下限
-输出参数：    无
-*******************************************************************************/
-float data_limit(float data,float toplimit,float lowerlimit)
-{
-  if(data > toplimit)  data = toplimit;
-  else if(data < lowerlimit) data = lowerlimit;
-	return data;
-}
-
-
 /***********************************************
   * @brief  可变增益自适应参数
   * @param  None
@@ -71,7 +55,7 @@ float VariableParameter(float error)
 输入参数：    角度
 输出参数：    弧度
 *******************************************************************************/
-double Rad(double angle)
+float Rad(float angle)
 {
     return (angle * M_PI / 180.0);
 }
@@ -81,9 +65,20 @@ double Rad(double angle)
 输入参数：    弧度
 输出参数：    角度
 *******************************************************************************/
-double Degree(double rad)
+float Degree(float rad)
 {
     return (rad / M_PI * 180.0);
+}
+
+float wrap_360_degree(float _angle)
+{
+    float ret = fmod(_angle, 360.0f);
+
+    if (ret < 0) {
+        ret += 360.0f;
+    }
+
+    return ret;
 }
 
 double constrain(double inputvalue, double limitmin, double limitmax)
@@ -96,4 +91,16 @@ double constrain(double inputvalue, double limitmin, double limitmax)
         inputvalue=limitmin;
     }
 		return inputvalue;
+}
+
+float constrain_float(float inputvalue, float limitmin, float limitmax)
+{
+    if (inputvalue>limitmax) {
+        inputvalue=limitmax;
+    }
+    else
+    if (inputvalue<limitmin) {
+        inputvalue=limitmin;
+    }
+        return inputvalue;
 }

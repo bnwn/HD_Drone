@@ -3,6 +3,8 @@
 
 #include "attitude_control.h"
 
+#define RADIO_SIGNAL_LOST_MS 500
+
 #define RF_XNS104 104
 #define RADIO RF_XNS104
 #define RC_CHANNEL_NUM_MAX 4 
@@ -40,6 +42,10 @@
 
 #define RC_THROTTLE_OUT_LIMIT 0.95f
 
+#ifndef THR_DZ_DEFAULT
+# define THR_DZ_DEFAULT         100            // the deadzone above and below mid throttle while in althold or loiter
+#endif
+
 typedef struct {
 		uint16_t rc_in;
 		uint16_t rc_max;
@@ -63,6 +69,7 @@ float norm_input_dz(Rc_Channel_t *_rc);
 float channel_input_to_target(Rc_Channel_t *_rc, float _max_range);
 void get_desired_leans_angles(_Target_Attitude *_target_att, float _leans_limit);
 float get_desired_throttle_expo(void);
+float get_desired_climb_rate();
 void set_roll_code(uint8_t *_code);
 bool auto_code_matching(void);
 void set_rc_channel_max(Rc_Channel_t *_rc, uint16_t _value);
@@ -72,6 +79,7 @@ void set_rc_channel_reversed(Rc_Channel_t *_rc, uint8_t _value);
 void set_rc_channel_deadzone(Rc_Channel_t *_rc, uint16_t _value);
 void setting_rc_channel_all(void);
 void check_motor_armed(void);
+bool check_throttle_is_safe(void);
 
 extern Rc_Channel_t rc_channels[RC_CHANNEL_NUM_MAX];
 extern Rc_Switch_t rc_switchs[RC_SWITCH_MAX];

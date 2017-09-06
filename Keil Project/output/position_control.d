@@ -31,3 +31,4 @@
 .\output\position_control.o: ..\Control\../Driver/motor.h
 .\output\position_control.o: ..\AHRS\inertial_nav.h
 .\output\position_control.o: ..\User\common.h
+.\output\position_control.o: ..\RC\rc_channel.h

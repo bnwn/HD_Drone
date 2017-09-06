@@ -31,10 +31,10 @@ Clean started - Project: 'HD_Drone'
    deleting intermediate output files for target 'HD_Drone'
 compiling bmi160.c...
 compiling fbm320.c...
-..\Driver\fbm320.c(80): warning:  #223-D: function "fabs" declared implicitly
-                        } else if (fabs(new_alt - fbm320_packet.altitude) < 0.1f) {
-..\Driver\fbm320.c(86): warning:  #223-D: function "fabs" declared implicitly
-                        if (fabs(new_alt - fbm320_packet.altitude) < 10) {
+..\Driver\fbm320.c(80): warning:  #223-D: function "fabsf" declared implicitly
+              } else if (fabsf(new_alt - fbm320_packet.altitude) < 0.1f) {
+..\Driver\fbm320.c(86): warning:  #223-D: function "fabsf" declared implicitly
+              if (fabsf(new_alt - fbm320_packet.altitude) < 10) {
 ..\Driver\fbm320.c: 2 warnings, 0 errors
 compiling motor.c...
 ..\Driver\motor.c(35): warning:  #223-D: function "printf" declared implicitly
@@ -43,7 +43,9 @@ compiling motor.c...
 compiling common.c...
 ..\User\../AHRS/inertial_nav.h(21): warning:  #1295-D: Deprecated declaration position_z_update - give arg types
   void position_z_update();
-..\User\common.c: 1 warning, 0 errors
+..\User\../RC/rc_channel.h(72): warning:  #1295-D: Deprecated declaration get_desired_climb_rate - give arg types
+  float get_desired_climb_rate();
+..\User\common.c: 2 warnings, 0 errors
 compiling main.c...
 ..\User\main.c(20): warning:  #111-D: statement is unreachable
           return 0;
@@ -52,7 +54,7 @@ compiling system_PN020Series.c...
 assembling startup_PN020Series.s...
 compiling Algorithm_filter.c...
 compiling Algorithm_math.c...
-..\Algorithm\Algorithm_math\Algorithm_math.c(53): warning:  #111-D: statement is unreachable
+..\Algorithm\Algorithm_math\Algorithm_math.c(37): warning:  #111-D: statement is unreachable
         if(error < 0.0f)
 ..\Algorithm\Algorithm_math\Algorithm_math.c: 1 warning, 0 errors
 compiling Algorithm_pid.c...
@@ -64,23 +66,44 @@ compiling Algorithm_quaternion.c...
   }
 ..\Algorithm\Algorithm_quaternion\Algorithm_quaternion.c: 1 warning, 0 errors
 compiling attitude_control.c...
+..\RC\rc_channel.h(72): warning:  #1295-D: Deprecated declaration get_desired_climb_rate - give arg types
+  float get_desired_climb_rate();
+..\Control\attitude_control.c: 1 warning, 0 errors
 compiling flight_mode_control.c...
+..\Control\flight_mode_control.c(1): warning:  #14-D: extra text after expected end of preprocessing directive
+  #include "PN020Series.h"s
+..\RC\rc_channel.h(72): warning:  #1295-D: Deprecated declaration get_desired_climb_rate - give arg types
+  float get_desired_climb_rate();
+..\AHRS\inertial_nav.h(21): warning:  #1295-D: Deprecated declaration position_z_update - give arg types
+  void position_z_update();
+..\Control\flight_mode_control.c(25): warning:  #188-D: enumerated type mixed with another type
+      bool ignore_checks = (fc_status.armed == DISARMED);
+..\Control\flight_mode_control.c(217): warning:  #188-D: enumerated type mixed with another type
+      takeoff_triggered = fc_status.land_complete && (target_climb_rate > 0.0f);
+..\Control\flight_mode_control.c: 5 warnings, 0 errors
 compiling motor_control.c...
-..\Control\motor_control.c(128): warning:  #1-D: last line of file ends without a newline
-  }
+..\Control\motor_control.c(7): warning:  #188-D: enumerated type mixed with another type
+  Motor_t motor = {0};
 ..\Control\motor_control.c: 1 warning, 0 errors
 compiling position_control.c...
 ..\AHRS\inertial_nav.h(21): warning:  #1295-D: Deprecated declaration position_z_update - give arg types
   void position_z_update();
-..\Control\position_control.c: 1 warning, 0 errors
+..\RC\rc_channel.h(72): warning:  #1295-D: Deprecated declaration get_desired_climb_rate - give arg types
+  float get_desired_climb_rate();
+..\Control\position_control.c(653): warning:  #188-D: enumerated type mixed with another type
+      return ((sys_milli() - last_update_z_ms) <= 
+OSCONTROL_ACTIVE_TIMEOUT_MS);
+..\Control\position_control.c: 3 warnings, 0 errors
 compiling scheduler.c...
 ..\Scheduler\../AHRS/inertial_nav.h(21): warning:  #1295-D: Deprecated declaration position_z_update - give arg types
   void position_z_update();
+..\Scheduler\../RC/rc_channel.h(72): warning:  #1295-D: Deprecated declaration get_desired_climb_rate - give arg types
+  float get_desired_climb_rate();
 ..\Scheduler\scheduler.c(183): warning:  #177-D: variable "_ahrs" was declared but never referenced
         EulerAngle _ahrs;
 ..\Scheduler\scheduler.c(314): warning:  #1-D: last line of file ends without a newline
   }
-..\Scheduler\scheduler.c: 3 warnings, 0 errors
+..\Scheduler\scheduler.c: 4 warnings, 0 errors
 compiling ahrs.c...
 ..\AHRS\ahrs.c(170): warning:  #223-D: function "printf" declared implicitly
                 printf("kp: %.6f\n", cmp_kp);
@@ -102,11 +125,9 @@ compiling inertial_nav.c...
         static float w_z_acc = 20.0f;
 ..\AHRS\inertial_nav.c(34): warning:  #550-D: variable "corr_acc" was set but never used
         static float corr_acc[3] = {0.0f, 0.0f, 0.0f};  // N E D ,  m/s2
-..\AHRS\inertial_nav.c(171): warning:  #177-D: variable "count" was declared but never referenced
+..\AHRS\inertial_nav.c(173): warning:  #177-D: variable "count" was declared but never referenced
         static uint8_t count = 0;
-..\AHRS\inertial_nav.c(239): warning:  #1-D: last line of file ends without a newline
-  }
-..\AHRS\inertial_nav.c: 5 warnings, 0 errors
+..\AHRS\inertial_nav.c: 4 warnings, 0 errors
 compiling timer_delay.c...
 compiling bsp_i2c.c...
 compiling uart_console.c...
@@ -191,31 +212,43 @@ compiling uart.c...
 compiling wdt.c...
 compiling wwdt.c...
 compiling rc_channel.c...
-..\RC\rc_channel.c(24): warning:  #223-D: function "printf" declared implicitly
+..\RC\rc_channel.h(72): warning:  #1295-D: Deprecated declaration get_desired_climb_rate - give arg types
+  float get_desired_climb_rate();
+..\RC\rc_channel.c(25): warning:  #223-D: function "printf" declared implicitly
       printf("rf xns104 init success\n");
-..\RC\rc_channel.c(47): warning:  #223-D: function "memset" declared implicitly
+..\RC\rc_channel.c(54): warning:  #223-D: function "memset" declared implicitly
         memset(rc_buf, 0, PAYLOAD_WIDTH);
-..\RC\rc_channel.c(40): warning:  #177-D: variable "j" was declared but never referenced
+..\RC\rc_channel.c(43): warning:  #177-D: variable "j" was declared but never referenced
       uint8_t j = 0;
-..\RC\rc_channel.c(197): warning:  #188-D: enumerated type mixed with another type
+..\RC\rc_channel.c(207): warning:  #188-D: enumerated type mixed with another type
               switch_event_trigger(ch_index, (switch_on_tick[ch_index] >= 250));
-..\RC\rc_channel.c(209): warning:  #223-D: function "printf" declared implicitly
+..\RC\rc_channel.c(219): warning:  #223-D: function "printf" declared implicitly
                         printf("set_pid_param_p:%i", (int16_t)(ctrl_loop.rate.pitch.ki * 100));
-..\RC\rc_channel.c(299): warning:  #223-D: function "printf" declared implicitly
+..\RC\rc_channel.c(310): warning:  #223-D: function "printf" declared implicitly
       printf("roll code: 0x%X 0x%X 0x%X\n", roll_code[0], roll_code[1], roll_code[2]);
-..\RC\rc_channel.c: 6 warnings, 0 errors
+..\RC\rc_channel.c(519): warning:  #188-D: enumerated type mixed with another type
+          return (rc_channels[
+C_THROTTLE_CH].rc_in < (
+C_CHANNEL_NEUTRAL + 
+C_CHANNEL_DEADZONE * 10));
+..\RC\rc_channel.c(521): warning:  #188-D: enumerated type mixed with another type
+          return (rc_channels[
+C_THROTTLE_CH].rc_in > (
+C_CHANNEL_NEUTRAL - 
+C_CHANNEL_DEADZONE * 10));
+..\RC\rc_channel.c: 9 warnings, 0 errors
 compiling rf.c...
 linking...
-Program Size: Code=31236 RO-data=684 RW-data=216 ZI-data=1652  
-".\output\HD_Drone.axf" - 0 Error(s), 61 Warning(s).
+Program Size: Code=35252 RO-data=684 RW-data=288 ZI-data=1788  
+".\output\HD_Drone.axf" - 0 Error(s), 73 Warning(s).
 
 *** Performing Cross-Module-Optimization:
 compiling bmi160.c...
 compiling fbm320.c...
-..\Driver\fbm320.c(80): warning:  #223-D: function "fabs" declared implicitly
-                        } else if (fabs(new_alt - fbm320_packet.altitude) < 0.1f) {
-..\Driver\fbm320.c(86): warning:  #223-D: function "fabs" declared implicitly
-                        if (fabs(new_alt - fbm320_packet.altitude) < 10) {
+..\Driver\fbm320.c(80): warning:  #223-D: function "fabsf" declared implicitly
+              } else if (fabsf(new_alt - fbm320_packet.altitude) < 0.1f) {
+..\Driver\fbm320.c(86): warning:  #223-D: function "fabsf" declared implicitly
+              if (fabsf(new_alt - fbm320_packet.altitude) < 10) {
 ..\Driver\fbm320.c: 2 warnings, 0 errors
 compiling motor.c...
 ..\Driver\motor.c(35): warning:  #223-D: function "printf" declared implicitly
@@ -224,7 +257,9 @@ compiling motor.c...
 compiling common.c...
 ..\User\../AHRS/inertial_nav.h(21): warning:  #1295-D: Deprecated declaration position_z_update - give arg types
   void position_z_update();
-..\User\common.c: 1 warning, 0 errors
+..\User\../RC/rc_channel.h(72): warning:  #1295-D: Deprecated declaration get_desired_climb_rate - give arg types
+  float get_desired_climb_rate();
+..\User\common.c: 2 warnings, 0 errors
 compiling main.c...
 ..\User\main.c(20): warning:  #111-D: statement is unreachable
           return 0;
@@ -232,7 +267,7 @@ compiling main.c...
 compiling system_PN020Series.c...
 compiling Algorithm_filter.c...
 compiling Algorithm_math.c...
-..\Algorithm\Algorithm_math\Algorithm_math.c(53): warning:  #111-D: statement is unreachable
+..\Algorithm\Algorithm_math\Algorithm_math.c(37): warning:  #111-D: statement is unreachable
         if(error < 0.0f)
 ..\Algorithm\Algorithm_math\Algorithm_math.c: 1 warning, 0 errors
 compiling Algorithm_pid.c...
@@ -244,23 +279,44 @@ compiling Algorithm_quaternion.c...
   }
 ..\Algorithm\Algorithm_quaternion\Algorithm_quaternion.c: 1 warning, 0 errors
 compiling attitude_control.c...
+..\RC\rc_channel.h(72): warning:  #1295-D: Deprecated declaration get_desired_climb_rate - give arg types
+  float get_desired_climb_rate();
+..\Control\attitude_control.c: 1 warning, 0 errors
 compiling flight_mode_control.c...
+..\Control\flight_mode_control.c(1): warning:  #14-D: extra text after expected end of preprocessing directive
+  #include "PN020Series.h"s
+..\RC\rc_channel.h(72): warning:  #1295-D: Deprecated declaration get_desired_climb_rate - give arg types
+  float get_desired_climb_rate();
+..\AHRS\inertial_nav.h(21): warning:  #1295-D: Deprecated declaration position_z_update - give arg types
+  void position_z_update();
+..\Control\flight_mode_control.c(25): warning:  #188-D: enumerated type mixed with another type
+      bool ignore_checks = (fc_status.armed == DISARMED);
+..\Control\flight_mode_control.c(217): warning:  #188-D: enumerated type mixed with another type
+      takeoff_triggered = fc_status.land_complete && (target_climb_rate > 0.0f);
+..\Control\flight_mode_control.c: 5 warnings, 0 errors
 compiling motor_control.c...
-..\Control\motor_control.c(128): warning:  #1-D: last line of file ends without a newline
-  }
+..\Control\motor_control.c(7): warning:  #188-D: enumerated type mixed with another type
+  Motor_t motor = {0};
 ..\Control\motor_control.c: 1 warning, 0 errors
 compiling position_control.c...
 ..\AHRS\inertial_nav.h(21): warning:  #1295-D: Deprecated declaration position_z_update - give arg types
   void position_z_update();
-..\Control\position_control.c: 1 warning, 0 errors
+..\RC\rc_channel.h(72): warning:  #1295-D: Deprecated declaration get_desired_climb_rate - give arg types
+  float get_desired_climb_rate();
+..\Control\position_control.c(653): warning:  #188-D: enumerated type mixed with another type
+      return ((sys_milli() - last_update_z_ms) <= 
+OSCONTROL_ACTIVE_TIMEOUT_MS);
+..\Control\position_control.c: 3 warnings, 0 errors
 compiling scheduler.c...
 ..\Scheduler\../AHRS/inertial_nav.h(21): warning:  #1295-D: Deprecated declaration position_z_update - give arg types
   void position_z_update();
+..\Scheduler\../RC/rc_channel.h(72): warning:  #1295-D: Deprecated declaration get_desired_climb_rate - give arg types
+  float get_desired_climb_rate();
 ..\Scheduler\scheduler.c(183): warning:  #177-D: variable "_ahrs" was declared but never referenced
         EulerAngle _ahrs;
 ..\Scheduler\scheduler.c(314): warning:  #1-D: last line of file ends without a newline
   }
-..\Scheduler\scheduler.c: 3 warnings, 0 errors
+..\Scheduler\scheduler.c: 4 warnings, 0 errors
 compiling ahrs.c...
 ..\AHRS\ahrs.c(170): warning:  #223-D: function "printf" declared implicitly
                 printf("kp: %.6f\n", cmp_kp);
@@ -282,11 +338,9 @@ compiling inertial_nav.c...
         static float w_z_acc = 20.0f;
 ..\AHRS\inertial_nav.c(34): warning:  #550-D: variable "corr_acc" was set but never used
         static float corr_acc[3] = {0.0f, 0.0f, 0.0f};  // N E D ,  m/s2
-..\AHRS\inertial_nav.c(171): warning:  #177-D: variable "count" was declared but never referenced
+..\AHRS\inertial_nav.c(173): warning:  #177-D: variable "count" was declared but never referenced
         static uint8_t count = 0;
-..\AHRS\inertial_nav.c(239): warning:  #1-D: last line of file ends without a newline
-  }
-..\AHRS\inertial_nav.c: 5 warnings, 0 errors
+..\AHRS\inertial_nav.c: 4 warnings, 0 errors
 compiling timer_delay.c...
 compiling bsp_i2c.c...
 compiling uart_console.c...
@@ -371,28 +425,40 @@ compiling uart.c...
 compiling wdt.c...
 compiling wwdt.c...
 compiling rc_channel.c...
-..\RC\rc_channel.c(24): warning:  #223-D: function "printf" declared implicitly
+..\RC\rc_channel.h(72): warning:  #1295-D: Deprecated declaration get_desired_climb_rate - give arg types
+  float get_desired_climb_rate();
+..\RC\rc_channel.c(25): warning:  #223-D: function "printf" declared implicitly
       printf("rf xns104 init success\n");
-..\RC\rc_channel.c(47): warning:  #223-D: function "memset" declared implicitly
+..\RC\rc_channel.c(54): warning:  #223-D: function "memset" declared implicitly
         memset(rc_buf, 0, PAYLOAD_WIDTH);
-..\RC\rc_channel.c(40): warning:  #177-D: variable "j" was declared but never referenced
+..\RC\rc_channel.c(43): warning:  #177-D: variable "j" was declared but never referenced
       uint8_t j = 0;
-..\RC\rc_channel.c(197): warning:  #188-D: enumerated type mixed with another type
+..\RC\rc_channel.c(207): warning:  #188-D: enumerated type mixed with another type
               switch_event_trigger(ch_index, (switch_on_tick[ch_index] >= 250));
-..\RC\rc_channel.c(209): warning:  #223-D: function "printf" declared implicitly
+..\RC\rc_channel.c(219): warning:  #223-D: function "printf" declared implicitly
                         printf("set_pid_param_p:%i", (int16_t)(ctrl_loop.rate.pitch.ki * 100));
-..\RC\rc_channel.c(299): warning:  #223-D: function "printf" declared implicitly
+..\RC\rc_channel.c(310): warning:  #223-D: function "printf" declared implicitly
       printf("roll code: 0x%X 0x%X 0x%X\n", roll_code[0], roll_code[1], roll_code[2]);
-..\RC\rc_channel.c: 6 warnings, 0 errors
+..\RC\rc_channel.c(519): warning:  #188-D: enumerated type mixed with another type
+          return (rc_channels[
+C_THROTTLE_CH].rc_in < (
+C_CHANNEL_NEUTRAL + 
+C_CHANNEL_DEADZONE * 10));
+..\RC\rc_channel.c(521): warning:  #188-D: enumerated type mixed with another type
+          return (rc_channels[
+C_THROTTLE_CH].rc_in > (
+C_CHANNEL_NEUTRAL - 
+C_CHANNEL_DEADZONE * 10));
+..\RC\rc_channel.c: 9 warnings, 0 errors
 compiling rf.c...
 linking...
-Program Size: Code=27356 RO-data=684 RW-data=216 ZI-data=1652  
+Program Size: Code=31556 RO-data=684 RW-data=284 ZI-data=1788  
 compiling bmi160.c...
 compiling fbm320.c...
-..\Driver\fbm320.c(80): warning:  #223-D: function "fabs" declared implicitly
-                        } else if (fabs(new_alt - fbm320_packet.altitude) < 0.1f) {
-..\Driver\fbm320.c(86): warning:  #223-D: function "fabs" declared implicitly
-                        if (fabs(new_alt - fbm320_packet.altitude) < 10) {
+..\Driver\fbm320.c(80): warning:  #223-D: function "fabsf" declared implicitly
+              } else if (fabsf(new_alt - fbm320_packet.altitude) < 0.1f) {
+..\Driver\fbm320.c(86): warning:  #223-D: function "fabsf" declared implicitly
+              if (fabsf(new_alt - fbm320_packet.altitude) < 10) {
 ..\Driver\fbm320.c: 2 warnings, 0 errors
 compiling motor.c...
 ..\Driver\motor.c(35): warning:  #223-D: function "printf" declared implicitly
@@ -401,7 +467,9 @@ compiling motor.c...
 compiling common.c...
 ..\User\../AHRS/inertial_nav.h(21): warning:  #1295-D: Deprecated declaration position_z_update - give arg types
   void position_z_update();
-..\User\common.c: 1 warning, 0 errors
+..\User\../RC/rc_channel.h(72): warning:  #1295-D: Deprecated declaration get_desired_climb_rate - give arg types
+  float get_desired_climb_rate();
+..\User\common.c: 2 warnings, 0 errors
 compiling main.c...
 ..\User\main.c(20): warning:  #111-D: statement is unreachable
           return 0;
@@ -409,7 +477,7 @@ compiling main.c...
 compiling system_PN020Series.c...
 compiling Algorithm_filter.c...
 compiling Algorithm_math.c...
-..\Algorithm\Algorithm_math\Algorithm_math.c(53): warning:  #111-D: statement is unreachable
+..\Algorithm\Algorithm_math\Algorithm_math.c(37): warning:  #111-D: statement is unreachable
         if(error < 0.0f)
 ..\Algorithm\Algorithm_math\Algorithm_math.c: 1 warning, 0 errors
 compiling Algorithm_pid.c...
@@ -421,23 +489,44 @@ compiling Algorithm_quaternion.c...
   }
 ..\Algorithm\Algorithm_quaternion\Algorithm_quaternion.c: 1 warning, 0 errors
 compiling attitude_control.c...
+..\RC\rc_channel.h(72): warning:  #1295-D: Deprecated declaration get_desired_climb_rate - give arg types
+  float get_desired_climb_rate();
+..\Control\attitude_control.c: 1 warning, 0 errors
 compiling flight_mode_control.c...
+..\Control\flight_mode_control.c(1): warning:  #14-D: extra text after expected end of preprocessing directive
+  #include "PN020Series.h"s
+..\RC\rc_channel.h(72): warning:  #1295-D: Deprecated declaration get_desired_climb_rate - give arg types
+  float get_desired_climb_rate();
+..\AHRS\inertial_nav.h(21): warning:  #1295-D: Deprecated declaration position_z_update - give arg types
+  void position_z_update();
+..\Control\flight_mode_control.c(25): warning:  #188-D: enumerated type mixed with another type
+      bool ignore_checks = (fc_status.armed == DISARMED);
+..\Control\flight_mode_control.c(217): warning:  #188-D: enumerated type mixed with another type
+      takeoff_triggered = fc_status.land_complete && (target_climb_rate > 0.0f);
+..\Control\flight_mode_control.c: 5 warnings, 0 errors
 compiling motor_control.c...
-..\Control\motor_control.c(128): warning:  #1-D: last line of file ends without a newline
-  }
+..\Control\motor_control.c(7): warning:  #188-D: enumerated type mixed with another type
+  Motor_t motor = {0};
 ..\Control\motor_control.c: 1 warning, 0 errors
 compiling position_control.c...
 ..\AHRS\inertial_nav.h(21): warning:  #1295-D: Deprecated declaration position_z_update - give arg types
   void position_z_update();
-..\Control\position_control.c: 1 warning, 0 errors
+..\RC\rc_channel.h(72): warning:  #1295-D: Deprecated declaration get_desired_climb_rate - give arg types
+  float get_desired_climb_rate();
+..\Control\position_control.c(653): warning:  #188-D: enumerated type mixed with another type
+      return ((sys_milli() - last_update_z_ms) <= 
+OSCONTROL_ACTIVE_TIMEOUT_MS);
+..\Control\position_control.c: 3 warnings, 0 errors
 compiling scheduler.c...
 ..\Scheduler\../AHRS/inertial_nav.h(21): warning:  #1295-D: Deprecated declaration position_z_update - give arg types
   void position_z_update();
+..\Scheduler\../RC/rc_channel.h(72): warning:  #1295-D: Deprecated declaration get_desired_climb_rate - give arg types
+  float get_desired_climb_rate();
 ..\Scheduler\scheduler.c(183): warning:  #177-D: variable "_ahrs" was declared but never referenced
         EulerAngle _ahrs;
 ..\Scheduler\scheduler.c(314): warning:  #1-D: last line of file ends without a newline
   }
-..\Scheduler\scheduler.c: 3 warnings, 0 errors
+..\Scheduler\scheduler.c: 4 warnings, 0 errors
 compiling ahrs.c...
 ..\AHRS\ahrs.c(170): warning:  #223-D: function "printf" declared implicitly
                 printf("kp: %.6f\n", cmp_kp);
@@ -459,11 +548,9 @@ compiling inertial_nav.c...
         static float w_z_acc = 20.0f;
 ..\AHRS\inertial_nav.c(34): warning:  #550-D: variable "corr_acc" was set but never used
         static float corr_acc[3] = {0.0f, 0.0f, 0.0f};  // N E D ,  m/s2
-..\AHRS\inertial_nav.c(171): warning:  #177-D: variable "count" was declared but never referenced
+..\AHRS\inertial_nav.c(173): warning:  #177-D: variable "count" was declared but never referenced
         static uint8_t count = 0;
-..\AHRS\inertial_nav.c(239): warning:  #1-D: last line of file ends without a newline
-  }
-..\AHRS\inertial_nav.c: 5 warnings, 0 errors
+..\AHRS\inertial_nav.c: 4 warnings, 0 errors
 compiling timer_delay.c...
 compiling bsp_i2c.c...
 compiling uart_console.c...
@@ -548,25 +635,37 @@ compiling uart.c...
 compiling wdt.c...
 compiling wwdt.c...
 compiling rc_channel.c...
-..\RC\rc_channel.c(24): warning:  #223-D: function "printf" declared implicitly
+..\RC\rc_channel.h(72): warning:  #1295-D: Deprecated declaration get_desired_climb_rate - give arg types
+  float get_desired_climb_rate();
+..\RC\rc_channel.c(25): warning:  #223-D: function "printf" declared implicitly
       printf("rf xns104 init success\n");
-..\RC\rc_channel.c(47): warning:  #223-D: function "memset" declared implicitly
+..\RC\rc_channel.c(54): warning:  #223-D: function "memset" declared implicitly
         memset(rc_buf, 0, PAYLOAD_WIDTH);
-..\RC\rc_channel.c(40): warning:  #177-D: variable "j" was declared but never referenced
+..\RC\rc_channel.c(43): warning:  #177-D: variable "j" was declared but never referenced
       uint8_t j = 0;
-..\RC\rc_channel.c(197): warning:  #188-D: enumerated type mixed with another type
+..\RC\rc_channel.c(207): warning:  #188-D: enumerated type mixed with another type
               switch_event_trigger(ch_index, (switch_on_tick[ch_index] >= 250));
-..\RC\rc_channel.c(209): warning:  #223-D: function "printf" declared implicitly
+..\RC\rc_channel.c(219): warning:  #223-D: function "printf" declared implicitly
                         printf("set_pid_param_p:%i", (int16_t)(ctrl_loop.rate.pitch.ki * 100));
-..\RC\rc_channel.c(299): warning:  #223-D: function "printf" declared implicitly
+..\RC\rc_channel.c(310): warning:  #223-D: function "printf" declared implicitly
       printf("roll code: 0x%X 0x%X 0x%X\n", roll_code[0], roll_code[1], roll_code[2]);
-..\RC\rc_channel.c: 6 warnings, 0 errors
+..\RC\rc_channel.c(519): warning:  #188-D: enumerated type mixed with another type
+          return (rc_channels[
+C_THROTTLE_CH].rc_in < (
+C_CHANNEL_NEUTRAL + 
+C_CHANNEL_DEADZONE * 10));
+..\RC\rc_channel.c(521): warning:  #188-D: enumerated type mixed with another type
+          return (rc_channels[
+C_THROTTLE_CH].rc_in > (
+C_CHANNEL_NEUTRAL - 
+C_CHANNEL_DEADZONE * 10));
+..\RC\rc_channel.c: 9 warnings, 0 errors
 compiling rf.c...
 linking...
-Program Size: Code=27356 RO-data=684 RW-data=216 ZI-data=1652  
+Program Size: Code=31556 RO-data=684 RW-data=284 ZI-data=1788  
 After Build - User command #1: fromelf --bin ".\output\HD_Drone.axf" --output ".\output\HD_Drone.bin"
 After Build - User command #2: fromelf --text -c ".\output\HD_Drone.axf" --output ".\output\HD_Drone.txt"
-".\output\HD_Drone.axf" - 0 Error(s), 61 Warning(s).
+".\output\HD_Drone.axf" - 0 Error(s), 73 Warning(s).
 *** Completed Cross-Module-Optimization after 3 iteration(s).
 
 <h2>Software Packages used:</h2>
@@ -585,7 +684,7 @@ Package Vendor: ARM
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.0.2
-Build Time Elapsed:  00:00:41
+Build Time Elapsed:  00:00:34
 </pre>
 </body>
 </html>

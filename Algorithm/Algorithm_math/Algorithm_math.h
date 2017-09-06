@@ -10,15 +10,17 @@
 #define toDeg( Math_R )	  ((float)(Math_R)*57.2957795f)
 #define absu16( Math_X )  (Math_X<0? -(Math_X):Math_X)
 #define absFloat( Math_X )(Math_X<0? -(Math_X):Math_X)
-
+#define MIN(x,y)     ((x) < (y) ? (x) : (y))
+#define MAX(x,y)     ((x) > (y) ? (x) : (y))
 
 float Q_rsqrt(float number);
 float VariableParameter(float error);
 void array_assign(uint16_t *array,int16_t value,uint16_t length);
 void array_astrict(int16_t *array,int16_t lower,int16_t upper);
-float data_limit(float data,float toplimit,float lowerlimit);
-double Degree(double rad);
-double Rad(double angle);
+float Degree(float rad);
+float Rad(float angle);
+float wrap_360_degree(float _angle);
 double constrain(double inputvalue, double limitmin, double limitmax);
+float constrain_float(float inputvalue, float limitmin, float limitmax);
 void applyDeadband(double value,double deadband);
 #endif /* __Algorithm_math_H */

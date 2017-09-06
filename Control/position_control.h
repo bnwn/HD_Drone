@@ -29,12 +29,9 @@
 #define POSCONTROL_THROTTLE_CUTOFF_FREQ         0.059f    // low-pass filter on accel error (unit: 2hz)
 #define POSCONTROL_ACCEL_FILTER_HZ              2.0f    // low-pass filter on acceleration (unit: hz)
 #define POSCONTROL_JERK_RATIO                   1.0f    // Defines the time it takes to reach the requested acceleration
+#define POSCONTROL_OVERSPEED_GAIN_Z             2.0f    // gain controlling rate at which z-axis speed is brought back within SPEED_UP and SPEED_DOWN range
 
 // Throttle control gains
-#ifndef THR_DZ_DEFAULT
-# define THR_DZ_DEFAULT         100             // the deadzone above and below mid throttle while in althold or loiter
-#endif
-
 #ifndef ALT_HOLD_P
  # define ALT_HOLD_P            1.0f
 #endif
@@ -62,11 +59,11 @@
 #endif
 
 // default maximum vertical velocity and acceleration the pilot may request
-#ifndef PILOT_VELZ_MAX
- # define PILOT_VELZ_MAX    250     // maximum vertical velocity in cm/s
+#ifndef POSCONTROL_VELZ_MAX
+ # define POSCONTROL_VELZ_MAX    250     // maximum vertical velocity in cm/s
 #endif
-#ifndef PILOT_ACCEL_Z_DEFAULT
- # define PILOT_ACCEL_Z_DEFAULT 250 // vertical acceleration in cm/s/s while altitude is under pilot control
+#ifndef POSCONTROL_ACCEL_Z_DEFAULT
+ # define POSCONTROL_ACCEL_Z_DEFAULT 250 // vertical acceleration in cm/s/s while altitude is under pilot control
 #endif
 
 // max distance in cm above or below current location that will be used for the alt target when transitioning to alt-hold mode
@@ -84,15 +81,29 @@
 
 
 /* function prototype */
-void position_z_control(void);
+void poscontrol_init_takeoff(void);
+void position_z_controller(void);
 void pos_to_rate_z(void);
 // rate_to_accel_z - calculates desired accel required to achieve the velocity target
 void rate_to_accel_z(void);
 // accel_to_throttle - alt hold's acceleration controller
 void accel_to_throttle(float _accel_target_z);
+void add_takeoff_climb_rate(float _climb_rate_cms, float _dt);
+void set_alt_target_from_climb_rate_ff(float climb_rate_cms, float dt, bool force_descend);
+void relax_alt_controller(float throttle_setting);
 void calc_leash_length_z(void);
 float calc_leash_length(float speed_cms, float accel_cms, float kP);
 // Proportional controller with piecewise sqrt sections to constrain second derivative
 float sqrt_controller(float error, float p, float second_ord_lim);
+/// set_speed_z - sets maximum climb and descent rates
+/// To-Do: call this in the main code as part of flight mode initialisation
+///     calc_leash_length_z should be called afterwards
+///     speed_down should be a negative number
+void set_speed_z(float _speed_down, float _speed_up);
+/// set_accel_z - set vertical acceleration in cm/s/s
+void set_accel_z(float _accel_cmss);
+bool is_active_z(void);
+void set_alt_target_to_current_alt(void);
+void set_desired_vel_z(float _vel_z_cms);
 
 #endif

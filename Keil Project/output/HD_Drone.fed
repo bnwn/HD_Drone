@@ -1,4 +1,4 @@
-;#<FEEDBACK># ARM Linker, 5060183: Last Updated: Tue Sep 05 22:29:07 2017
+;#<FEEDBACK># ARM Linker, 5060183: Last Updated: Wed Sep 06 22:39:29 2017
 ;VERSION 0.2
 ;FILE acmp.o
 ACMP_Close <= USED 0
@@ -31,6 +31,7 @@ __asm___18_Algorithm_filter_c_b693f501____REVSH <= USED 0
 __asm___16_Algorithm_math_c_Q_rsqrt____REV16 <= USED 0
 __asm___16_Algorithm_math_c_Q_rsqrt____REVSH <= USED 0
 constrain <= USED 0
+wrap_360_degree <= USED 0
 ;FILE algorithm_pid.o
 __asm___15_Algorithm_pid_c_61a19061____REV16 <= USED 0
 __asm___15_Algorithm_pid_c_61a19061____REVSH <= USED 0
@@ -74,15 +75,14 @@ __asm___5_clk_c_93d8d263____REVSH <= USED 0
 ;FILE common.o
 __asm___8_common_c_d7b85782____REV16 <= USED 0
 __asm___8_common_c_d7b85782____REVSH <= USED 0
-sys_milli <= USED 0
 ;FILE fbm320.o
 __asm___8_fbm320_c_8c0545fd____REV16 <= USED 0
 __asm___8_fbm320_c_8c0545fd____REVSH <= USED 0
 ;FILE flight_mode_control.o
 __asm___21_flight_mode_control_c_3550a7f2____REV16 <= USED 0
 __asm___21_flight_mode_control_c_3550a7f2____REVSH <= USED 0
-acro_init <= USED 0
 exit_mode <= USED 0
+init_simple_bearing <= USED 0
 ;FILE fmc.o
 FMC_Close <= USED 0
 FMC_Erase <= USED 0
@@ -131,9 +131,6 @@ __asm___5_i2c_c_I2C_Open____REVSH <= USED 0
 ;FILE inertial_nav.o
 __asm___14_inertial_nav_c_nav____REV16 <= USED 0
 __asm___14_inertial_nav_c_nav____REVSH <= USED 0
-get_inertial_accel <= USED 0
-get_inertial_alt <= USED 0
-get_inertial_velocity <= USED 0
 inertial_nav_init <= USED 0
 ;FILE inertial_sensor.o
 __asm___17_inertial_sensor_c_e05d5c6f____REV16 <= USED 0
@@ -145,20 +142,12 @@ __asm___6_main_c_main____REVSH <= USED 0
 __asm___7_motor_c_d71f47f0____REV16 <= USED 0
 __asm___7_motor_c_d71f47f0____REVSH <= USED 0
 ;FILE motor_control.o
-__asm___15_motor_control_c_thrust____REV16 <= USED 0
-__asm___15_motor_control_c_thrust____REVSH <= USED 0
-get_throttle_hover <= USED 0
+__asm___15_motor_control_c_motor____REV16 <= USED 0
+__asm___15_motor_control_c_motor____REVSH <= USED 0
 throttle_control <= USED 0
 ;FILE position_control.o
-__asm___18_position_control_c_2463169a____REV16 <= USED 0
-__asm___18_position_control_c_2463169a____REVSH <= USED 0
-accel_to_throttle <= USED 0
-calc_leash_length <= USED 0
-calc_leash_length_z <= USED 0
-pos_to_rate_z <= USED 0
-position_z_control <= USED 0
-rate_to_accel_z <= USED 0
-sqrt_controller <= USED 0
+__asm___18_position_control_c_f21ea35f____REV16 <= USED 0
+__asm___18_position_control_c_f21ea35f____REVSH <= USED 0
 ;FILE pwm.o
 PWM_ClearADCTriggerFlag <= USED 0
 PWM_ClearCMPDIntFlag <= USED 0

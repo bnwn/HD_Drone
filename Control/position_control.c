@@ -2,6 +2,7 @@
 #include "position_control.h"
 #include "attitude_control.h"
 #include "inertial_nav.h"
+#include "rc_channel.h"
 
 _Nav_t pos_target, pos_error;
 
@@ -18,7 +19,7 @@ struct poscontrol_flags {
     uint16_t freeze_ff_z        : 1;    // 1 used to freeze velocity to accel feed forward for one iteration
     uint16_t use_desvel_ff_z    : 1;    // 1 to use z-axis desired velocity as feed forward into velocity step
     uint16_t vehicle_horiz_vel_override : 1; // 1 if we should use _vehicle_horiz_vel as our velocity process variable for one timestep
-} pos_flags;
+} pos_flags = {0};
 
 // limit flags structure
 struct poscontrol_limit_flags {
@@ -27,20 +28,37 @@ struct poscontrol_limit_flags {
     uint8_t vel_up      : 1;    // 1 if we have hit the vertical velocity limit going up
     uint8_t vel_down    : 1;    // 1 if we have hit the vertical velocity limit going down
     uint8_t accel_xy    : 1;    // 1 if we have hit the horizontal accel limit
-} pos_limit;
+} pos_limit = {0};
 
 float leash_up_z = POSCONTROL_LEASH_LENGTH_MIN, leash_down_z = POSCONTROL_LEASH_LENGTH_MIN;
 float speed_up_cms = POSCONTROL_SPEED_UP, speed_down_cms = POSCONTROL_SPEED_DOWN;
 float accel_z_cms = POSCONTROL_ACCEL_Z;
+float accel_last_z_cms = 0.0f;
 _Vector_Float vel_desired, vel_last, accel_feedforward;
+uint32_t last_update_z_ms = 0;
+
+void poscontrol_init_takeoff(void)
+{
+    float curr_alt = get_inav_alt();
+
+    pos_target.z = curr_alt;
+
+    // freeze feedforward to avoid jump
+    pos_flags.freeze_ff_z = true;
+
+    // shift difference between last motor out and hover throttle into accelerometer I
+    ctrl_loop.pos_accel.z.integrator = ((1.0f+norm_input_dz(&rc_channels[RC_THROTTLE_CH]))/2.0f - get_throttle_hover())*1000.0f;
+
+    // initialise ekf reset handler
+    // init_ekf_z_reset();
+}
 
 /* altitude control */
-void position_z_control(void)
+void position_z_controller(void)
 {
-	static uint32_t timestamp = 0;
 	uint32_t now = sys_milli();
-	uint32_t dt = (timestamp>0) ? (now-timestamp) : 0;
-	timestamp = now;
+    uint32_t dt = (last_update_z_ms>0) ? (now-last_update_z_ms) : 0;
+    last_update_z_ms = now;
 	
 	if (dt > POSCONTROL_ACTIVE_TIMEOUT_MS) {
 		pos_flags.reset_accel_to_throttle = true;
@@ -59,7 +77,7 @@ void position_z_control(void)
 // vel_up_max, vel_down_max should have already been set before calling this method
 void pos_to_rate_z(void)
 {
-    float curr_alt = get_inertial_alt();
+    float curr_alt = get_inav_alt();
 
     // clear position limit flags
     pos_limit.pos_up = false;
@@ -109,7 +127,7 @@ void pos_to_rate_z(void)
 // calculates desired acceleration and calls accel throttle controller
 void rate_to_accel_z(void)
 {
-    const _Vector_Float curr_vel = get_inertial_velocity();
+    const _Vector_Float curr_vel = get_inav_velocity();
     float p;                                // used to capture pid values for logging
 	static float last_vel_error = 0.0f;
 	
@@ -153,7 +171,7 @@ void rate_to_accel_z(void)
     // calculate p
     p = ctrl_loop.pos_vel.z.kp * pos_error.vz;
 
-    // consolidate and constrain target acceleration
+    // consolidate and constrain_float target acceleration
     pos_target.az = accel_feedforward.z + p;
 
     // set target for accel based throttle controller
@@ -169,7 +187,7 @@ void accel_to_throttle(float accel_target_z)
 	float thr_out;
 
     // Calculate Earth Frame Z acceleration
-    z_accel_meas = get_inertial_accel().z;
+    z_accel_meas = get_inav_accel().z;
 
     // reset target altitude if this controller has just been engaged
     if (pos_flags.reset_accel_to_throttle) {
@@ -211,6 +229,54 @@ void accel_to_throttle(float accel_target_z)
 
     // send throttle to attitude controller with angle boost
     attitude_throttle_controller(thr_out, true, POSCONTROL_THROTTLE_CUTOFF_FREQ);
+}
+
+/// add_takeoff_climb_rate - adjusts alt target up or down using a climb rate in cm/s
+///     should be called continuously (with dt set to be the expected time between calls)
+///     almost no checks are performed on the input
+void add_takeoff_climb_rate(float _climb_rate_cms, float _dt)
+{
+    pos_target.z += _climb_rate_cms * _dt;
+}
+
+/// set_alt_target_from_climb_rate_ff - adjusts target up or down using a climb rate in cm/s using feed-forward
+///     should be called continuously (with dt set to be the expected time between calls)
+///     actual position target will be moved no faster than the speed_down and speed_up
+///     target will also be stopped if the motors hit their limits or leash length is exceeded
+///     set force_descend to true during landing to allow target to move low enough to slow the motors
+void set_alt_target_from_climb_rate_ff(float climb_rate_cms, float dt, bool force_descend)
+{
+    // calculated increased maximum acceleration if over speed
+    float _accel_z_cms = accel_z_cms;
+	float vel_change_limit;
+	float accel_z_max;
+	float jerk_z;
+	
+    if (vel_desired.z < speed_down_cms && (speed_down_cms != 0.0f)) {
+        _accel_z_cms *= POSCONTROL_OVERSPEED_GAIN_Z * vel_desired.z / speed_down_cms;
+    }
+    if (vel_desired.z > speed_up_cms && (speed_down_cms != 0.0f)) {
+        _accel_z_cms *= POSCONTROL_OVERSPEED_GAIN_Z * vel_desired.z / speed_up_cms;
+    }
+    _accel_z_cms = (float)constrain_float(_accel_z_cms, 0.0f, 750.0f);
+
+    // jerk_z is calculated to reach full acceleration in 1000ms.
+    jerk_z = _accel_z_cms * POSCONTROL_JERK_RATIO;
+
+    accel_z_max = MIN(_accel_z_cms, sqrt(2.0f*fabsf(vel_desired.z - climb_rate_cms)*jerk_z));
+
+    accel_last_z_cms += jerk_z * dt;
+    accel_last_z_cms = MIN(accel_z_max, accel_last_z_cms);
+
+    vel_change_limit = accel_last_z_cms * dt;
+    vel_desired.z = constrain_float(climb_rate_cms, vel_desired.z-vel_change_limit, vel_desired.z+vel_change_limit);
+    pos_flags.use_desvel_ff_z = true;
+
+    // adjust desired alt if motors have not hit their limits
+    // To-Do: add check of _limit.pos_down?
+    if ((vel_desired.z<0 && (!motor.limit_throttle_lower || force_descend)) || (vel_desired.z>0 && !motor.limit_throttle_upper && pos_limit.pos_up)) {
+        pos_target.z += vel_desired.z * dt;
+    }
 }
 
 #if 0
@@ -470,7 +536,7 @@ pitchSp = asinf(thrustXYSp[1]) * 180.0f /M_PI_F;
 
 
 // if saturation ,don't integral
-if(!satZ )//&& fabs(thrustZSp)<THR_MAX
+if(!satZ )//&& fabsf(thrustZSp)<THR_MAX
 {
         thrustZInt += velZErr * alt_vel_PID.I * dt;
         if (thrustZInt > 0.0f)
@@ -479,6 +545,21 @@ if(!satZ )//&& fabs(thrustZSp)<THR_MAX
 
 
 #endif
+void relax_alt_controller(float _throttle_setting)
+{
+    pos_target.z = get_inav_alt();
+    vel_desired.z = 0.0f;
+    pos_flags.use_desvel_ff_z = false;
+    pos_target.vz = get_inav_velocity().z;
+    vel_last.z = get_inav_velocity().z;
+    accel_feedforward.z = 0.0f;
+    accel_last_z_cms = 0.0f;
+    pos_target.az = get_inav_accel().z;
+    pos_flags.reset_accel_to_throttle = true;
+
+    ctrl_loop.pos_accel.z.integrator = (_throttle_setting-get_throttle_hover())*1000.0f;
+}
+
 /// calc_leash_length - calculates the vertical leash lengths from maximum speed, acceleration
 ///     called by pos_to_rate_z if z-axis speed or accelerations are changed
 void calc_leash_length_z(void)
@@ -539,4 +620,45 @@ float sqrt_controller(float error, float p, float second_ord_lim)
     } else {
         return error*p;
     }
+}
+
+/// set_speed_z - sets maximum climb and descent rates
+/// To-Do: call this in the main code as part of flight mode initialisation
+///     calc_leash_length_z should be called afterwards
+///     speed_down should be a negative number
+void set_speed_z(float _speed_down, float _speed_up)
+{
+    _speed_down = -fabsf(_speed_down);
+
+    if ((fabsf(speed_down_cms-_speed_down) > 1.0f) || (fabsf(speed_up_cms-_speed_up) > 1.0f)) {
+        speed_down_cms = _speed_down;
+        speed_up_cms = _speed_up;
+        pos_flags.recalc_leash_z = true;
+        calc_leash_length_z();
+    }
+}
+
+/// set_accel_z - set vertical acceleration in cm/s/s
+void set_accel_z(float _accel_cmss)
+{
+    if (fabsf(accel_z_cms-_accel_cmss) > 1.0f) {
+        accel_z_cms = _accel_cmss;
+        pos_flags.recalc_leash_z = true;
+        calc_leash_length_z();
+    }
+}
+
+bool is_active_z(void)
+{
+    return ((sys_milli() - last_update_z_ms) <= POSCONTROL_ACTIVE_TIMEOUT_MS);
+}
+
+void set_alt_target_to_current_alt(void)
+{
+    pos_target.z = get_inav_alt();
+}
+
+void set_desired_vel_z(float _vel_z_cms)
+{
+    pos_target.vz = _vel_z_cms;
 }

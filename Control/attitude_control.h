@@ -68,7 +68,7 @@ float axis_target_pid_cal(Pid_t *_pid, float _error);
 void attitude_angle_euler_controller(float _target_roll, float _target_pitch, float _target_yaw_rate, float sense_level, float _dt);
 void attitude_throttle_controller(float _throttle, bool _use_leans_tilt, float _cutoff);
 float get_throttle_boosted(float _throttle_in);
-void reset_pid_param(void);
+void reset_rate_controller(void);
 
 typedef struct {
     float roll;

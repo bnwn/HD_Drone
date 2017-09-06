@@ -77,15 +77,15 @@ void fbm320_timer_procedure(void)
 		if (!fc_status.baro_initialize) {
 			if (fbm320_packet.altitude == 0.0f) {
 				fbm320_packet.altitude = new_alt;
-			} else if (fabs(new_alt - fbm320_packet.altitude) < 0.1f) {
+            } else if (fabsf(new_alt - fbm320_packet.altitude) < 0.1f) {
 				fc_status.baro_initialize = true;
 			}
 			
 		} else {
 			new_alt = Moving_Average(fbm320_alt_filter, 5, new_alt);
-			if (fabs(new_alt - fbm320_packet.altitude) < 10) {
+            if (fabsf(new_alt - fbm320_packet.altitude) < 10) {
 				fbm320_packet.altitude += (new_alt - fbm320_packet.altitude) * 0.2736f; // 2Hz LPF
-			} else if (fabs(new_alt - fbm320_packet.altitude) < 50) {
+            } else if (fabsf(new_alt - fbm320_packet.altitude) < 50) {
 				fbm320_packet.altitude += (new_alt - fbm320_packet.altitude) * 0.1585f; // 1Hz LPF
 			} else {
 				fbm320_packet.altitude += (new_alt - fbm320_packet.altitude) * 0.086f; // 0.5Hz LPF

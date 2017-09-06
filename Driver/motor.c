@@ -53,7 +53,7 @@ void motor_update(float *_duty)
 //        } else if (*(_duty + i) > 1.0f) {
 //            *(_duty + i) = 1.0f;
 //        }
-		*(_duty + i) = data_limit(*(_duty + i), 1.0f, 0.0f);
+        *(_duty + i) = (float)constrain_float(*(_duty + i), 0.0f, 1.0f);
 				
 #if MOTOR_TYPE == DC
 		_duty_cycle = (uint32_t)(*(_duty + i) * motor_duty_range);

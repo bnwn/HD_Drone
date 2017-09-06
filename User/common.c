@@ -160,16 +160,44 @@ void param_load(void)
 
 void fc_status_reset(void)
 {
-	fc_status.armed = ARMED;
+    fc_status.armed = DISARMED;
+    fc_status.simple_mode = Normal;
 	fc_status.land_complete = true;
 	fc_status.code_matched = false;
+    fc_status.radio_lost = true;
     fc_status.altitude_updated = false;
 	fc_status.home_abs_alt_updated = false;
     fc_status.accel_updated = false;
-	fc_status.position_z_ok = false;
+    fc_status.baro_collect_ok = false;
+    fc_status.inav_z_estimate_ok = false;
 	fc_status.baro_initialize = false;
 	fc_status.printf_flag = 6;
 	fc_status.motor_control_Hz = 2000;
+}
+
+void set_land_complete(bool _b)
+{
+    if (fc_status.land_complete != _b)
+    {
+        fc_status.land_complete = _b;
+    }
+
+    if (fc_status.land_complete && ((control_mode == Land) || (control_mode == Auto))) {
+        fc_status.armed = DISARMED;
+    }
+}
+
+void set_radio_lost(bool _b)
+{
+    if (fc_status.radio_lost != _b)
+    {
+        fc_status.radio_lost = _b;
+    }
+
+    if (fc_status.radio_lost) {
+        fc_status.armed = DISARMED;
+        //set_flight_mode(Land);
+    }
 }
 
 uint32_t systick_config(uint32_t ticks)

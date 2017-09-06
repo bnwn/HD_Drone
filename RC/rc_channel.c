@@ -5,6 +5,7 @@
 #include "timer_delay.h"
 #include "common.h"
 #include "flight_mode_control.h"
+#include "position_control.h"
 
 Rc_Channel_t rc_channels[RC_CHANNEL_NUM_MAX] = {0};
 Rc_Switch_t rc_switchs[RC_SWITCH_MAX] = {0};
@@ -37,12 +38,18 @@ bool rc_channel_read(void)
 {
     static uint8_t buf_index = 0;
     uint8_t rev_len = PAYLOAD_WIDTH - buf_index;
+    static uint32_t timestamp = 0;
+    uint32_t now = sys_milli();
     uint8_t j = 0;
 	
 	if (!fc_status.code_matched) {
 		auto_code_matching();
 		return false;
 	}
+
+    if ((now - timestamp) > RADIO_SIGNAL_LOST_MS) {
+        set_radio_lost(true);
+    }
 
 	memset(rc_buf, 0, PAYLOAD_WIDTH);
     ucRF_DumpRxData(rc_buf + buf_index, rev_len);
@@ -65,6 +72,9 @@ bool rc_channel_read(void)
                 }
             }
 			
+            timestamp = sys_milli();
+            set_radio_lost(false);
+
             rc_channels[0].rc_in = (rc_buf[DATA_INDEX] << 8) | rc_buf[DATA_INDEX+1];
             rc_channels[1].rc_in = (rc_buf[DATA_INDEX+2] << 8) | rc_buf[DATA_INDEX+3];
             rc_channels[2].rc_in = (rc_buf[DATA_INDEX+4] << 8) | rc_buf[DATA_INDEX+5];
@@ -218,14 +228,15 @@ static void switch_event_trigger(uint8_t _ch, bool _is_long_hold)
 			else {
 				fc_status.printf_flag = 0x0;
 				
-				fc_status.armed = ARMED;
+                fc_status.armed = DISARMED;
 			}
             break;
         case 3:
-			fc_status.armed = ARMED;
+            fc_status.armed = DISARMED;
             break;
         case 4:
-			set_flight_mode(Acro);
+			//set_flight_mode(Acro);
+			set_flight_mode(AltHold);
             break;
         case 5:
 			set_pid_param_d(&ctrl_loop.rate.roll, (ctrl_loop.rate.roll.kd + 0.0005f));
@@ -263,7 +274,7 @@ float norm_input(Rc_Channel_t *_rc)
         ret = reverse_mul * (float)(_rc->rc_in - _rc->rc_neutral) / (float)(_rc->rc_max - _rc->rc_neutral);
     }
 
-    return data_limit(ret, 1.0f, -1.0f);
+    return (float)constrain_float(ret, -1.0f, 1.0f);
 }
 
 float norm_input_dz(Rc_Channel_t *_rc)
@@ -281,7 +292,7 @@ float norm_input_dz(Rc_Channel_t *_rc)
         ret = 0.0f;
     }
 
-    return data_limit(ret, 1.0f, -1.0f);
+    return (float)constrain_float(ret, -1.0f, 1.0f);
 }
 
 float channel_input_to_target(Rc_Channel_t *_rc, float _max_range)
@@ -319,8 +330,8 @@ void get_desired_leans_angles(_Target_Attitude *_target_att, float _leans_limit)
         _pitch *= _ratio;
     }
 
- //   _target_att->roll = (180/M_PI) * atanf(cosf(_pitch*(M_PI/180))*tanf(_roll*(M_PI/180)));
-	_target_att->roll = _roll;
+    _target_att->roll = (180/M_PI) * atanf(cosf(_pitch*(M_PI/180))*tanf(_roll*(M_PI/180)));
+//	_target_att->roll = _roll;
     _target_att->pitch = _pitch;
 
     _yaw_stick_angle = channel_input_to_target(&rc_channels[RC_EULER_YAW_CH], _leans_limit);
@@ -330,13 +341,50 @@ void get_desired_leans_angles(_Target_Attitude *_target_att, float _leans_limit)
 
 float get_desired_throttle_expo(void)
 {
-    float throttle_out = (float)((norm_input_dz(&rc_channels[RC_THROTTLE_CH]) + 1.0f) / 2.0f);
+	float throttle_out;
+    if (fc_status.radio_lost) {
+        return 0.0f;
+    }
+
+    throttle_out = (float)((norm_input_dz(&rc_channels[RC_THROTTLE_CH]) + 1.0f) / 2.0f);
 
     // calculate the output throttle using the given expo function
     throttle_out = throttle_out * 0.6 + 0.4 * throttle_out * throttle_out * throttle_out;
 	
-    throttle_out = data_limit(throttle_out, RC_THROTTLE_OUT_LIMIT, 0.0f);
+    throttle_out = (float)constrain_float(throttle_out, 0.0f, RC_THROTTLE_OUT_LIMIT);
     return throttle_out;
+}
+
+// get_desired_climb_rate - transform pilot's throttle input to climb rate in cm/s
+// without any deadzone at the bottom
+float get_desired_climb_rate(void)
+{
+    float desired_rate = 0.0f;
+    float thr_in = (float)((norm_input_dz(&rc_channels[RC_THROTTLE_CH]) + 1.0f) / 2.0f) * 1000.0f;
+    float deadband_top = 500.0f + THR_DZ_DEFAULT;
+    float deadband_bottom = 500.0f - THR_DZ_DEFAULT;
+	
+    // throttle failsafe check
+    if (fc_status.radio_lost) {
+        return 0.0f;
+    }
+
+    // ensure a reasonable throttle value
+    thr_in = constrain_float(thr_in, 0.0f, 1000.0f);
+
+    // check throttle is above, below or in the deadband
+    if (thr_in < deadband_bottom) {
+        // below the deadband
+        desired_rate = POSCONTROL_VELZ_MAX * (thr_in-deadband_bottom) / deadband_bottom;
+    }else if (thr_in > deadband_top) {
+        // above the deadband
+        desired_rate = POSCONTROL_VELZ_MAX * (thr_in-deadband_top) / (1000.0f-deadband_top);
+    }else{
+        // must be in the deadband
+        desired_rate = 0.0f;
+    }
+
+    return desired_rate;
 }
 
 bool auto_code_matching(void)
@@ -402,7 +450,7 @@ void check_motor_armed(void)
 	static uint8_t idle_tick = 0;
 	
 	switch (fc_status.armed) {
-		case ARMED:
+        case DISARMED:
 			if ((rc_channels[0].rc_in > RC_CHANNEL_DISARMED) && (rc_channels[1].rc_in < (RC_CHANNEL_MAX - RC_CHANNEL_DISARMED)) \
 									&& (rc_channels[2].rc_in > RC_CHANNEL_DISARMED) && (rc_channels[3].rc_in > RC_CHANNEL_DISARMED)) {
 				check_times++;
@@ -419,21 +467,19 @@ void check_motor_armed(void)
 			idle_tick++;
 			
 			if (idle_tick > 100) {
-				fc_status.armed = ARMED;
+                fc_status.armed = DISARMED;
 				idle_tick = 0;
 			}
 			
 			if ((rc_channels[RC_THROTTLE_CH].reversed && (rc_channels[RC_THROTTLE_CH].rc_in < (rc_channels[RC_THROTTLE_CH].rc_neutral - rc_channels[RC_THROTTLE_CH].dead_zone * 2))) || \
 					(!~rc_channels[RC_THROTTLE_CH].reversed && (rc_channels[RC_THROTTLE_CH].rc_in > (rc_channels[RC_THROTTLE_CH].rc_neutral + rc_channels[RC_THROTTLE_CH].dead_zone * 2))))
 			{
-				fc_status.armed = DISARMED;
-				fc_status.land_complete = false;
-				reset_pid_param();
+                fc_status.armed = ARMED;
 			} else if (fc_status.land_complete && (rc_channels[0].rc_in > RC_CHANNEL_DISARMED) && (rc_channels[1].rc_in > RC_CHANNEL_DISARMED) \
 									&& (rc_channels[2].rc_in > RC_CHANNEL_DISARMED) && (rc_channels[3].rc_in < (RC_CHANNEL_MAX - RC_CHANNEL_DISARMED))) {
 				check_times++;
 				if (check_times > 10) {						
-					fc_status.armed = ARMED;
+                    fc_status.armed = DISARMED;
 					check_times = 0;
 				}
 			} else {
@@ -441,7 +487,7 @@ void check_motor_armed(void)
 			}
 			
 			break;
-		case DISARMED:
+        case ARMED:
 			if ((rc_channels[RC_THROTTLE_CH].reversed && (rc_channels[RC_THROTTLE_CH].rc_in > (rc_channels[RC_THROTTLE_CH].rc_max - rc_channels[RC_THROTTLE_CH].dead_zone * 10))) || \
 					(!~rc_channels[RC_THROTTLE_CH].reversed && (rc_channels[RC_THROTTLE_CH].rc_in < (rc_channels[RC_THROTTLE_CH].rc_min + rc_channels[RC_THROTTLE_CH].dead_zone * 10))))
 			{
@@ -449,7 +495,7 @@ void check_motor_armed(void)
 				
 				// need to rewrite
 				if (check_times > 50) {
-					fc_status.land_complete = true;
+                    set_land_complete(true);
 					check_times = 0;
 				}
 				if (fc_status.land_complete) {
@@ -465,5 +511,14 @@ void check_motor_armed(void)
 		default:
 			break;
 	}
+}
+
+bool check_throttle_is_safe(void)
+{
+    if (rc_channels[RC_THROTTLE_CH].reversed) {
+        return (rc_channels[RC_THROTTLE_CH].rc_in < (RC_CHANNEL_NEUTRAL + RC_CHANNEL_DEADZONE * 10));
+    } else {
+        return (rc_channels[RC_THROTTLE_CH].rc_in > (RC_CHANNEL_NEUTRAL - RC_CHANNEL_DEADZONE * 10));
+    }
 }
 

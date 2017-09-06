@@ -45,7 +45,7 @@ void position_z_update()
 	float dt = (timestamp>0) ? ((float)(now-timestamp)/1000000.0f) : 0;
 	timestamp = now;
 	
-	if (!fc_status.position_z_ok || (dt == 0))
+    if (!fc_status.baro_collect_ok || (dt == 0))
 	{
 		return;
 	}
@@ -55,9 +55,9 @@ void position_z_update()
 		
     if (fc_status.altitude_updated) { // update altitude in 16.67Hz
         float new_alt = fbm320_packet.altitude - home_absolute_pos.z;
-//		if (fabs(new_alt) < 10) {
+//		if (fabsf(new_alt) < 10) {
 //            nav_pos.z += (new_alt) * 0.2736f; // 2Hz LPF
-//        } else if (fabs(new_alt) < 50) {
+//        } else if (fabsf(new_alt) < 50) {
 //            nav_pos.z += (new_alt) * 0.1585f; // 1Hz LPF
 //        } else {
 //            nav_pos.z += (new_alt) * 0.086f; // 0.5Hz LPF
@@ -112,6 +112,8 @@ void position_z_update()
     nav.z = z_est[0];
     nav.vz = z_est[1];
     nav.az = accel_NED[2];
+
+    fc_status.inav_z_estimate_ok = true;
 
 ///* Complementary filter */
 //    height_thr = LIMIT( thr , 0, 700 );
@@ -171,13 +173,13 @@ void update_home_pos(void)
 	static uint8_t count = 0;
 	static float filter_arr[15] = {0};
 	
-	if ((!fc_status.position_z_ok) && fc_status.home_abs_alt_updated) {
+    if ((!fc_status.baro_collect_ok) && fc_status.home_abs_alt_updated) {
 		if (Moving_Average(filter_arr, 15, (fbm320_packet.altitude - home_absolute_pos.z)) < 0.8f) {
-			fc_status.position_z_ok = true;
+            fc_status.baro_collect_ok = true;
 		}
 		home_absolute_pos.z = fbm320_packet.altitude;
 		fc_status.home_abs_alt_updated = false;
-	}/* else if (fc_status.armed == ARMED && fc_status.home_abs_alt_updated) {
+    }/* else if (fc_status.armed == DISARMED && fc_status.home_abs_alt_updated) {
 		home_absolute_pos.z += (fbm320_packet.altitude - home_absolute_pos.z) * 0.2736f; // 2Hz LPF
 		fc_status.home_abs_alt_updated = false;
 	}*/
@@ -211,12 +213,12 @@ static void inertial_filter_correct(float e, float dt, float *x, int i, float w)
 	}
 }
 
-float get_inertial_alt(void)
+float get_inav_alt(void)
 {
 	return (float)(-nav.z * 100);
 }
 
-_Vector_Float get_inertial_velocity(void)
+_Vector_Float get_inav_velocity(void)
 {
 	_Vector_Float vec;
 	
@@ -227,7 +229,7 @@ _Vector_Float get_inertial_velocity(void)
 	return vec;
 }
 
-_Vector_Float get_inertial_accel(void)
+_Vector_Float get_inav_accel(void)
 {	
 	_Vector_Float vec;
 	

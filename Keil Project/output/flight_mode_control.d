@@ -32,3 +32,4 @@
 .\output\flight_mode_control.o: ..\Control\position_control.h
 .\output\flight_mode_control.o: ..\User\common.h
 .\output\flight_mode_control.o: ..\RC\rc_channel.h
+.\output\flight_mode_control.o: ..\AHRS\inertial_nav.h
