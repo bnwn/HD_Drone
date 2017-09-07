@@ -1,4 +1,4 @@
-;#<FEEDBACK># ARM Linker, 5060183: Last Updated: Wed Sep 06 22:39:29 2017
+;#<FEEDBACK># ARM Linker, 5060183: Last Updated: Thu Sep 07 21:11:56 2017
 ;VERSION 0.2
 ;FILE acmp.o
 ACMP_Close <= USED 0
@@ -24,7 +24,6 @@ AHRS_Read_Attitude <= USED 0
 __asm___6_ahrs_c_NumQ____REV16 <= USED 0
 __asm___6_ahrs_c_NumQ____REVSH <= USED 0
 ;FILE algorithm_filter.o
-IIR_I_Filter <= USED 0
 __asm___18_Algorithm_filter_c_b693f501____REV16 <= USED 0
 __asm___18_Algorithm_filter_c_b693f501____REVSH <= USED 0
 ;FILE algorithm_math.o
@@ -36,9 +35,8 @@ wrap_360_degree <= USED 0
 __asm___15_Algorithm_pid_c_61a19061____REV16 <= USED 0
 __asm___15_Algorithm_pid_c_61a19061____REVSH <= USED 0
 set_input_filter_all <= USED 0
+set_pid_param_p <= USED 0
 ;FILE algorithm_quaternion.o
-Quaternion_Multiply <= USED 0
-Quaternion_ToNumQ <= USED 0
 __asm___22_Algorithm_quaternion_c_fdc3695e____REV16 <= USED 0
 __asm___22_Algorithm_quaternion_c_fdc3695e____REVSH <= USED 0
 ;FILE attitude_control.o
@@ -81,7 +79,6 @@ __asm___8_fbm320_c_8c0545fd____REVSH <= USED 0
 ;FILE flight_mode_control.o
 __asm___21_flight_mode_control_c_3550a7f2____REV16 <= USED 0
 __asm___21_flight_mode_control_c_3550a7f2____REVSH <= USED 0
-exit_mode <= USED 0
 init_simple_bearing <= USED 0
 ;FILE fmc.o
 FMC_Close <= USED 0
@@ -131,7 +128,6 @@ __asm___5_i2c_c_I2C_Open____REVSH <= USED 0
 ;FILE inertial_nav.o
 __asm___14_inertial_nav_c_nav____REV16 <= USED 0
 __asm___14_inertial_nav_c_nav____REVSH <= USED 0
-inertial_nav_init <= USED 0
 ;FILE inertial_sensor.o
 __asm___17_inertial_sensor_c_e05d5c6f____REV16 <= USED 0
 __asm___17_inertial_sensor_c_e05d5c6f____REVSH <= USED 0
@@ -144,6 +140,7 @@ __asm___7_motor_c_d71f47f0____REVSH <= USED 0
 ;FILE motor_control.o
 __asm___15_motor_control_c_motor____REV16 <= USED 0
 __asm___15_motor_control_c_motor____REVSH <= USED 0
+set_trace_throttle <= USED 0
 throttle_control <= USED 0
 ;FILE position_control.o
 __asm___18_position_control_c_f21ea35f____REV16 <= USED 0
@@ -184,15 +181,9 @@ __asm___5_pwm_c_03ee09af____REVSH <= USED 0
 __asm___12_rc_channel_c_ccc456d5____REV16 <= USED 0
 __asm___12_rc_channel_c_ccc456d5____REVSH <= USED 0
 norm_input <= USED 0
-set_rc_channel_deadzone <= USED 0
-set_rc_channel_max <= USED 0
-set_rc_channel_min <= USED 0
-set_rc_channel_neutral <= USED 0
-set_rc_channel_reversed <= USED 0
 ;FILE retarget.o
 GetChar <= USED 0
 IsDebugFifoEmpty <= USED 0
-SendChar <= USED 0
 __asm___10_retarget_c_8c64092a____REV16 <= USED 0
 __asm___10_retarget_c_8c64092a____REVSH <= USED 0
 _ttywrch <= USED 0
@@ -200,14 +191,8 @@ ferror <= USED 0
 fgetc <= USED 0
 kbhit <= USED 0
 ;FILE rf.o
-RF_Carrier <= USED 0
-RF_SetChannel <= USED 0
-RF_TxMode <= USED 0
-RF_Tx_CheckResult <= USED 0
-RF_Tx_TransmintData <= USED 0
 __asm___4_rf_c_f3462bf4____REV16 <= USED 0
 __asm___4_rf_c_f3462bf4____REVSH <= USED 0
-ucRF_GetRSSI <= USED 0
 ;FILE scheduler.o
 __asm___11_scheduler_c_dc3a42db____REV16 <= USED 0
 __asm___11_scheduler_c_dc3a42db____REVSH <= USED 0
@@ -256,6 +241,7 @@ UART_ClearIntFlag <= USED 0
 UART_Close <= USED 0
 UART_DisableInt <= USED 0
 UART_EnableInt <= USED 0
+UART_Read <= USED 0
 UART_SetLine_Config <= USED 0
 UART_SetTimeoutCnt <= USED 0
 UART_Write <= USED 0

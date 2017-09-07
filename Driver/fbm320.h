@@ -28,6 +28,8 @@
 #define FBM320_READ_TEMPERATURE 0x2E
 #define FBM320_READ_PRESSURE FBM320_PRESSURE_OSR
 
+#define FBM320_ALT_INIT_TIME_MS 500
+
 /* function prototype */
 /**
  * @brief fbm320 init

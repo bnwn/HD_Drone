@@ -47,8 +47,7 @@ typedef struct {
     bool accel_updated;
     bool baro_collect_ok;
     bool inav_z_estimate_ok;
-	bool baro_initialize;
-	uint8_t printf_flag;
+	int8_t printf_flag;
 	uint16_t motor_control_Hz;
 }_Status_t;
 

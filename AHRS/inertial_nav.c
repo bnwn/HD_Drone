@@ -9,8 +9,17 @@
 _Nav_t nav = {0}; // NED frame in earth
 _Vector_Float home_absolute_pos;
 
+float z_est[3] = {0.0, 0.0, 0.0};	// estimate z Vz  Az
+float w_z_baro = 0.0;
+float w_z_acc = 2.0;
+float w_acc_bias = 0.25;
+/* store error when sensor updates, but correct on each time step to avoid jumps in estimated value */
+float corr_acc[3] = {0.0, 0.0, 0.0};	// N E D ,  m/s2
+float acc_bias[3] = {0.0, 0.0, 0.0};	// body frame ,
+	
+
 /* acceleration in NED frame */
-float accel_NED[3] = {0.0f, 0.0f, -GRAVITY_MSS};
+float accel_NED[3] = {0.0, 0.0, -GRAVITY_MSS};
 
 void inertial_nav_init(void)
 {
@@ -21,26 +30,19 @@ void inertial_nav_init(void)
 	
 void inertial_nav_update(void)
 {
-    position_z_update(0.02f);
+    position_z_update();
 }
 
-void position_z_update()
+void position_z_update(void)
 {
-	static float z_est[3] = {0.0f, 0.0f, 0.0f};	// estimate z Vz  Az
-	static float w_z_baro = 0.0f;
-	static float w_z_acc = 20.0f;
-	static float w_acc_bias = 0.19f;
-	/* store error when sensor updates, but correct on each time step to avoid jumps in estimated value */
-	static float corr_acc[3] = {0.0f, 0.0f, 0.0f};	// N E D ,  m/s2
-	static float acc_bias[3] = {0.0f, 0.0f, 0.0f};	// body frame ,
-	
     uint8_t i, j;
 	float corr_baro;//m
     /* accelerometer bias correction */
-    float accel_bias_corr[3] = { 0.0f, 0.0f, 0.0f };
+    float accel_bias_corr[3] = { 0.0, 0.0, 0.0 };
 	int8_t co_factor[3] = {IMU_SENSOR_X_FACTOR, IMU_SENSOR_Y_FACTOR, IMU_SENSOR_Z_FACTOR};
 	
 	static uint32_t timestamp = 0;
+	static float baro_offset = 0.0f;
 	uint32_t now = sys_micro();
 	float dt = (timestamp>0) ? ((float)(now-timestamp)/1000000.0f) : 0;
 	timestamp = now;
@@ -50,8 +52,8 @@ void position_z_update()
 		return;
 	}
 	
-	if (w_z_baro < 1.5f) w_z_baro += 0.05;
-	if (w_acc_bias > 0.075f) w_acc_bias -= 0.01f;
+	if (w_z_baro < 1.5) w_z_baro += 0.215;
+	if (w_acc_bias > 0.05) w_acc_bias -= 0.01;
 		
     if (fc_status.altitude_updated) { // update altitude in 16.67Hz
         float new_alt = fbm320_packet.altitude - home_absolute_pos.z;
@@ -62,34 +64,38 @@ void position_z_update()
 //        } else {
 //            nav_pos.z += (new_alt) * 0.086f; // 0.5Hz LPF
 //        }
-        corr_baro = 0 - new_alt - z_est[0];
+		if (baro_offset == 0.0f)
+		{
+			baro_offset = new_alt;
+		}
+        corr_baro = baro_offset - new_alt - z_est[0];
 
         fc_status.altitude_updated = false;
     }
 
     if (fc_status.accel_updated) {
 		float acc[3];
-        acc[0] = inertial_sensor.accel.filter.x - acc_bias[0];
-        acc[1] = inertial_sensor.accel.filter.y - acc_bias[1];
-        acc[2] = inertial_sensor.accel.filter.z - acc_bias[2];
+        acc[0] = (float)(inertial_sensor.accel.filter.x - acc_bias[0]);
+        acc[1] = (float)(inertial_sensor.accel.filter.y - acc_bias[1]);
+        acc[2] = (float)(inertial_sensor.accel.filter.z - acc_bias[2]);
 
         for(i=0; i<3; i++)
         {
-            accel_NED[i] = 0.0f;
+            accel_NED[i] = 0.0;
             for(j=0; j<3; j++)
             {
-                accel_NED[i] += ahrs.dcm[j][i] * acc[j] * co_factor[i];
+                accel_NED[i] += (float)(ahrs.dcm[j][i] * acc[j] * co_factor[i]);
             }
         }
 		
-		accel_NED[2] += GRAVITY_MSS;
+		accel_NED[2] += (float)(GRAVITY_MSS);
         corr_acc[2] = accel_NED[2] - z_est[2];
 
         fc_status.accel_updated = false;
     }
 
     //correct accelerometer bias every time step
-    accel_bias_corr[2] -= corr_baro * w_z_baro * w_z_baro;
+    accel_bias_corr[2] -= (float)(corr_baro * w_z_baro * w_z_baro);
 
     //transform error vector from NED frame to body frame
     for (i = 0; i < 3; i++)
@@ -97,21 +103,21 @@ void position_z_update()
         float c = 0.0f;
 
         for (j = 0; j < 3; j++) {
-            c += ahrs.dcm[i][j] * accel_bias_corr[j];
+            c += (float)(ahrs.dcm[i][j] * accel_bias_corr[j]);
         }
 
-        acc_bias[i] += c * w_acc_bias * dt * co_factor[i];		//accumulate bias
+        acc_bias[i] += (float)(c * w_acc_bias * dt * co_factor[i]);		//accumulate bias
     }
 
     /* inertial filter prediction for altitude */
-    inertial_filter_predict(dt, z_est, accel_NED[2]);//accel_NED[2]);
+    inertial_filter_predict(dt, z_est, z_est[2]);//accel_NED[2]);
     /* inertial filter correction for altitude */
     inertial_filter_correct(corr_baro, dt, z_est, 0, w_z_baro);	//0.5f
-//    inertial_filter_correct(corr_acc[2], dt, z_est, 2, w_z_acc);		//20.0f
+    inertial_filter_correct(corr_acc[2], dt, z_est, 2, w_z_acc);		//30.0f
 
     nav.z = z_est[0];
     nav.vz = z_est[1];
-    nav.az = accel_NED[2];
+    nav.az = z_est[2];
 
     fc_status.inav_z_estimate_ok = true;
 
@@ -174,7 +180,7 @@ void update_home_pos(void)
 	static float filter_arr[15] = {0};
 	
     if ((!fc_status.baro_collect_ok) && fc_status.home_abs_alt_updated) {
-		if (Moving_Average(filter_arr, 15, (fbm320_packet.altitude - home_absolute_pos.z)) < 0.8f) {
+		if (Moving_Average(filter_arr, 15, (fbm320_packet.altitude - home_absolute_pos.z), false) < 0.8f) {
             fc_status.baro_collect_ok = true;
 		}
 		home_absolute_pos.z = fbm320_packet.altitude;
@@ -190,25 +196,25 @@ static void inertial_filter_predict(float dt, float *x, float acc)
 {
 	if (isfinite(dt)) {
 		if (!isfinite(acc)) {
-			acc = 0.0f;
+			acc = 0.0;
 		}
-		x[0] += x[1] * dt + acc * dt * dt / 2.0f;
-		x[1] += acc * dt;
+		x[0] += (float)(x[1] * dt + acc * dt * dt / 2.0);
+		x[1] += (float)(acc * dt);
 	}
 }
 
 static void inertial_filter_correct(float e, float dt, float *x, int i, float w)
 {
 	if (isfinite(e) && isfinite(w) && isfinite(dt)) {
-		float ewdt = e * w * dt;
+		float ewdt = (float)(e * w * dt);
 		x[i] += ewdt;
 
 		if (i == 0) {
-			x[1] += w * ewdt;
-			x[2] += w * w * ewdt / 3.0;
+			x[1] += (float)(w * ewdt);
+			x[2] += (float)(w * w * ewdt / 3.0);
 
 		} else if (i == 1) {
-			x[2] += w * ewdt;
+			x[2] += (float)(w * ewdt);
 		}
 	}
 }
@@ -222,9 +228,9 @@ _Vector_Float get_inav_velocity(void)
 {
 	_Vector_Float vec;
 	
-	vec.x = nav.vx * 100;
-	vec.y = nav.vy * 100;
-	vec.z = -nav.vz * 100;
+	vec.x = (float)(nav.vx * 100);
+	vec.y = (float)(nav.vy * 100);
+	vec.z = (float)(-nav.vz * 100);
 	
 	return vec;
 }
@@ -233,9 +239,9 @@ _Vector_Float get_inav_accel(void)
 {	
 	_Vector_Float vec;
 	
-	vec.x = nav.ax * 100;
-	vec.y = nav.ay * 100;
-	vec.z = -nav.az * 100;
+	vec.x = (float)(nav.ax * 100);
+	vec.y = (float)(nav.ay * 100);
+	vec.z = (float)(-nav.az * 100);
 	
 	return vec;
 }

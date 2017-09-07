@@ -71,39 +71,39 @@ float LPF2pApply(LPF2p_t *_lpf2p, float _sample)
                     a1*y(n-1) - a2*y(n-2)
 **====================================================================================================*/
 /*====================================================================================================*/
-double IIR_I_Filter(double InData, double *x, double *y, double *b, short nb, double *a, short na)
-{
-  double z1,z2;
-  short i;
-  double OutData;
-  
-  for(i=nb-1; i>0; i--)
-  {
-    x[i]=x[i-1];
-  }
-  
-  x[0] = InData;
-  
-  for(z1=0,i=0; i<nb; i++)
-  {
-    z1 += x[i]*b[i];
-  }
-  
-  for(i=na-1; i>0; i--)
-  {
-    y[i]=y[i-1];
-  }
-  
-  for(z2=0,i=1; i<na; i++)
-  {
-    z2 += y[i]*a[i];
-  }
-  
-  y[0] = z1 - z2; 
-  OutData = y[0];
-    
-  return OutData;
-}
+//double IIR_I_Filter(double InData, double *x, double *y, double *b, short nb, double *a, short na)
+//{
+//  double z1,z2;
+//  short i;
+//  double OutData;
+//  
+//  for(i=nb-1; i>0; i--)
+//  {
+//    x[i]=x[i-1];
+//  }
+//  
+//  x[0] = InData;
+//  
+//  for(z1=0,i=0; i<nb; i++)
+//  {
+//    z1 += x[i]*b[i];
+//  }
+//  
+//  for(i=na-1; i>0; i--)
+//  {
+//    y[i]=y[i-1];
+//  }
+//  
+//  for(z2=0,i=1; i<na; i++)
+//  {
+//    z2 += y[i]*a[i];
+//  }
+//  
+//  y[0] = z1 - z2; 
+//  OutData = y[0];
+//    
+//  return OutData;
+//}
 
 /*====================================================================================================*/
 /*====================================================================================================*
@@ -120,18 +120,28 @@ float LPF_1st(float oldData, float newData, float lpf_factor)
 }
 
 
-float Moving_Average(float _filter_arr[], uint8_t _width, float _data)
+float Moving_Average(float _filter_arr[], uint8_t _width, float _data, bool _extre)
 {
 	uint8_t i;
 	float sum = 0.0f;
+	float max_data = _data, min_data = _data;
 	
 	for (i=1; i<_width; i++) {
+		if (_filter_arr[i] > max_data) {
+			max_data = _filter_arr[i];
+		} else if (_filter_arr[i] < min_data) {
+			min_data = _filter_arr[i];
+		}
+		
 		sum += _filter_arr[i];
 		_filter_arr[i-1] = _filter_arr[i];
 	}
 	_filter_arr[_width-1] = _data;
 	sum += _data;
 	
-	return (float)(sum/_width);
+	if (_extre)
+		return (float)((sum-max_data-min_data)/(_width-2));
+	else 
+		return (float)(sum/_width);
 }
 

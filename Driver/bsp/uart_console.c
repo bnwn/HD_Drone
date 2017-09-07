@@ -11,10 +11,11 @@ void uart_console_init(UART_T* _uart, uint32_t _baudrate)
 {
     UART_Open(_uart, _baudrate);
 	
+#ifdef CONSOLE_DEBUG	
 	    /* Enable Interrupt and install the call back function */
     //UART_ENABLE_INT(_uart, (UART_INTEN_RDAIEN_Msk | UART_INTEN_THREIEN_Msk | UART_INTEN_RXTOIEN_Msk));
 		UART_ENABLE_INT(_uart, (UART_INTEN_RDAIEN_Msk | UART_INTEN_RXTOIEN_Msk));
-	
+
 		if (_uart == UART0) {
 				NVIC_EnableIRQ(UART0_IRQn);
 				//NVIC_SetPriority(UART0_IRQn, 0);
@@ -22,8 +23,10 @@ void uart_console_init(UART_T* _uart, uint32_t _baudrate)
 				NVIC_EnableIRQ(UART1_IRQn);
 				//NVIC_SetPriority(UART1_IRQn, 0);
 		}
+#endif
 }
 
+#ifdef CONSOLE_DEBUG
 /*---------------------------------------------------------------------------------------------------------*/
 /* ISR to handle UART Channel 0 interrupt event                                                            */
 /*---------------------------------------------------------------------------------------------------------*/
@@ -423,5 +426,6 @@ float get_float(uint16_t _buf_index)
 		
 		return tmp;
 }
+#endif
 
 #endif

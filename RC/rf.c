@@ -21,12 +21,12 @@ unsigned short   Payload_Count = 0;
 //            RF_TxMode
 //                Set RF into TX mode
 /******************************************************************************/
-void RF_TxMode(void)
-{
-    CE_LOW;
-    SPI_WriteReg(W_REGISTER + CONFIG,  0X8E);							// 将RF设置成TX模式
-    delay_ms(1);
-}
+//void RF_TxMode(void)
+//{
+//    CE_LOW;
+//    SPI_WriteReg(W_REGISTER + CONFIG,  0X8E);							// 将RF设置成TX模式
+//    delay_ms(1);
+//}
 
 
 /******************************************************************************/
@@ -55,10 +55,10 @@ uint8_t ucRF_GetStatus(void)
 //            ucRF_GetRSSI
 //                读取rssi 值
 /******************************************************************************/
-uint8_t ucRF_GetRSSI(void)
-{
-    return (SPI_ReadReg(DATAOUT));								//读取RF RSSI
-}
+//uint8_t ucRF_GetRSSI(void)
+//{
+//    return (SPI_ReadReg(DATAOUT));								//读取RF RSSI
+//}
 /******************************************************************************/
 //            RF_ClearStatus
 //                clear RF IRQ
@@ -82,11 +82,11 @@ void RF_ClearFIFO(void)
 //            RF_SetChannel
 //                Set RF TX/RX channel:Channel
 /******************************************************************************/
-void RF_SetChannel( uint8_t Channel)
-{    
-    CE_LOW;
-    SPI_WriteReg(W_REGISTER + RF_CH, Channel);
-}
+//void RF_SetChannel( uint8_t Channel)
+//{    
+//    CE_LOW;
+//    SPI_WriteReg(W_REGISTER + RF_CH, Channel);
+//}
 
 
 /******************************************************************************/
@@ -126,21 +126,21 @@ uint8_t ucRF_DumpRxData( uint8_t *ucPayload,  uint8_t length)
 //              2. length:  需要发送的数据长度
 /******************************************************************************/
 
-void RF_Tx_TransmintData( uint8_t *ucTXPayload,  uint8_t length)
-{
+//void RF_Tx_TransmintData( uint8_t *ucTXPayload,  uint8_t length)
+//{
 
 
-    
-    if(!ucRF_GetStatus())                                                                               // rf 处于空闲状态才发送数据
-    {       
-            SPI_WriteBuf(W_TX_PAYLOAD, ucTXPayload, length);                               		//write data to txfifo        
-            CE_HIGH;                                                                    		//rf entery tx mode start send data 
-           // delay_10us(60);                                                              		//keep ce high at least 150us
-           // Delay(2000);
-            delay_ms(1);
-            CE_LOW;
-    }
-}
+//    
+//    if(!ucRF_GetStatus())                                                                               // rf 处于空闲状态才发送数据
+//    {       
+//            SPI_WriteBuf(W_TX_PAYLOAD, ucTXPayload, length);                               		//write data to txfifo        
+//            CE_HIGH;                                                                    		//rf entery tx mode start send data 
+//           // delay_10us(60);                                                              		//keep ce high at least 150us
+//           // Delay(2000);
+//            delay_ms(1);
+//            CE_LOW;
+//    }
+//}
 
 /******************************************************************************/
 //发送结果
@@ -149,28 +149,28 @@ void RF_Tx_TransmintData( uint8_t *ucTXPayload,  uint8_t length)
 //              2. length:ackpayload 的长度
 
 /*****************************************************************************/
-void  RF_Tx_CheckResult(uint8_t *ucAckPayload,  uint8_t length)
-{
+//void  RF_Tx_CheckResult(uint8_t *ucAckPayload,  uint8_t length)
+//{
 
-    
-        switch(ucRF_GetStatus())
-        {
-          
-          case	RX_TX_FLAG:		                                                        //增强型发送成功且收到payload          
-                SPI_ReadBuf(R_RX_PAYLOAD,ucAckPayload, length);           
+//    
+//        switch(ucRF_GetStatus())
+//        {
+//          
+//          case	RX_TX_FLAG:		                                                        //增强型发送成功且收到payload          
+//                SPI_ReadBuf(R_RX_PAYLOAD,ucAckPayload, length);           
 
-         case	TX_DS_FLAG: 		                                                        // 普通型发送完成 或 增强型发送成功	
-                Payload_Count++;                                                                // 增强型模式，累计ack次数                                                                                
-         case	MAX_RT_FLAG:		                                                        // 增强型发送超时失败	                                          
-                RF_ClearFIFO();
-                RF_ClearStatus ();
-                break;
-         default:			
-                break;			
-          }
+//         case	TX_DS_FLAG: 		                                                        // 普通型发送完成 或 增强型发送成功	
+//                Payload_Count++;                                                                // 增强型模式，累计ack次数                                                                                
+//         case	MAX_RT_FLAG:		                                                        // 增强型发送超时失败	                                          
+//                RF_ClearFIFO();
+//                RF_ClearStatus ();
+//                break;
+//         default:			
+//                break;			
+//          }
 
-      
-}
+//      
+//}
 
 
 
@@ -246,29 +246,29 @@ if(PAYLOAD_WIDTH >32)
 /******************************************************************************/
 //            		进入载波模式
 /******************************************************************************/
-void RF_Carrier( uint8_t ucChannel_Set)
-{
-    uint8_t BB_cal_data[]    = {0x0A,0x6D,0x67,0x9C,0x46}; 
-    uint8_t RF_cal_data[]    = {0xF6,0x37,0x5D};
-    uint8_t RF_cal2_data[]   = {0x45,0x21,0xEF,0xAC,0x5A,0x50};
-    uint8_t Dem_cal_data[]   = {0xE1}; 								
-    uint8_t Dem_cal2_data[]  = {0x0B,0xDF,0x02};  
+//void RF_Carrier( uint8_t ucChannel_Set)
+//{
+//    uint8_t BB_cal_data[]    = {0x0A,0x6D,0x67,0x9C,0x46}; 
+//    uint8_t RF_cal_data[]    = {0xF6,0x37,0x5D};
+//    uint8_t RF_cal2_data[]   = {0x45,0x21,0xEF,0xAC,0x5A,0x50};
+//    uint8_t Dem_cal_data[]   = {0xE1}; 								
+//    uint8_t Dem_cal2_data[]  = {0x0B,0xDF,0x02};  
 
-    SPI_WriteReg(RST_FSPI, 0x5A);								//Software Reset    			
-    SPI_WriteReg(RST_FSPI, 0XA5);
-    SPI_WriteReg(W_REGISTER + FEATURE, 0x20);
-    CE_LOW;
-    //delay_ms(200);
-    delay_ms(200);
-   //  Delay(9000);
-    SPI_WriteReg(W_REGISTER + RF_CH, ucChannel_Set);						//单载波频点	   
-    SPI_WriteReg(W_REGISTER + RF_SETUP, RF_POWER);      						//13dbm
-    SPI_WriteBuf(W_REGISTER + BB_CAL,    BB_cal_data,  sizeof(BB_cal_data));
-    SPI_WriteBuf(W_REGISTER + RF_CAL2,   RF_cal2_data, sizeof(RF_cal2_data));
-    SPI_WriteBuf(W_REGISTER + DEM_CAL,   Dem_cal_data, sizeof(Dem_cal_data));
-    SPI_WriteBuf(W_REGISTER + RF_CAL,    RF_cal_data,  sizeof(RF_cal_data));
-    SPI_WriteBuf(W_REGISTER + DEM_CAL2,  Dem_cal2_data,sizeof(Dem_cal2_data));
-}
+//    SPI_WriteReg(RST_FSPI, 0x5A);								//Software Reset    			
+//    SPI_WriteReg(RST_FSPI, 0XA5);
+//    SPI_WriteReg(W_REGISTER + FEATURE, 0x20);
+//    CE_LOW;
+//    //delay_ms(200);
+//    delay_ms(200);
+//   //  Delay(9000);
+//    SPI_WriteReg(W_REGISTER + RF_CH, ucChannel_Set);						//单载波频点	   
+//    SPI_WriteReg(W_REGISTER + RF_SETUP, RF_POWER);      						//13dbm
+//    SPI_WriteBuf(W_REGISTER + BB_CAL,    BB_cal_data,  sizeof(BB_cal_data));
+//    SPI_WriteBuf(W_REGISTER + RF_CAL2,   RF_cal2_data, sizeof(RF_cal2_data));
+//    SPI_WriteBuf(W_REGISTER + DEM_CAL,   Dem_cal_data, sizeof(Dem_cal_data));
+//    SPI_WriteBuf(W_REGISTER + RF_CAL,    RF_cal_data,  sizeof(RF_cal_data));
+//    SPI_WriteBuf(W_REGISTER + DEM_CAL2,  Dem_cal2_data,sizeof(Dem_cal2_data));
+//}
 
 
 

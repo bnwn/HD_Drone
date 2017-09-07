@@ -274,7 +274,7 @@ void set_alt_target_from_climb_rate_ff(float climb_rate_cms, float dt, bool forc
 
     // adjust desired alt if motors have not hit their limits
     // To-Do: add check of _limit.pos_down?
-    if ((vel_desired.z<0 && (!motor.limit_throttle_lower || force_descend)) || (vel_desired.z>0 && !motor.limit_throttle_upper && pos_limit.pos_up)) {
+    if ((vel_desired.z<0 && (!motor.limit_throttle_lower || force_descend)) || (vel_desired.z>0 && !motor.limit_throttle_upper && !pos_limit.pos_up)) {
         pos_target.z += vel_desired.z * dt;
     }
 }

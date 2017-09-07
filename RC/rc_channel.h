@@ -62,7 +62,7 @@ typedef struct {
 void rc_channel_init(void);
 bool rc_channel_read(void);
 //static void packet_parse(void);
-static void switch_handle(void);
+void switch_handle(void);
 static void switch_event_trigger(uint8_t _ch, bool _is_long_hold);
 float norm_input(Rc_Channel_t *_rc);
 float norm_input_dz(Rc_Channel_t *_rc);

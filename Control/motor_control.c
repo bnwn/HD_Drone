@@ -62,8 +62,8 @@ void motor_logic(void)
 #endif
             break;
         case Motor_Spin:
-            motor.limit_throttle_lower = false;
-            motor.limit_throttle_upper = false;
+            motor.limit_throttle_lower = true;
+            motor.limit_throttle_upper = true;
             motor.output_on = true;
 
             motor_duty[MOTOR1_INDEX] = IDLED_DUTY;

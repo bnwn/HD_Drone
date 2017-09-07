@@ -30,33 +30,33 @@ _Vector_Float Quaternion_vectorGravity( Quaternion *pNumQ )
 **使用 : Quaternion_ToNumQ(&NumQ, &AngE);
 **====================================================================================================*/
 /*====================================================================================================*/
-void Quaternion_ToNumQ( Quaternion *pNumQ, EulerAngle *pAngE )
-{
-  float halfP = pAngE->Pitch/2.0f;
-  float halfR = pAngE->Roll/2.0f;
-  float halfY = pAngE->Yaw/2.0f;
+//void Quaternion_ToNumQ( Quaternion *pNumQ, EulerAngle *pAngE )
+//{
+//  float halfP = pAngE->Pitch/2.0f;
+//  float halfR = pAngE->Roll/2.0f;
+//  float halfY = pAngE->Yaw/2.0f;
 
-#ifndef USE_ARM_MATH_LIB
-  float sinP = sinf(halfP);
-  float cosP = cosf(halfP);
-  float sinR = sinf(halfR);
-  float cosR = cosf(halfR);
-  float sinY = sinf(halfY);
-  float cosY = cosf(halfY);
-#else
-  float sinP = arm_sin_f32(halfP);
-  float cosP = arm_cos_f32(halfP);
-  float sinR = arm_sin_f32(halfR);
-  float cosR = arm_cos_f32(halfR);
-  float sinY = arm_sin_f32(halfY);
-  float cosY = arm_cos_f32(halfY);
-#endif
+//#ifndef USE_ARM_MATH_LIB
+//  float sinP = sinf(halfP);
+//  float cosP = cosf(halfP);
+//  float sinR = sinf(halfR);
+//  float cosR = cosf(halfR);
+//  float sinY = sinf(halfY);
+//  float cosY = cosf(halfY);
+//#else
+//  float sinP = arm_sin_f32(halfP);
+//  float cosP = arm_cos_f32(halfP);
+//  float sinR = arm_sin_f32(halfR);
+//  float cosR = arm_cos_f32(halfR);
+//  float sinY = arm_sin_f32(halfY);
+//  float cosY = arm_cos_f32(halfY);
+//#endif
 
-  pNumQ->q0 = cosY*cosR*cosP + sinY*sinR*sinP;
-  pNumQ->q1 = cosY*cosR*sinP - sinY*sinR*cosP;
-  pNumQ->q2 = cosY*sinR*cosP + sinY*cosR*sinP;
-  pNumQ->q3 = sinY*cosR*cosP - cosY*sinR*sinP;
-}
+//  pNumQ->q0 = cosY*cosR*cosP + sinY*sinR*sinP;
+//  pNumQ->q1 = cosY*cosR*sinP - sinY*sinR*cosP;
+//  pNumQ->q2 = cosY*sinR*cosP + sinY*cosR*sinP;
+//  pNumQ->q3 = sinY*cosR*cosP - cosY*sinR*sinP;
+//}
 /*====================================================================================================*/
 /*====================================================================================================*
 **函数 : Quaternion_ToAngE
@@ -83,19 +83,19 @@ void Quaternion_ToAngE( Quaternion *pNumQ, EulerAngle *pAngE, float *_matrix)
 **使用 : NewQ = Quaternion_Multiply(NowQ, OldQ);
 **====================================================================================================*/
 /*====================================================================================================*/
-Quaternion Quaternion_Multiply( Quaternion NowQ, Quaternion OldQ )
-{
-  Quaternion NewQ;
+//Quaternion Quaternion_Multiply( Quaternion NowQ, Quaternion OldQ )
+//{
+//  Quaternion NewQ;
 
-  NewQ.q0 = NowQ.q0*OldQ.q0 - NowQ.q1*OldQ.q1 - NowQ.q2*OldQ.q2 - NowQ.q3*OldQ.q3;
-  NewQ.q1 = NowQ.q0*OldQ.q1 + NowQ.q1*OldQ.q0 + NowQ.q2*OldQ.q3 - NowQ.q3*OldQ.q2;
-  NewQ.q2 = NowQ.q0*OldQ.q2 - NowQ.q1*OldQ.q3 + NowQ.q2*OldQ.q0 + NowQ.q3*OldQ.q1;
-  NewQ.q3 = NowQ.q0*OldQ.q3 + NowQ.q1*OldQ.q2 - NowQ.q2*OldQ.q1 + NowQ.q3*OldQ.q0;
+//  NewQ.q0 = NowQ.q0*OldQ.q0 - NowQ.q1*OldQ.q1 - NowQ.q2*OldQ.q2 - NowQ.q3*OldQ.q3;
+//  NewQ.q1 = NowQ.q0*OldQ.q1 + NowQ.q1*OldQ.q0 + NowQ.q2*OldQ.q3 - NowQ.q3*OldQ.q2;
+//  NewQ.q2 = NowQ.q0*OldQ.q2 - NowQ.q1*OldQ.q3 + NowQ.q2*OldQ.q0 + NowQ.q3*OldQ.q1;
+//  NewQ.q3 = NowQ.q0*OldQ.q3 + NowQ.q1*OldQ.q2 - NowQ.q2*OldQ.q1 + NowQ.q3*OldQ.q0;
 
-  Quaternion_Normalize(&NewQ);
+//  Quaternion_Normalize(&NewQ);
 
-  return NewQ;
-}
+//  return NewQ;
+//}
 /*====================================================================================================*/
 /*====================================================================================================*
 **函数 : Quaternion_Normalize

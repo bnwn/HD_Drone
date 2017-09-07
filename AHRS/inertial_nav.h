@@ -18,7 +18,7 @@ typedef struct  {
 
 void inertial_nav_init(void);
 void inertial_nav_update(void);
-void position_z_update();
+void position_z_update(void);
 float get_nav_altitude(void);
 void update_home_pos(void);
 //Combine Filter to correct err

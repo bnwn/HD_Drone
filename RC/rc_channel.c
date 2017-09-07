@@ -88,9 +88,6 @@ bool rc_channel_read(void)
             rc_switchs[5].rc_in = (rc_buf[DATA_INDEX+8] & 0x20) ? 1 : 0;
             rc_switchs[6].rc_in = (rc_buf[DATA_INDEX+8] & 0x40) ? 1 : 0;
             rc_switchs[7].rc_in = (rc_buf[DATA_INDEX+8] & 0x80) ? 1 : 0;
-
-            switch_handle();
-
     } /* else if (rc_buf[START_CODE_INDEX] == 0xAC && rc_buf[START_CODE_INDEX+1] == 0xCE \
                && rc_buf[END_CODE_INDEX] == 0xCE && rc_buf[END_CODE_INDEX+1] == 0xED) { // match and end code
             set_roll_code(rc_buf+ROLL_CODE_INDEX);
@@ -194,7 +191,7 @@ static void packet_parse(void)
 }
 #endif
 
-static void switch_handle(void)
+void switch_handle(void)
 {
     static uint8_t switch_on_tick[RC_SWITCH_MAX] = {0};
     uint8_t ch_index = 0;
@@ -204,7 +201,7 @@ static void switch_handle(void)
         if (rc_switchs[ch_index].rc_in) {
             switch_on_tick[ch_index]++;
         } else if (switch_on_tick[ch_index] > 0) {
-            switch_event_trigger(ch_index, (switch_on_tick[ch_index] >= 250));
+            switch_event_trigger(ch_index, (switch_on_tick[ch_index] >= 100));
             switch_on_tick[ch_index] = 0;
         }
     }
@@ -224,19 +221,23 @@ static void switch_event_trigger(uint8_t _ch, bool _is_long_hold)
 			printf("set_pid_param_p:%i", (int16_t)(ctrl_loop.rate.pitch.ki*100));
             break;
         case 2:
-			if (fc_status.printf_flag != 255) fc_status.printf_flag = 255;
-			else {
-				fc_status.printf_flag = 0x0;
-				
-                fc_status.armed = DISARMED;
-			}
+//			if (fc_status.printf_flag != 255) fc_status.printf_flag = 255;
+//			else {
+//				fc_status.printf_flag = 0x0;
+//				
+//                fc_status.armed = DISARMED;
+//			}
+		
+			fc_status.printf_flag--;
+			if (fc_status.printf_flag < 0) fc_status.printf_flag = 7;
             break;
         case 3:
             fc_status.armed = DISARMED;
             break;
         case 4:
 			//set_flight_mode(Acro);
-			set_flight_mode(AltHold);
+			if (set_flight_mode(AltHold))
+				printf("set AltHold mode.\n");
             break;
         case 5:
 			set_pid_param_d(&ctrl_loop.rate.roll, (ctrl_loop.rate.roll.kd + 0.0005f));
@@ -244,13 +245,16 @@ static void switch_event_trigger(uint8_t _ch, bool _is_long_hold)
 			printf("set_pid_param_d:%d", (int16_t)(ctrl_loop.rate.pitch.kd*10000));
             break;
         case 6:
-			set_pid_param_d(&ctrl_loop.rate.roll, (ctrl_loop.rate.roll.kd - 0.0005f));
-			set_pid_param_d(&ctrl_loop.rate.pitch, (ctrl_loop.rate.pitch.kd - 0.0005f));
-			printf("set_pid_param_d:%d", (int16_t)(ctrl_loop.rate.pitch.kd*10000));
+//			set_pid_param_d(&ctrl_loop.rate.roll, (ctrl_loop.rate.roll.kd - 0.0005f));
+//			set_pid_param_d(&ctrl_loop.rate.pitch, (ctrl_loop.rate.pitch.kd - 0.0005f));
+//			printf("set_pid_param_d:%d", (int16_t)(ctrl_loop.rate.pitch.kd*10000));
+		
+			if (set_flight_mode(Stabilize))
+				printf("set Stabilize mode.\n");
             break;
         case 7:
 			fc_status.printf_flag++;
-			if (fc_status.printf_flag >= 7) fc_status.printf_flag = 0;
+			if (fc_status.printf_flag >= 8) fc_status.printf_flag = 0;
             break;
         default:
             break;
@@ -472,10 +476,11 @@ void check_motor_armed(void)
 			}
 			
 			if ((rc_channels[RC_THROTTLE_CH].reversed && (rc_channels[RC_THROTTLE_CH].rc_in < (rc_channels[RC_THROTTLE_CH].rc_neutral - rc_channels[RC_THROTTLE_CH].dead_zone * 2))) || \
-					(!~rc_channels[RC_THROTTLE_CH].reversed && (rc_channels[RC_THROTTLE_CH].rc_in > (rc_channels[RC_THROTTLE_CH].rc_neutral + rc_channels[RC_THROTTLE_CH].dead_zone * 2))))
+					(!rc_channels[RC_THROTTLE_CH].reversed && (rc_channels[RC_THROTTLE_CH].rc_in > (rc_channels[RC_THROTTLE_CH].rc_neutral + rc_channels[RC_THROTTLE_CH].dead_zone * 2))))
 			{
                 fc_status.armed = ARMED;
-			} else if (fc_status.land_complete && (rc_channels[0].rc_in > RC_CHANNEL_DISARMED) && (rc_channels[1].rc_in > RC_CHANNEL_DISARMED) \
+				check_times = 0;
+			} else if ((rc_channels[0].rc_in > RC_CHANNEL_DISARMED) && (rc_channels[1].rc_in > RC_CHANNEL_DISARMED) \
 									&& (rc_channels[2].rc_in > RC_CHANNEL_DISARMED) && (rc_channels[3].rc_in < (RC_CHANNEL_MAX - RC_CHANNEL_DISARMED))) {
 				check_times++;
 				if (check_times > 10) {						
@@ -488,13 +493,13 @@ void check_motor_armed(void)
 			
 			break;
         case ARMED:
-			if ((rc_channels[RC_THROTTLE_CH].reversed && (rc_channels[RC_THROTTLE_CH].rc_in > (rc_channels[RC_THROTTLE_CH].rc_max - rc_channels[RC_THROTTLE_CH].dead_zone * 10))) || \
-					(!~rc_channels[RC_THROTTLE_CH].reversed && (rc_channels[RC_THROTTLE_CH].rc_in < (rc_channels[RC_THROTTLE_CH].rc_min + rc_channels[RC_THROTTLE_CH].dead_zone * 10))))
+			if (((rc_channels[RC_THROTTLE_CH].reversed && (rc_channels[RC_THROTTLE_CH].rc_in > (rc_channels[RC_THROTTLE_CH].rc_max - rc_channels[RC_THROTTLE_CH].dead_zone * 10))) || \
+					(!rc_channels[RC_THROTTLE_CH].reversed && (rc_channels[RC_THROTTLE_CH].rc_in < (rc_channels[RC_THROTTLE_CH].rc_min + rc_channels[RC_THROTTLE_CH].dead_zone * 10)))))
 			{
 				check_times++;
 				
 				// need to rewrite
-				if (check_times > 50) {
+				if (check_times > 15) {
                     set_land_complete(true);
 					check_times = 0;
 				}

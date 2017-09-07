@@ -50,12 +50,14 @@ int32_t fbm320_read_long_data(void)
 }
 
 /**
- * @brief timer procedure, call in 50Hz
+ * @brief timer procedure, call in 80Hz
  */
 void fbm320_timer_procedure(void)
 {
     static uint16_t timer_count = 0;
 	static float fbm320_alt_filter[5];
+	static uint32_t init_time = 0;
+	static bool baro_initialize = false;
 	
 	float new_alt;
 	
@@ -74,23 +76,33 @@ void fbm320_timer_procedure(void)
         calculate(fbm320_packet.UP, fbm320_packet.UT);
         new_alt = (float)(abs_altitude(fbm320_packet.RP) / 1000.0f);
 		
-		if (!fc_status.baro_initialize) {
-			if (fbm320_packet.altitude == 0.0f) {
-				fbm320_packet.altitude = new_alt;
-            } else if (fabsf(new_alt - fbm320_packet.altitude) < 0.1f) {
-				fc_status.baro_initialize = true;
+		if (!baro_initialize) {
+			if (init_time == 0) {
+				init_time = sys_milli();
+			} else if (((sys_milli() - init_time) > FBM320_ALT_INIT_TIME_MS) && (new_alt != 0)) {
+				baro_initialize = true;
 			}
-			
 		} else {
-			new_alt = Moving_Average(fbm320_alt_filter, 5, new_alt);
-            if (fabsf(new_alt - fbm320_packet.altitude) < 10) {
-				fbm320_packet.altitude += (new_alt - fbm320_packet.altitude) * 0.2736f; // 2Hz LPF
-            } else if (fabsf(new_alt - fbm320_packet.altitude) < 50) {
-				fbm320_packet.altitude += (new_alt - fbm320_packet.altitude) * 0.1585f; // 1Hz LPF
-			} else {
-				fbm320_packet.altitude += (new_alt - fbm320_packet.altitude) * 0.086f; // 0.5Hz LPF
+			if (fc_status.home_abs_alt_updated) {
+				new_alt = Moving_Average(fbm320_alt_filter, 5, new_alt, true);
+							
+				if (fabsf(new_alt - fbm320_packet.altitude) < 10) {
+					fbm320_packet.altitude += (new_alt - fbm320_packet.altitude) * 0.1906f; // 2Hz LPF
+				} else if (fabsf(new_alt - fbm320_packet.altitude) < 50) {
+					fbm320_packet.altitude += (new_alt - fbm320_packet.altitude) * 0.1052f; // 1Hz LPF
+				} else {
+					fbm320_packet.altitude += (new_alt - fbm320_packet.altitude) * 0.0555f; // 0.5Hz LPF
+				}
+				
+				fc_status.altitude_updated = true;
 			}
-			fc_status.altitude_updated = true;
+			else {
+				uint8_t i = 0;
+				for (i=0; i<5; i++) {
+					fbm320_packet.altitude = new_alt;
+					fbm320_alt_filter[i] = fbm320_packet.altitude;
+				}
+			}
 			fc_status.home_abs_alt_updated = true;
 		}
     default:

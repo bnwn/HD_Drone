@@ -1,6 +1,8 @@
 #ifndef __POSITION_CONTROL_H
 #define __POSITION_CONTROL_H
 
+#include "inertial_nav.h"
+
 // position controller default definitions
 #define POSCONTROL_ACCELERATION_MIN             50.0f   // minimum horizontal acceleration in cm/s/s - used for sanity checking acceleration in leash length calculation
 #define POSCONTROL_ACCEL_XY                     100.0f  // default horizontal acceleration in cm/s/s.  This is overwritten by waypoint and loiter controllers
@@ -105,5 +107,7 @@ void set_accel_z(float _accel_cmss);
 bool is_active_z(void);
 void set_alt_target_to_current_alt(void);
 void set_desired_vel_z(float _vel_z_cms);
+
+extern _Nav_t pos_target, pos_error;
 
 #endif

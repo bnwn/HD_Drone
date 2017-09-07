@@ -16,5 +16,5 @@ void LPF2pSetCutoffFreq(LPF2p_t *_lpf2p, float _sample_freq, float _cutoff_freq)
 float LPF2pApply(LPF2p_t *_lpf2p, float _sample);
 double IIR_I_Filter(double InData, double *x, double *y, double *b, short nb, double *a, short na);
 float LPF_1st(float oldData, float newData, float lpf_factor);
-float Moving_Average(float _filter_arr[], uint8_t _width, float _data);
+float Moving_Average(float _filter_arr[], uint8_t _width, float _data, bool _extre);
 #endif /* __Algorithm_filter_H */

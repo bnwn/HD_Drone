@@ -17,7 +17,7 @@ void scheduler_run(void);
 void fast_loop(void);
 void low_priority_loop(void);
 void sched_200Hzloop(void);
-void sched_100Hzloop(void);
+void sched_80Hzloop(void);
 void sched_50Hzloop(void);
 void sched_20Hzloop(void);
 void sched_10Hzloop(void);
@@ -33,7 +33,7 @@ typedef struct {
     bool loop_10Hz;
     bool loop_20Hz;
     bool loop_50Hz;
-    bool loop_100Hz;
+    bool loop_80Hz;
     bool loop_200Hz;
     bool loop_400Hz;
     bool main_loop;

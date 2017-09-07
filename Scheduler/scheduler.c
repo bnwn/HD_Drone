@@ -32,7 +32,7 @@ void scheduler_init(void)
     slice_flag.loop_10Hz = false;
     slice_flag.loop_20Hz = false;
     slice_flag.loop_50Hz = false;
-    slice_flag.loop_100Hz = false;
+    slice_flag.loop_80Hz = false;
     slice_flag.loop_200Hz = false;
     slice_flag.loop_400Hz = false;
     slice_flag.main_loop = false;
@@ -112,7 +112,7 @@ void fast_loop(void)
 void low_priority_loop(void)
 {
 //		sched_200Hzloop();
-	sched_100Hzloop();
+	sched_80Hzloop();
 	sched_50Hzloop();
 	sched_20Hzloop();
 	sched_10Hzloop();
@@ -129,14 +129,15 @@ void sched_200Hzloop(void)
 	slice_flag.loop_200Hz = false;
 }
 
-void sched_100Hzloop(void)
+void sched_80Hzloop(void)
 {
-	if (!slice_flag.loop_100Hz) {
+	if (!slice_flag.loop_80Hz) {
 		return;
 	}
 	
+	fbm320_timer_procedure();  // update absolute altitude about 26.7Hz
 	
-	slice_flag.loop_100Hz = false;
+	slice_flag.loop_80Hz = false;
 }
 
 void sched_50Hzloop(void)
@@ -147,8 +148,6 @@ void sched_50Hzloop(void)
 	}
 			
 	rc_channel_read();
-	
-	fbm320_timer_procedure();  // update absolute altitude about 16.7Hz
 	
 	inertial_nav_update();
 	
@@ -172,8 +171,11 @@ void sched_50Hzloop(void)
 	else if (fc_status.printf_flag == 5)
 		printf ("%d, %d, %d, %d,\n", (int16_t)(rc_channels[0].rc_in/5), (int16_t)(rc_channels[1].rc_in/5), (int16_t)(rc_channels[2].rc_in/5), (int16_t)(rc_channels[3].rc_in/5));
 	else if (fc_status.printf_flag == 6)
-		printf("%d, %d, %d, %d, %d, %d, %d,\n", (int16_t)((fbm320_packet.altitude-home_absolute_pos.z)*100), (int16_t)(-nav.z*100), (int16_t)(nav.vz*100), \
-											(int16_t)(nav.az*100), (int16_t)(accel_NED[2]*100), (int16_t)((inertial_sensor.accel.filter.z-GRAVITY_MSS)*100), (int16_t)(home_absolute_pos.z*100));
+		printf("%d, %d, %d, %d, %d, %d, %d,\n", (int16_t)((fbm320_packet.altitude-home_absolute_pos.z)*100), (int16_t)(get_inav_alt()), (int16_t)(get_inav_velocity().z), \
+											(int16_t)(get_inav_accel().z), (int16_t)(accel_NED[2]*100), (int16_t)((inertial_sensor.accel.filter.z-GRAVITY_MSS)*100), (int16_t)(home_absolute_pos.z*100));
+	else if (fc_status.printf_flag == 7)
+		printf("%d, %d, %d, %d, %d, %d, \n", (int16_t)(pos_target.z), (int16_t)(pos_target.vz), (int16_t)(pos_target.az), \
+											(int16_t)(get_inav_alt()), (int16_t)(get_inav_velocity().z), (int16_t)(get_inav_accel().z));
 #endif	
 	slice_flag.loop_50Hz = false;
 }
@@ -186,6 +188,8 @@ void sched_20Hzloop(void)
 	}	
 	
 	update_home_pos();
+	switch_handle();
+
 	
 #ifdef __DEVELOP__
 	//AHRS_Read_Attitude(&_ahrs);
@@ -232,35 +236,35 @@ void sched_1Hzloop(void)
 		return;
 	}
 
-	if (fc_status.printf_flag == 255) {
-		fc_status.armed = MOTOR_TEST;
-		trace_throttle += 0.1;
-		if (trace_throttle > 1.0f)
-		{
-			trace_throttle = 0.0f;
-			fc_status.motor_control_Hz += 1000;
-			#ifdef __DEVELOP__
-			printf("current motor PWM freq:%d\n", fc_status.motor_control_Hz);
-			#endif
-			PWM_ConfigOutputChannel(PWM, 0, fc_status.motor_control_Hz, MOTOR_MIN_PWM_DUTY);	
-			PWM_ConfigOutputChannel(PWM, 1, fc_status.motor_control_Hz, MOTOR_MIN_PWM_DUTY);
-			PWM_ConfigOutputChannel(PWM, 2, fc_status.motor_control_Hz, MOTOR_MIN_PWM_DUTY);
-			PWM_ConfigOutputChannel(PWM, 3, fc_status.motor_control_Hz, MOTOR_MIN_PWM_DUTY);
-			
-			PWM_EnableOutput(PWM, 0x0F);
-			PWM_Start(PWM, 0x0F);
-			
-			motor_duty_range = PWM->PERIOD0;
-		}
-		motor_duty[MOTOR1_INDEX] = trace_throttle;
-		motor_duty[MOTOR2_INDEX] = trace_throttle;
-		motor_duty[MOTOR3_INDEX] = trace_throttle;
-		motor_duty[MOTOR4_INDEX] = trace_throttle;
-		
-		motor_update(motor_duty);
-	} else {
-		trace_throttle = 0.0f;
-	}
+//	if (fc_status.printf_flag == 255) {
+//		fc_status.armed = MOTOR_TEST;
+//		trace_throttle += 0.1;
+//		if (trace_throttle > 1.0f)
+//		{
+//			trace_throttle = 0.0f;
+//			fc_status.motor_control_Hz += 1000;
+//			#ifdef __DEVELOP__
+//			printf("current motor PWM freq:%d\n", fc_status.motor_control_Hz);
+//			#endif
+//			PWM_ConfigOutputChannel(PWM, 0, fc_status.motor_control_Hz, MOTOR_MIN_PWM_DUTY);	
+//			PWM_ConfigOutputChannel(PWM, 1, fc_status.motor_control_Hz, MOTOR_MIN_PWM_DUTY);
+//			PWM_ConfigOutputChannel(PWM, 2, fc_status.motor_control_Hz, MOTOR_MIN_PWM_DUTY);
+//			PWM_ConfigOutputChannel(PWM, 3, fc_status.motor_control_Hz, MOTOR_MIN_PWM_DUTY);
+//			
+//			PWM_EnableOutput(PWM, 0x0F);
+//			PWM_Start(PWM, 0x0F);
+//			
+//			motor_duty_range = PWM->PERIOD0;
+//		}
+//		motor_duty[MOTOR1_INDEX] = trace_throttle;
+//		motor_duty[MOTOR2_INDEX] = trace_throttle;
+//		motor_duty[MOTOR3_INDEX] = trace_throttle;
+//		motor_duty[MOTOR4_INDEX] = trace_throttle;
+//		
+//		motor_update(motor_duty);
+//	} else {
+//		trace_throttle = 0.0f;
+//	}
 	slice_flag.loop_1Hz = false;
 }
 
@@ -268,14 +272,14 @@ void sched_1Hzloop(void)
 void time_slice(void)
 {
     static uint16_t count_1Hz = 397, count_5Hz = 75, count_10Hz = 33, count_20Hz = 11,\
-            count_50Hz = 7, count_100Hz = 2, count_200Hz = 1, count_main_loop = MAIN_LOOP_TIME;
+            count_50Hz = 7, count_80Hz = 3, count_200Hz = 1, count_main_loop = MAIN_LOOP_TIME;
 
     count_1Hz++;
     count_5Hz++;
     count_10Hz++;
     count_20Hz++;
     count_50Hz++;
-    count_100Hz++;
+    count_80Hz++;
     count_200Hz++;
     count_main_loop++;
 
@@ -299,9 +303,9 @@ void time_slice(void)
         slice_flag.loop_50Hz = true;
         count_50Hz = 0;
     }
-    if (count_100Hz >= 4) {
-        slice_flag.loop_100Hz = true;
-        count_100Hz = 0;
+    if (count_80Hz >= 5) {
+        slice_flag.loop_80Hz = true;
+        count_80Hz = 0;
     }
     if (count_200Hz >= 2) {
         slice_flag.loop_200Hz = true;

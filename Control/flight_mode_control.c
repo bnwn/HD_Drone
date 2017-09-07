@@ -166,6 +166,8 @@ void acro_run(void)
 	attitude_target_ang_vel.roll = target_attitude.roll;
 	attitude_target_ang_vel.pitch = target_attitude.pitch;
     attitude_target_ang_vel.yaw = target_attitude.yaw;
+	// clear landing flag
+    set_land_complete(false);
 }
 
 // althold_init - initialise althold controller
@@ -218,7 +220,7 @@ void althold_run(void)
 
 
     // Alt Hold State Machine Determination
-    if (fc_status.armed == DISARMED || !fc_status.inav_z_estimate_ok) {
+    if (fc_status.armed == DISARMED || !fc_status.inav_z_estimate_ok || fc_status.armed == IDLED) {
         althold_state = AltHold_MotorStopped;
     } else if (takeoff_state.running || takeoff_triggered) {
         althold_state = AltHold_Takeoff;
@@ -232,8 +234,12 @@ void althold_run(void)
     switch (althold_state) {
 
     case AltHold_MotorStopped:
-
-        set_motor_state(Motor_ShutDown);
+        
+		if (fc_status.armed == DISARMED) {
+			set_motor_state(Motor_ShutDown);
+		} else if (fc_status.armed == IDLED) {
+			set_motor_state(Motor_Spin);
+		}
         attitude_angle_euler_controller(target_attitude.roll, target_attitude.pitch, target_attitude.yaw, get_smoothing_gain(), dt);
 
         reset_rate_controller();

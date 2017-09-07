@@ -28,7 +28,6 @@ EulerAngle AngE = {0};
 struct AHRS ahrs = {0};
 float Rot_matrix[9] = {1.f,  0.0f,  0.0f, 0.0f,  1.f,  0.0f, 0.0f,  0.0f,  1.f };		/**< init: identity matrix */
 
-int16_t MAG[3];
 float cmp_kp = KpDef, cmp_ki = KiDef;
 float exInt = 0.0f, eyInt = 0.0f, ezInt = 0.0f;
 
@@ -162,38 +161,38 @@ void AHRS_Read_Attitude(EulerAngle *_attitude)
 		_attitude->Yaw = ahrs.Yaw;
 }
 
-void AHRS_set_complementary_filter_kp(float _kp)
-{
-		SCHEDULER_STOP;
-		cmp_kp = _kp;
-#ifdef __DEVELOP__
-		printf("kp: %.6f\n", cmp_kp);
-#endif
-		memset(&NumQ, 0, sizeof(Quaternion));
-		NumQ.q0 = 1;
-		memset(&AngE, 0, sizeof(EulerAngle));
-		memset(&ahrs, 0, sizeof(EulerAngle));
-		exInt = 0;
-		exInt = 0;
-		exInt = 0;
-		accel_offset();
-		SCHEDULER_RUN;
-}
+//void AHRS_set_complementary_filter_kp(float _kp)
+//{
+//		SCHEDULER_STOP;
+//		cmp_kp = _kp;
+//#ifdef __DEVELOP__
+//		printf("kp: %.6f\n", cmp_kp);
+//#endif
+//		memset(&NumQ, 0, sizeof(Quaternion));
+//		NumQ.q0 = 1;
+//		memset(&AngE, 0, sizeof(EulerAngle));
+//		memset(&ahrs, 0, sizeof(EulerAngle));
+//		exInt = 0;
+//		exInt = 0;
+//		exInt = 0;
+//		accel_offset();
+//		SCHEDULER_RUN;
+//}
 
-void AHRS_set_complementary_filter_ki(float _ki)
-{
-		SCHEDULER_STOP;
-		cmp_ki = _ki;
-#ifdef __DEVELOP__
-		printf("ki: %.6f\n", cmp_ki);
-#endif
-		memset(&NumQ, 0, sizeof(Quaternion));
-		NumQ.q0 = 1;
-		memset(&AngE, 0, sizeof(EulerAngle));
-		memset(&ahrs, 0, sizeof(EulerAngle));
-		exInt = 0;
-		exInt = 0;
-		exInt = 0;
-		accel_offset();
-		SCHEDULER_RUN;
-}
+//void AHRS_set_complementary_filter_ki(float _ki)
+//{
+//		SCHEDULER_STOP;
+//		cmp_ki = _ki;
+//#ifdef __DEVELOP__
+//		printf("ki: %.6f\n", cmp_ki);
+//#endif
+//		memset(&NumQ, 0, sizeof(Quaternion));
+//		NumQ.q0 = 1;
+//		memset(&AngE, 0, sizeof(EulerAngle));
+//		memset(&ahrs, 0, sizeof(EulerAngle));
+//		exInt = 0;
+//		exInt = 0;
+//		exInt = 0;
+//		accel_offset();
+//		SCHEDULER_RUN;
+//}

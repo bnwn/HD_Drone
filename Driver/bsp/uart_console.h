@@ -9,6 +9,7 @@
 #include "uart.h"
 
 #define CONSOLE_BAUDRATE 115200
+#if 0
 #define CONSOLE_BUF_SIZE 50
 
 #define ASCII_A 0x61
@@ -52,9 +53,12 @@
 #define ASCII_REC_START 0x24
 #define ASCII_REC_END 0x23
 
-void uart_console_init(UART_T* _uart, uint32_t _baudrate);
+
 float get_float(uint16_t _buf_index);
 bool console_input_handle(void);
+#endif
+
+void uart_console_init(UART_T* _uart, uint32_t _baudrate);
 
 #endif
 

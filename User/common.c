@@ -119,7 +119,7 @@ void peripheral_init(void)
     gyro_offset();
     accel_offset();
 	inertial_sensor_init();
-//	inertial_nav_init();
+	inertial_nav_init();
 #ifdef __DEVELOP__
     printf("collect complete\n");
 #endif
@@ -170,7 +170,6 @@ void fc_status_reset(void)
     fc_status.accel_updated = false;
     fc_status.baro_collect_ok = false;
     fc_status.inav_z_estimate_ok = false;
-	fc_status.baro_initialize = false;
 	fc_status.printf_flag = 6;
 	fc_status.motor_control_Hz = 2000;
 }
