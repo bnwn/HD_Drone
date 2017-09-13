@@ -30,7 +30,7 @@ struct poscontrol_limit_flags {
     uint8_t accel_xy    : 1;    // 1 if we have hit the horizontal accel limit
 } pos_limit = {0};
 
-float leash_up_z = POSCONTROL_LEASH_LENGTH_MIN, leash_down_z = POSCONTROL_LEASH_LENGTH_MIN;
+float leash_up_z = POSCONTROL_LEASH_LENGTH_MIN, leash_down_z = POSCONTROL_LEASH_LENGTH_MIN / 2;
 float speed_up_cms = POSCONTROL_SPEED_UP, speed_down_cms = POSCONTROL_SPEED_DOWN;
 float accel_z_cms = POSCONTROL_ACCEL_Z;
 float accel_last_z_cms = 0.0f;
@@ -47,7 +47,7 @@ void poscontrol_init_takeoff(void)
     pos_flags.freeze_ff_z = true;
 
     // shift difference between last motor out and hover throttle into accelerometer I
-    ctrl_loop.pos_accel.z.integrator = ((1.0f+norm_input_dz(&rc_channels[RC_THROTTLE_CH]))/2.0f - get_throttle_hover())*1000.0f;
+    ctrl_loop.pos_accel.z.integrator = (motor.thrust.throttle - get_throttle_hover())*1000.0f;
 
     // initialise ekf reset handler
     // init_ekf_z_reset();
@@ -61,6 +61,7 @@ void position_z_controller(void)
     last_update_z_ms = now;
 	
 	if (dt > POSCONTROL_ACTIVE_TIMEOUT_MS) {
+		printf("poscontrol timeout.\n");
 		pos_flags.reset_accel_to_throttle = true;
 		pos_flags.reset_rate_to_accel_z = true;
 	}
@@ -99,7 +100,8 @@ void pos_to_rate_z(void)
     }
 
     // calculate _vel_target.z using from _pos_error.z using sqrt controller
-    pos_target.vz = sqrt_controller(pos_error.z, ctrl_loop.pos.z.kp, accel_z_cms);
+    // pos_target.vz = sqrt_controller(pos_error.z, ctrl_loop.pos.z.kp, accel_z_cms);
+	pos_target.vz = pos_error.z * ctrl_loop.pos.z.kp;
 
     // check speed limits
     // To-Do: check these speed limits here or in the pos->rate controller
@@ -164,7 +166,8 @@ void rate_to_accel_z(void)
         pos_flags.reset_rate_to_accel_z = false;
     } else {
         // calculate rate error and filter with cut off frequency of 2 Hz, 100Hz loop
-        pos_error.vz = LPF_1st(last_vel_error, pos_target.vz - curr_vel.z, 0.059f);
+        pos_error.vz = LPF_1st(last_vel_error, pos_target.vz - curr_vel.z, 0.239f); //0.059f);
+//		pos_error.vz = pos_target.vz - curr_vel.z;
 		last_vel_error = pos_error.vz;
     }
 
@@ -213,7 +216,7 @@ void accel_to_throttle(float accel_target_z)
         ctrl_loop.pos_accel.z.imax = get_throttle_hover() * 1000.0f;
     }
 	
-	if ((i > 0 && pos_error.az < 0) || (i < 0 && pos_error.az > 0)) {
+	if ((!motor.limit_throttle_lower && !motor.limit_throttle_upper) || (i > 0 && pos_error.az < 0) || (i < 0 && pos_error.az > 0)) {
 		i = get_i_output(&ctrl_loop.pos_accel.z);
 	}
     // update i term as long as we haven't breached the limits or the I term will certainly reduce
@@ -557,7 +560,8 @@ void relax_alt_controller(float _throttle_setting)
     pos_target.az = get_inav_accel().z;
     pos_flags.reset_accel_to_throttle = true;
 
-    ctrl_loop.pos_accel.z.integrator = (_throttle_setting-get_throttle_hover())*1000.0f;
+    ctrl_loop.pos_accel.z.integrator = 0.0f;
+	//ctrl_loop.pos_accel.z.integrator = (_throttle_setting-get_throttle_hover())*1000.0f;
 }
 
 /// calc_leash_length - calculates the vertical leash lengths from maximum speed, acceleration

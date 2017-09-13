@@ -14,8 +14,8 @@
 #define POSCONTROL_JERK_LIMIT_CMSSS             1700.0f // default jerk limit on horizontal acceleration (unit: m/s/s/s)
 
 #define POSCONTROL_SPEED                        500.0f  // default horizontal speed in cm/s
-#define POSCONTROL_SPEED_DOWN                  -150.0f  // default descent rate in cm/s
-#define POSCONTROL_SPEED_UP                     250.0f  // default climb rate in cm/s
+#define POSCONTROL_SPEED_DOWN                  -50.0f  // default descent rate in cm/s
+#define POSCONTROL_SPEED_UP                     150.0f  // default climb rate in cm/s
 #define POSCONTROL_VEL_XY_MAX_FROM_POS_ERR      200.0f  // max speed output from pos_to_vel controller when feed forward is used
 
 #define POSCONTROL_ACCEL_Z                      250.0f  // default vertical acceleration in cm/s/s.
@@ -35,20 +35,21 @@
 
 // Throttle control gains
 #ifndef ALT_HOLD_P
- # define ALT_HOLD_P            1.0f
+# define ALT_HOLD_P            1.0f
 #endif
 
 // Velocity (vertical) control gains
 #ifndef VEL_Z_P
- # define VEL_Z_P       5.0f
+# define VEL_Z_P       1.0f
+//#define VEL_Z_P			2.5f	
 #endif
 
 // Accel (vertical) control gains
 #ifndef ACCEL_Z_P
- # define ACCEL_Z_P     0.50f
+ # define ACCEL_Z_P     0.87f
 #endif
 #ifndef ACCEL_Z_I
- # define ACCEL_Z_I     1.00f
+ # define ACCEL_Z_I     0.065f
 #endif
 #ifndef ACCEL_Z_D
  # define ACCEL_Z_D     0.0f

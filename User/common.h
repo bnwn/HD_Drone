@@ -44,9 +44,12 @@ typedef struct {
     bool radio_lost;
     bool altitude_updated;
 	bool home_abs_alt_updated;
-    bool accel_updated;
+    bool imu_updated;
     bool baro_collect_ok;
     bool inav_z_estimate_ok;
+	bool calibrated_gyro;
+	bool calibrated_accel;
+	bool calibrated_compass;
 	int8_t printf_flag;
 	uint16_t motor_control_Hz;
 }_Status_t;

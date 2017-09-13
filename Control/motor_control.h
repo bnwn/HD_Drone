@@ -6,7 +6,8 @@
 #include "../Algorithm/Algorithm_math/Algorithm_math.h"
 
 #define IDLED_DUTY 0.08f
-#define THROTTLE_HOVER_DEFAULT 0.35f
+//#define THROTTLE_HOVER_DEFAULT 0.25f
+#define THROTTLE_HOVER_DEFAULT 0.42f
 
 enum Motor_State {
     Motor_ShutDown = 0,

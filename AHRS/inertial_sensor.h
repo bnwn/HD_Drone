@@ -14,7 +14,7 @@
 #endif
 
 /*----------------ÍÓÂÝÒÇ²É¼¯ÏÞ·ù--------------------*/
-#define GYRO_GATHER   100
+#define GYRO_GATHER   80
 #define FILTER_LPF2P 0
 #define FILTER_IIR_I 1
 #define SENSOR_FILTER FILTER_LPF2P
@@ -60,8 +60,8 @@ typedef struct {
 void inertial_sensor_init(void); 
 void inertial_sensor_read(void);
 void gyro_caloffest(float x,float y,float z,uint16_t amount);
-void gyro_offset(void);
-void accel_offset(void);
+void gyro_calibration(void);
+void accel_calibration(void);
 _Vector_Float get_inertial_vel(void);
 
 

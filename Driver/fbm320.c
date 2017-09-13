@@ -13,8 +13,11 @@ bool fbm320_init(void)
     if (I2C_ReadByte(FBM320_SLAVE_ADDRESS, FBM320_REG_CHIPID) != FBM320_CHIPID) {
         return false;
     }
-    fbm320_packet.Version = ((I2C_ReadByte(FBM320_SLAVE_ADDRESS, 0xA5) & 0x70) >> 2) | ((I2C_ReadByte(FBM320_SLAVE_ADDRESS, 0xF4) & 0xC0) >> 6);
-
+	delay_ms(20);
+//    fbm320_packet.Version = ((I2C_ReadByte(FBM320_SLAVE_ADDRESS, 0xA5) & 0x70) >> 2) | ((I2C_ReadByte(FBM320_SLAVE_ADDRESS, 0xF4) & 0xC0) >> 6);
+//	
+//	printf("fbm320 version£º%d\n", fbm320_packet.Version);
+	fbm320_packet.Version = 0;
     /* set default param */
     fbm320_packet.RPC = 3;
     Formula_Select |= 0x01;
@@ -55,11 +58,11 @@ int32_t fbm320_read_long_data(void)
 void fbm320_timer_procedure(void)
 {
     static uint16_t timer_count = 0;
-	static float fbm320_alt_filter[5];
+	static float fbm320_alt_filter[11];
 	static uint32_t init_time = 0;
 	static bool baro_initialize = false;
 	
-	float new_alt;
+	static float new_alt = 0.0f;
 	
     switch (timer_count) {
     case 0:
@@ -84,21 +87,21 @@ void fbm320_timer_procedure(void)
 			}
 		} else {
 			if (fc_status.home_abs_alt_updated) {
-				new_alt = Moving_Average(fbm320_alt_filter, 5, new_alt, true);
+				fbm320_packet.altitude = Moving_Average(fbm320_alt_filter, 10, new_alt, true);
+//				new_alt = Moving_Average(fbm320_alt_filter, 5, new_alt, true);
 							
-				if (fabsf(new_alt - fbm320_packet.altitude) < 10) {
-					fbm320_packet.altitude += (new_alt - fbm320_packet.altitude) * 0.1906f; // 2Hz LPF
-				} else if (fabsf(new_alt - fbm320_packet.altitude) < 50) {
-					fbm320_packet.altitude += (new_alt - fbm320_packet.altitude) * 0.1052f; // 1Hz LPF
-				} else {
-					fbm320_packet.altitude += (new_alt - fbm320_packet.altitude) * 0.0555f; // 0.5Hz LPF
-				}
+//				if (fabsf(new_alt - fbm320_packet.altitude) < 0.01f) {
+//					fbm320_packet.altitude += (new_alt - fbm320_packet.altitude) * 0.1906f; // 2Hz LPF
+//				} else if (fabsf(new_alt - fbm320_packet.altitude) < 0.05f) {
+//					fbm320_packet.altitude += (new_alt - fbm320_packet.altitude) * 0.1052f; // 1Hz LPF 0.1052f
+//				} else {
+//					fbm320_packet.altitude += (new_alt - fbm320_packet.altitude) * 0.0555f; // 0.5Hz LPF
+//				}
 				
 				fc_status.altitude_updated = true;
-			}
-			else {
+			} else {
 				uint8_t i = 0;
-				for (i=0; i<5; i++) {
+				for (i=0; i<10; i++) {
 					fbm320_packet.altitude = new_alt;
 					fbm320_alt_filter[i] = fbm320_packet.altitude;
 				}
@@ -108,6 +111,10 @@ void fbm320_timer_procedure(void)
     default:
         break;
     }
+	
+	if (baro_initialize && !fc_status.altitude_updated) {
+		fbm320_packet.altitude = Moving_Average(fbm320_alt_filter, 10, new_alt, true);
+	}
 
     if (timer_count < 3)
         timer_count++;

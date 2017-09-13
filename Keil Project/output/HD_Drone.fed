@@ -1,4 +1,4 @@
-;#<FEEDBACK># ARM Linker, 5060183: Last Updated: Thu Sep 07 21:11:56 2017
+;#<FEEDBACK># ARM Linker, 5060183: Last Updated: Wed Sep 13 12:02:49 2017
 ;VERSION 0.2
 ;FILE acmp.o
 ACMP_Close <= USED 0
@@ -12,13 +12,14 @@ ADC_DisableHWTrigger <= USED 0
 ADC_DisableInt <= USED 0
 ADC_Enable <= USED 0
 ADC_EnableHWTrigger <= USED 0
-ADC_EnableInt <= USED 0
-ADC_Open <= USED 0
 ADC_SeqModeEnable <= USED 0
 ADC_SeqModeTriggerSrc <= USED 0
 ADC_SetExtraSampleTime <= USED 0
 __asm___5_adc_c_26cd6614____REV16 <= USED 0
 __asm___5_adc_c_26cd6614____REVSH <= USED 0
+;FILE adc_det.o
+__asm___9_adc_det_c_d69ae0d3____REV16 <= USED 0
+__asm___9_adc_det_c_d69ae0d3____REVSH <= USED 0
 ;FILE ahrs.o
 AHRS_Read_Attitude <= USED 0
 __asm___6_ahrs_c_NumQ____REV16 <= USED 0
@@ -35,7 +36,7 @@ wrap_360_degree <= USED 0
 __asm___15_Algorithm_pid_c_61a19061____REV16 <= USED 0
 __asm___15_Algorithm_pid_c_61a19061____REVSH <= USED 0
 set_input_filter_all <= USED 0
-set_pid_param_p <= USED 0
+set_pid_param_i <= USED 0
 ;FILE algorithm_quaternion.o
 __asm___22_Algorithm_quaternion_c_fdc3695e____REV16 <= USED 0
 __asm___22_Algorithm_quaternion_c_fdc3695e____REVSH <= USED 0
@@ -80,6 +81,8 @@ __asm___8_fbm320_c_8c0545fd____REVSH <= USED 0
 __asm___21_flight_mode_control_c_3550a7f2____REV16 <= USED 0
 __asm___21_flight_mode_control_c_3550a7f2____REVSH <= USED 0
 init_simple_bearing <= USED 0
+takeoff_get_climb_rates <= USED 0
+takeoff_timer_start <= USED 0
 ;FILE fmc.o
 FMC_Close <= USED 0
 FMC_Erase <= USED 0
@@ -145,6 +148,9 @@ throttle_control <= USED 0
 ;FILE position_control.o
 __asm___18_position_control_c_f21ea35f____REV16 <= USED 0
 __asm___18_position_control_c_f21ea35f____REVSH <= USED 0
+add_takeoff_climb_rate <= USED 0
+poscontrol_init_takeoff <= USED 0
+sqrt_controller <= USED 0
 ;FILE pwm.o
 PWM_ClearADCTriggerFlag <= USED 0
 PWM_ClearCMPDIntFlag <= USED 0

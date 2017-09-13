@@ -9,17 +9,17 @@
 _Nav_t nav = {0}; // NED frame in earth
 _Vector_Float home_absolute_pos;
 
-float z_est[3] = {0.0, 0.0, 0.0};	// estimate z Vz  Az
-float w_z_baro = 0.0;
-float w_z_acc = 2.0;
-float w_acc_bias = 0.25;
+float z_est[3] = {0.0f, 0.0f, 0.0f};	// estimate z Vz  Az
+float w_z_baro = 10.0f;
+float w_z_acc = 1.0f;
+float w_acc_bias = 0.5f;
 /* store error when sensor updates, but correct on each time step to avoid jumps in estimated value */
-float corr_acc[3] = {0.0, 0.0, 0.0};	// N E D ,  m/s2
-float acc_bias[3] = {0.0, 0.0, 0.0};	// body frame ,
+float corr_acc[3] = {0.0f, 0.0f, 0.0f};	// N E D ,  m/s2
+float acc_bias[3] = {0.0f, 0.0f, 0.0f};	// body frame ,
 	
 
 /* acceleration in NED frame */
-float accel_NED[3] = {0.0, 0.0, -GRAVITY_MSS};
+float accel_NED[3] = {0.0f, 0.0f, -GRAVITY_MSS};
 
 void inertial_nav_init(void)
 {
@@ -41,8 +41,12 @@ void position_z_update(void)
     float accel_bias_corr[3] = { 0.0, 0.0, 0.0 };
 	int8_t co_factor[3] = {IMU_SENSOR_X_FACTOR, IMU_SENSOR_Y_FACTOR, IMU_SENSOR_Z_FACTOR};
 	
+	float acc[3];
+	float new_alt;
+	
 	static uint32_t timestamp = 0;
 	static float baro_offset = 0.0f;
+	static bool position_z_init = false;
 	uint32_t now = sys_micro();
 	float dt = (timestamp>0) ? ((float)(now-timestamp)/1000000.0f) : 0;
 	timestamp = now;
@@ -51,12 +55,27 @@ void position_z_update(void)
 	{
 		return;
 	}
-	
-	if (w_z_baro < 1.5) w_z_baro += 0.215;
-	if (w_acc_bias > 0.05) w_acc_bias -= 0.01;
 		
-    if (fc_status.altitude_updated) { // update altitude in 16.67Hz
-        float new_alt = fbm320_packet.altitude - home_absolute_pos.z;
+	/** faker 
+	if (!fc_status.altitude_updated || !fc_status.imu_updated)
+	{
+		return;
+	} **/
+	
+	if (w_z_baro > 4.0f) w_z_baro -= 0.1f;
+	if (w_acc_bias > 0.05f) w_acc_bias -= 0.01f;
+//	if (w_z_acc < 6.4f) w_z_acc += 0.8f;
+	
+	if (!position_z_init) {
+		position_z_init = true;
+		baro_offset = fbm320_packet.altitude - home_absolute_pos.z;
+		z_est[0] = 0.0f;
+		z_est[1] = 0.0f;
+		z_est[2] = 0.0f;
+	}
+	
+//    if (fc_status.altitude_updated) { // update altitude in 16.67Hz
+        new_alt = fbm320_packet.altitude - home_absolute_pos.z;
 //		if (fabsf(new_alt) < 10) {
 //            nav_pos.z += (new_alt) * 0.2736f; // 2Hz LPF
 //        } else if (fabsf(new_alt) < 50) {
@@ -64,35 +83,47 @@ void position_z_update(void)
 //        } else {
 //            nav_pos.z += (new_alt) * 0.086f; // 0.5Hz LPF
 //        }
-		if (baro_offset == 0.0f)
-		{
-			baro_offset = new_alt;
-		}
         corr_baro = baro_offset - new_alt - z_est[0];
 
-        fc_status.altitude_updated = false;
-    }
-
-    if (fc_status.accel_updated) {
-		float acc[3];
-        acc[0] = (float)(inertial_sensor.accel.filter.x - acc_bias[0]);
-        acc[1] = (float)(inertial_sensor.accel.filter.y - acc_bias[1]);
-        acc[2] = (float)(inertial_sensor.accel.filter.z - acc_bias[2]);
-
-        for(i=0; i<3; i++)
-        {
-            accel_NED[i] = 0.0;
-            for(j=0; j<3; j++)
-            {
-                accel_NED[i] += (float)(ahrs.dcm[j][i] * acc[j] * co_factor[i]);
-            }
-        }
+//        fc_status.altitude_updated = false;
+//    }
+//		
+//    if (fc_status.imu_updated) {
 		
+//	        if (_ins.get_accel_health(i)) {
+//            /*
+//              by using get_delta_velocity() instead of get_accel() the
+//              accel value is sampled over the right time delta for
+//              each sensor, which prevents an aliasing effect
+//             */
+//            Vector3f delta_velocity;
+//            float delta_velocity_dt;
+//            _ins.get_delta_velocity(i, delta_velocity);
+//            delta_velocity_dt = _ins.get_delta_velocity_dt(i);
+//            if (delta_velocity_dt > 0) {
+//                _accel_ef[i] = _dcm_matrix * (delta_velocity / delta_velocity_dt);
+//                // integrate the accel vector in the earth frame between GPS readings
+//                _ra_sum[i] += _accel_ef[i] * deltat;
+//            }
+		acc[0] = (float)(inertial_sensor.accel.filter.x - acc_bias[0]);
+		acc[1] = (float)(inertial_sensor.accel.filter.y - acc_bias[1]);
+		acc[2] = (float)(inertial_sensor.accel.filter.z - acc_bias[2]);
+			
+		for(i=0; i<3; i++)
+		{
+			accel_NED[i] = 0.0;
+			for(j=0; j<3; j++)
+			{
+				accel_NED[i] += (float)(ahrs.dcm[j][i] * acc[j] * co_factor[i]);
+			}
+		}
+		
+		//z_est[2] = accel_NED[2] + (float)(GRAVITY_MSS);
 		accel_NED[2] += (float)(GRAVITY_MSS);
-        corr_acc[2] = accel_NED[2] - z_est[2];
+		corr_acc[2] = accel_NED[2] - z_est[2];
 
-        fc_status.accel_updated = false;
-    }
+//        fc_status.imu_updated = false;
+//    }
 
     //correct accelerometer bias every time step
     accel_bias_corr[2] -= (float)(corr_baro * w_z_baro * w_z_baro);
@@ -108,7 +139,7 @@ void position_z_update(void)
 
         acc_bias[i] += (float)(c * w_acc_bias * dt * co_factor[i]);		//accumulate bias
     }
-
+	
     /* inertial filter prediction for altitude */
     inertial_filter_predict(dt, z_est, z_est[2]);//accel_NED[2]);
     /* inertial filter correction for altitude */
@@ -210,7 +241,7 @@ static void inertial_filter_correct(float e, float dt, float *x, int i, float w)
 		x[i] += ewdt;
 
 		if (i == 0) {
-			x[1] += (float)(w * ewdt);
+			x[1] += (float)(w * ewdt); 
 			x[2] += (float)(w * w * ewdt / 3.0);
 
 		} else if (i == 1) {

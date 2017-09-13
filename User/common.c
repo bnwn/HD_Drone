@@ -19,6 +19,7 @@
 #include "../Driver/motor.h"
 #include "../Scheduler/scheduler.h"
 #include "../RC/rc_channel.h"
+#include "adc_det.h"
 
 _Status_t fc_status;
 static uint32_t milli_ticker = 0;
@@ -64,6 +65,19 @@ void system_init(void)
     CLK_EnableModuleClock(I2C0_MODULE);
     SYS->P3_MFP |=SYS_MFP_P35_I2C0_SCL|SYS_MFP_P34_I2C0_SDA;
     P3->DINOFF &= ~ ( GP_DINOFF_DINOFF4_Msk |GP_DINOFF_DINOFF5_Msk);
+	
+	/* Analog pin OFFD to prevent leakage */
+    CLK_EnableModuleClock(ADC_MODULE);
+    SYS->P1_MFP |=SYS_MFP_P10_ADC_CH1;
+	SYS->P1_MFP |=SYS_MFP_P12_ADC_CH2;
+	SYS->P1_MFP |=SYS_MFP_P13_ADC_CH3;
+	SYS->P1_MFP |=SYS_MFP_P14_ADC_CH4;
+	SYS->P1_MFP |=SYS_MFP_P15_ADC_CH5;
+	GPIO_DISABLE_DIGITAL_PATH(P1,(1<<0));
+	GPIO_DISABLE_DIGITAL_PATH(P1,(1<<2));
+	GPIO_DISABLE_DIGITAL_PATH(P1,(1<<3));
+	GPIO_DISABLE_DIGITAL_PATH(P1,(1<<4));
+	GPIO_DISABLE_DIGITAL_PATH(P1,(1<<5));
 		
     /* spi gpio setting */
     SYS->P0_MFP |= SYS_MFP_P03_SPI1_SS;  //SPI1SS
@@ -84,6 +98,10 @@ void peripheral_init(void)
     uart_console_init(UART0, CONSOLE_BAUDRATE);
     printf("console init success!\n");
 #endif
+	
+	/* battery adc collect init */
+	adc_init();
+		
     /* I2C Bus device init */
     I2C_Init(I2C0, I2C_CLOCK_FREQ);
 	
@@ -116,8 +134,6 @@ void peripheral_init(void)
 
     printf("sensor collect offset...\n");
 #endif
-    gyro_offset();
-    accel_offset();
 	inertial_sensor_init();
 	inertial_nav_init();
 #ifdef __DEVELOP__
@@ -138,10 +154,10 @@ void param_load(void)
 
 	set_pid_param(&ctrl_loop.rate.pitch, CONTROL_RATE_LOOP_PITCH_KP, CONTROL_RATE_LOOP_PITCH_KI, \
 																				CONTROL_RATE_LOOP_PITCH_KD, OONTROL_RATE_LOOP_PITCH_INTEGRATOR_MAX, 20, LOOP_DT);
-
+                                            
 	set_pid_param(&ctrl_loop.rate.roll, CONTROL_RATE_LOOP_ROLL_KP, CONTROL_RATE_LOOP_ROLL_KI, \
 																				CONTROL_RATE_LOOP_ROLL_KD, OONTROL_RATE_LOOP_ROLL_INTEGRATOR_MAX, 20, LOOP_DT);
-
+                                            
 	set_pid_param(&ctrl_loop.rate.yaw, CONTROL_RATE_LOOP_YAW_KP, CONTROL_RATE_LOOP_YAW_KI, \
 																				CONTROL_RATE_LOOP_YAW_KD, OONTROL_RATE_LOOP_YAW_INTEGRATOR_MAX, 0.5, LOOP_DT);
 
@@ -151,10 +167,10 @@ void param_load(void)
 	set_pid_param(&ctrl_loop.pos.z, ALT_HOLD_P, 0, \
 																			0, 0, 0, LOOP_DT);
 																			
-	set_pid_param(&ctrl_loop.pos.z, VEL_Z_P, 0, \
+	set_pid_param(&ctrl_loop.pos_vel.z, VEL_Z_P, 0, \
 																			0, 0, 0, LOOP_DT);
 																			
-	set_pid_param(&ctrl_loop.pos.z, ACCEL_Z_P, ACCEL_Z_I, \
+	set_pid_param(&ctrl_loop.pos_accel.z, ACCEL_Z_P, ACCEL_Z_I, \
 																			ACCEL_Z_D, ACCEL_Z_FILT_HZ, ACCEL_Z_IMAX, LOOP_DT);																			
 }
 
@@ -167,10 +183,13 @@ void fc_status_reset(void)
     fc_status.radio_lost = true;
     fc_status.altitude_updated = false;
 	fc_status.home_abs_alt_updated = false;
-    fc_status.accel_updated = false;
+    fc_status.imu_updated = false;
     fc_status.baro_collect_ok = false;
     fc_status.inav_z_estimate_ok = false;
-	fc_status.printf_flag = 6;
+	fc_status.calibrated_gyro = false;
+	fc_status.calibrated_accel = false;
+	fc_status.calibrated_compass = false;
+	fc_status.printf_flag = 7;
 	fc_status.motor_control_Hz = 2000;
 }
 
@@ -191,11 +210,12 @@ void set_radio_lost(bool _b)
     if (fc_status.radio_lost != _b)
     {
         fc_status.radio_lost = _b;
-    }
-
-    if (fc_status.radio_lost) {
-        fc_status.armed = DISARMED;
-        //set_flight_mode(Land);
+		
+		if (fc_status.radio_lost) {
+			fc_status.armed = IDLED;
+			set_land_complete(true);
+			//set_flight_mode(Land);
+		}
     }
 }
 

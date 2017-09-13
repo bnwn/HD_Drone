@@ -40,3 +40,4 @@
 .\output\common.o: ..\User\../Driver/fbm320.h
 .\output\common.o: ..\User\../Scheduler/scheduler.h
 .\output\common.o: ..\User\../RC/rc_channel.h
+.\output\common.o: ..\Driver\bsp\adc_det.h

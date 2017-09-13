@@ -22,7 +22,7 @@ Dialog DLL:      TARMCM1.DLL V1.10.0.0
  
 <h2>Project:</h2>
 C:\Users\Administrator.DESKTOP-ZXM\Desktop\workspace\HD_Drone\HD_Drone_Firmware\Keil Project\HD_Drone.uvprojx
-Project File Date:  09/04/2017
+Project File Date:  09/11/2017
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 2 (build 183)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
@@ -34,17 +34,12 @@ compiling bmi160.c...
         bool vetcor_init = false;
 ..\Driver\bmi160.c: 1 warning, 0 errors
 compiling fbm320.c...
-..\Driver\fbm320.c(89): warning:  #223-D: function "fabsf" declared implicitly
-                                if (fabsf(new_alt - fbm320_packet.altitude) < 10) {
-..\Driver\fbm320.c: 1 warning, 0 errors
-compiling motor.c...
-..\Driver\motor.c(35): warning:  #223-D: function "printf" declared implicitly
-        printf("period0:%d, period1:%d, period2:%d, period3:%d, motor_duty_range:%d\n", PWM->PERIOD0, PWM->PERIOD1, PWM->PERIOD2, PWM->PERIOD3, motor_duty_range);
-..\Driver\motor.c: 1 warning, 0 errors
 compiling common.c...
 ..\User\../RC/rc_channel.h(72): warning:  #1295-D: Deprecated declaration get_desired_climb_rate - give arg types
   float get_desired_climb_rate();
-..\User\common.c: 1 warning, 0 errors
+..\Driver\bsp\adc_det.h(11): warning:  #1-D: last line of file ends without a newline
+  #endif 
+..\User\common.c: 2 warnings, 0 errors
 compiling main.c...
 ..\User\main.c(20): warning:  #111-D: statement is unreachable
           return 0;
@@ -69,49 +64,69 @@ compiling attitude_control.c...
   float get_desired_climb_rate();
 ..\Control\attitude_control.c: 1 warning, 0 errors
 compiling flight_mode_control.c...
-..\Control\flight_mode_control.c(1): warning:  #14-D: extra text after expected end of preprocessing directive
-  #include "PN020Series.h"s
 ..\RC\rc_channel.h(72): warning:  #1295-D: Deprecated declaration get_desired_climb_rate - give arg types
   float get_desired_climb_rate();
 ..\Control\flight_mode_control.c(25): warning:  #188-D: enumerated type mixed with another type
-      bool ignore_checks = (fc_status.armed == DISARMED);
-..\Control\flight_mode_control.c(219): warning:  #188-D: enumerated type mixed with another type
+      bool ignore_checks = (DISARMED == fc_status.armed);
+..\Control\flight_mode_control.c(220): warning:  #188-D: enumerated type mixed with another type
       takeoff_triggered = fc_status.land_complete && (target_climb_rate > 0.0f);
-..\Control\flight_mode_control.c: 4 warnings, 0 errors
-compiling motor_control.c...
-..\Control\motor_control.c(7): warning:  #188-D: enumerated type mixed with another type
-  Motor_t motor = {0};
-..\Control\motor_control.c: 1 warning, 0 errors
+..\Control\flight_mode_control.c(202): warning:  #177-D: variable "takeoff_climb_rate" was declared but never referenced
+      float takeoff_climb_rate = 0.0f;
+..\Control\flight_mode_control.c(203): warning:  #177-D: variable "i" was declared but never referenced
+        static uint8_t i = 0;
+..\Control\flight_mode_control.c: 5 warnings, 0 errors
 compiling position_control.c...
 ..\RC\rc_channel.h(72): warning:  #1295-D: Deprecated declaration get_desired_climb_rate - give arg types
   float get_desired_climb_rate();
-..\Control\position_control.c(653): warning:  #188-D: enumerated type mixed with another type
+..\Control\position_control.c(64): warning:  #223-D: function "printf" declared implicitly
+                printf("poscontrol timeout.\n");
+..\Control\position_control.c(657): warning:  #188-D: enumerated type mixed with another type
       return ((sys_milli() - last_update_z_ms) <= 
 OSCONTROL_ACTIVE_TIMEOUT_MS);
-..\Control\position_control.c: 2 warnings, 0 errors
+..\Control\position_control.c: 3 warnings, 0 errors
+compiling motor_control.c...
+..\Driver\bsp\adc_det.h(11): warning:  #1-D: last line of file ends without a newline
+  #endif 
+..\Control\motor_control.c(8): warning:  #188-D: enumerated type mixed with another type
+  Motor_t motor = {0};
+..\Control\motor_control.c: 2 warnings, 0 errors
 compiling scheduler.c...
 ..\Scheduler\../RC/rc_channel.h(72): warning:  #1295-D: Deprecated declaration get_desired_climb_rate - give arg types
   float get_desired_climb_rate();
-..\Scheduler\scheduler.c(185): warning:  #177-D: variable "_ahrs" was declared but never referenced
+..\Driver\bsp\adc_det.h(11): warning:  #1-D: last line of file ends without a newline
+  #endif 
+..\Scheduler\scheduler.c(164): warning:  #177-D: variable "_ahrs" was declared but never referenced
         EulerAngle _ahrs;
-..\Scheduler\scheduler.c(234): warning:  #177-D: variable "trace_throttle" was declared but never referenced
+..\Scheduler\scheduler.c(247): warning:  #177-D: variable "trace_throttle" was declared but never referenced
         static float trace_throttle = 0.0f;
-..\Scheduler\scheduler.c(318): warning:  #1-D: last line of file ends without a newline
+..\Scheduler\scheduler.c(331): warning:  #1-D: last line of file ends without a newline
   }
-..\Scheduler\scheduler.c: 4 warnings, 0 errors
+..\Scheduler\scheduler.c: 5 warnings, 0 errors
 compiling ahrs.c...
 compiling inertial_sensor.c...
-..\AHRS\inertial_sensor.c(28): warning:  #177-D: variable "last_gyro" was declared but never referenced
+..\AHRS\inertial_sensor.c(37): warning:  #177-D: variable "last_gyro" was declared but never referenced
       static _Vector_Int16 last_gyro;
-..\AHRS\inertial_sensor.c: 1 warning, 0 errors
+..\AHRS\inertial_sensor.c(204): warning:  #223-D: function "printf" declared implicitly
+                                printf("%d, %d, %d\n",inertial_sensor.accel.average.x,inertial_sensor.accel.average.y,inertial_sensor.accel.average.z);
+..\AHRS\inertial_sensor.c(211): warning:  #223-D: function "printf" declared implicitly
+        printf("%d, %d, %d\n", (int16_t)(inertial_sensor.accel.quiet.x), (int16_t)(inertial_sensor.accel.quiet.y), (int16_t)(inertial_sensor.accel.quiet.z));
+..\AHRS\inertial_sensor.c: 3 warnings, 0 errors
 compiling inertial_nav.c...
-..\AHRS\inertial_nav.c(179): warning:  #177-D: variable "count" was declared but never referenced
+..\AHRS\inertial_nav.c(210): warning:  #177-D: variable "count" was declared but never referenced
         static uint8_t count = 0;
 ..\AHRS\inertial_nav.c: 1 warning, 0 errors
 compiling timer_delay.c...
+compiling motor.c...
+..\Driver\motor.c(35): warning:  #223-D: function "printf" declared implicitly
+        printf("period0:%d, period1:%d, period2:%d, period3:%d, motor_duty_range:%d\n", PWM->PERIOD0, PWM->PERIOD1, PWM->PERIOD2, PWM->PERIOD3, motor_duty_range);
+..\Driver\motor.c: 1 warning, 0 errors
 compiling bsp_i2c.c...
 compiling uart_console.c...
 compiling bsp_spi.c...
+compiling adc_det.c...
+..\Driver\bsp\adc_det.h(11): warning:  #1-D: last line of file ends without a newline
+  #endif 
+..\Driver\bsp\adc_det.c: 1 warning, 0 errors
 compiling acmp.c...
 compiling adc.c...
 compiling clk.c...
@@ -138,15 +153,15 @@ compiling rc_channel.c...
 ..\RC\rc_channel.c(204): warning:  #188-D: enumerated type mixed with another type
               switch_event_trigger(ch_index, (switch_on_tick[ch_index] >= 100));
 ..\RC\rc_channel.c(216): warning:  #223-D: function "printf" declared implicitly
-                        printf("set_pid_param_p:%i", (int16_t)(ctrl_loop.rate.pitch.ki * 100));
-..\RC\rc_channel.c(314): warning:  #223-D: function "printf" declared implicitly
+                        printf("set_pid_param_p:%i", (int16_t)(ctrl_loop.rate.pitch.kp * 100));
+..\RC\rc_channel.c(335): warning:  #223-D: function "printf" declared implicitly
       printf("roll code: 0x%X 0x%X 0x%X\n", roll_code[0], roll_code[1], roll_code[2]);
-..\RC\rc_channel.c(524): warning:  #188-D: enumerated type mixed with another type
+..\RC\rc_channel.c(545): warning:  #188-D: enumerated type mixed with another type
           return (rc_channels[
 C_THROTTLE_CH].rc_in < (
 C_CHANNEL_NEUTRAL + 
 C_CHANNEL_DEADZONE * 10));
-..\RC\rc_channel.c(526): warning:  #188-D: enumerated type mixed with another type
+..\RC\rc_channel.c(547): warning:  #188-D: enumerated type mixed with another type
           return (rc_channels[
 C_THROTTLE_CH].rc_in > (
 C_CHANNEL_NEUTRAL - 
@@ -154,8 +169,8 @@ C_CHANNEL_DEADZONE * 10));
 ..\RC\rc_channel.c: 9 warnings, 0 errors
 compiling rf.c...
 linking...
-Program Size: Code=30536 RO-data=624 RW-data=288 ZI-data=1728  
-".\output\HD_Drone.axf" - 0 Error(s), 31 Warning(s).
+Program Size: Code=31764 RO-data=628 RW-data=300 ZI-data=1772  
+".\output\HD_Drone.axf" - 0 Error(s), 38 Warning(s).
 
 *** Performing Cross-Module-Optimization:
 compiling bmi160.c...
@@ -163,17 +178,12 @@ compiling bmi160.c...
         bool vetcor_init = false;
 ..\Driver\bmi160.c: 1 warning, 0 errors
 compiling fbm320.c...
-..\Driver\fbm320.c(89): warning:  #223-D: function "fabsf" declared implicitly
-                                if (fabsf(new_alt - fbm320_packet.altitude) < 10) {
-..\Driver\fbm320.c: 1 warning, 0 errors
-compiling motor.c...
-..\Driver\motor.c(35): warning:  #223-D: function "printf" declared implicitly
-        printf("period0:%d, period1:%d, period2:%d, period3:%d, motor_duty_range:%d\n", PWM->PERIOD0, PWM->PERIOD1, PWM->PERIOD2, PWM->PERIOD3, motor_duty_range);
-..\Driver\motor.c: 1 warning, 0 errors
 compiling common.c...
 ..\User\../RC/rc_channel.h(72): warning:  #1295-D: Deprecated declaration get_desired_climb_rate - give arg types
   float get_desired_climb_rate();
-..\User\common.c: 1 warning, 0 errors
+..\Driver\bsp\adc_det.h(11): warning:  #1-D: last line of file ends without a newline
+  #endif 
+..\User\common.c: 2 warnings, 0 errors
 compiling main.c...
 ..\User\main.c(20): warning:  #111-D: statement is unreachable
           return 0;
@@ -197,49 +207,69 @@ compiling attitude_control.c...
   float get_desired_climb_rate();
 ..\Control\attitude_control.c: 1 warning, 0 errors
 compiling flight_mode_control.c...
-..\Control\flight_mode_control.c(1): warning:  #14-D: extra text after expected end of preprocessing directive
-  #include "PN020Series.h"s
 ..\RC\rc_channel.h(72): warning:  #1295-D: Deprecated declaration get_desired_climb_rate - give arg types
   float get_desired_climb_rate();
 ..\Control\flight_mode_control.c(25): warning:  #188-D: enumerated type mixed with another type
-      bool ignore_checks = (fc_status.armed == DISARMED);
-..\Control\flight_mode_control.c(219): warning:  #188-D: enumerated type mixed with another type
+      bool ignore_checks = (DISARMED == fc_status.armed);
+..\Control\flight_mode_control.c(220): warning:  #188-D: enumerated type mixed with another type
       takeoff_triggered = fc_status.land_complete && (target_climb_rate > 0.0f);
-..\Control\flight_mode_control.c: 4 warnings, 0 errors
-compiling motor_control.c...
-..\Control\motor_control.c(7): warning:  #188-D: enumerated type mixed with another type
-  Motor_t motor = {0};
-..\Control\motor_control.c: 1 warning, 0 errors
+..\Control\flight_mode_control.c(202): warning:  #177-D: variable "takeoff_climb_rate" was declared but never referenced
+      float takeoff_climb_rate = 0.0f;
+..\Control\flight_mode_control.c(203): warning:  #177-D: variable "i" was declared but never referenced
+        static uint8_t i = 0;
+..\Control\flight_mode_control.c: 5 warnings, 0 errors
 compiling position_control.c...
 ..\RC\rc_channel.h(72): warning:  #1295-D: Deprecated declaration get_desired_climb_rate - give arg types
   float get_desired_climb_rate();
-..\Control\position_control.c(653): warning:  #188-D: enumerated type mixed with another type
+..\Control\position_control.c(64): warning:  #223-D: function "printf" declared implicitly
+                printf("poscontrol timeout.\n");
+..\Control\position_control.c(657): warning:  #188-D: enumerated type mixed with another type
       return ((sys_milli() - last_update_z_ms) <= 
 OSCONTROL_ACTIVE_TIMEOUT_MS);
-..\Control\position_control.c: 2 warnings, 0 errors
+..\Control\position_control.c: 3 warnings, 0 errors
+compiling motor_control.c...
+..\Driver\bsp\adc_det.h(11): warning:  #1-D: last line of file ends without a newline
+  #endif 
+..\Control\motor_control.c(8): warning:  #188-D: enumerated type mixed with another type
+  Motor_t motor = {0};
+..\Control\motor_control.c: 2 warnings, 0 errors
 compiling scheduler.c...
 ..\Scheduler\../RC/rc_channel.h(72): warning:  #1295-D: Deprecated declaration get_desired_climb_rate - give arg types
   float get_desired_climb_rate();
-..\Scheduler\scheduler.c(185): warning:  #177-D: variable "_ahrs" was declared but never referenced
+..\Driver\bsp\adc_det.h(11): warning:  #1-D: last line of file ends without a newline
+  #endif 
+..\Scheduler\scheduler.c(164): warning:  #177-D: variable "_ahrs" was declared but never referenced
         EulerAngle _ahrs;
-..\Scheduler\scheduler.c(234): warning:  #177-D: variable "trace_throttle" was declared but never referenced
+..\Scheduler\scheduler.c(247): warning:  #177-D: variable "trace_throttle" was declared but never referenced
         static float trace_throttle = 0.0f;
-..\Scheduler\scheduler.c(318): warning:  #1-D: last line of file ends without a newline
+..\Scheduler\scheduler.c(331): warning:  #1-D: last line of file ends without a newline
   }
-..\Scheduler\scheduler.c: 4 warnings, 0 errors
+..\Scheduler\scheduler.c: 5 warnings, 0 errors
 compiling ahrs.c...
 compiling inertial_sensor.c...
-..\AHRS\inertial_sensor.c(28): warning:  #177-D: variable "last_gyro" was declared but never referenced
+..\AHRS\inertial_sensor.c(37): warning:  #177-D: variable "last_gyro" was declared but never referenced
       static _Vector_Int16 last_gyro;
-..\AHRS\inertial_sensor.c: 1 warning, 0 errors
+..\AHRS\inertial_sensor.c(204): warning:  #223-D: function "printf" declared implicitly
+                                printf("%d, %d, %d\n",inertial_sensor.accel.average.x,inertial_sensor.accel.average.y,inertial_sensor.accel.average.z);
+..\AHRS\inertial_sensor.c(211): warning:  #223-D: function "printf" declared implicitly
+        printf("%d, %d, %d\n", (int16_t)(inertial_sensor.accel.quiet.x), (int16_t)(inertial_sensor.accel.quiet.y), (int16_t)(inertial_sensor.accel.quiet.z));
+..\AHRS\inertial_sensor.c: 3 warnings, 0 errors
 compiling inertial_nav.c...
-..\AHRS\inertial_nav.c(179): warning:  #177-D: variable "count" was declared but never referenced
+..\AHRS\inertial_nav.c(210): warning:  #177-D: variable "count" was declared but never referenced
         static uint8_t count = 0;
 ..\AHRS\inertial_nav.c: 1 warning, 0 errors
 compiling timer_delay.c...
+compiling motor.c...
+..\Driver\motor.c(35): warning:  #223-D: function "printf" declared implicitly
+        printf("period0:%d, period1:%d, period2:%d, period3:%d, motor_duty_range:%d\n", PWM->PERIOD0, PWM->PERIOD1, PWM->PERIOD2, PWM->PERIOD3, motor_duty_range);
+..\Driver\motor.c: 1 warning, 0 errors
 compiling bsp_i2c.c...
 compiling uart_console.c...
 compiling bsp_spi.c...
+compiling adc_det.c...
+..\Driver\bsp\adc_det.h(11): warning:  #1-D: last line of file ends without a newline
+  #endif 
+..\Driver\bsp\adc_det.c: 1 warning, 0 errors
 compiling acmp.c...
 compiling adc.c...
 compiling clk.c...
@@ -266,15 +296,15 @@ compiling rc_channel.c...
 ..\RC\rc_channel.c(204): warning:  #188-D: enumerated type mixed with another type
               switch_event_trigger(ch_index, (switch_on_tick[ch_index] >= 100));
 ..\RC\rc_channel.c(216): warning:  #223-D: function "printf" declared implicitly
-                        printf("set_pid_param_p:%i", (int16_t)(ctrl_loop.rate.pitch.ki * 100));
-..\RC\rc_channel.c(314): warning:  #223-D: function "printf" declared implicitly
+                        printf("set_pid_param_p:%i", (int16_t)(ctrl_loop.rate.pitch.kp * 100));
+..\RC\rc_channel.c(335): warning:  #223-D: function "printf" declared implicitly
       printf("roll code: 0x%X 0x%X 0x%X\n", roll_code[0], roll_code[1], roll_code[2]);
-..\RC\rc_channel.c(524): warning:  #188-D: enumerated type mixed with another type
+..\RC\rc_channel.c(545): warning:  #188-D: enumerated type mixed with another type
           return (rc_channels[
 C_THROTTLE_CH].rc_in < (
 C_CHANNEL_NEUTRAL + 
 C_CHANNEL_DEADZONE * 10));
-..\RC\rc_channel.c(526): warning:  #188-D: enumerated type mixed with another type
+..\RC\rc_channel.c(547): warning:  #188-D: enumerated type mixed with another type
           return (rc_channels[
 C_THROTTLE_CH].rc_in > (
 C_CHANNEL_NEUTRAL - 
@@ -282,23 +312,18 @@ C_CHANNEL_DEADZONE * 10));
 ..\RC\rc_channel.c: 9 warnings, 0 errors
 compiling rf.c...
 linking...
-Program Size: Code=27696 RO-data=624 RW-data=288 ZI-data=1728  
+Program Size: Code=27840 RO-data=624 RW-data=300 ZI-data=1772  
 compiling bmi160.c...
 ..\Driver\bmi160.c(142): warning:  #177-D: variable "vetcor_init" was declared but never referenced
         bool vetcor_init = false;
 ..\Driver\bmi160.c: 1 warning, 0 errors
 compiling fbm320.c...
-..\Driver\fbm320.c(89): warning:  #223-D: function "fabsf" declared implicitly
-                                if (fabsf(new_alt - fbm320_packet.altitude) < 10) {
-..\Driver\fbm320.c: 1 warning, 0 errors
-compiling motor.c...
-..\Driver\motor.c(35): warning:  #223-D: function "printf" declared implicitly
-        printf("period0:%d, period1:%d, period2:%d, period3:%d, motor_duty_range:%d\n", PWM->PERIOD0, PWM->PERIOD1, PWM->PERIOD2, PWM->PERIOD3, motor_duty_range);
-..\Driver\motor.c: 1 warning, 0 errors
 compiling common.c...
 ..\User\../RC/rc_channel.h(72): warning:  #1295-D: Deprecated declaration get_desired_climb_rate - give arg types
   float get_desired_climb_rate();
-..\User\common.c: 1 warning, 0 errors
+..\Driver\bsp\adc_det.h(11): warning:  #1-D: last line of file ends without a newline
+  #endif 
+..\User\common.c: 2 warnings, 0 errors
 compiling main.c...
 ..\User\main.c(20): warning:  #111-D: statement is unreachable
           return 0;
@@ -322,49 +347,69 @@ compiling attitude_control.c...
   float get_desired_climb_rate();
 ..\Control\attitude_control.c: 1 warning, 0 errors
 compiling flight_mode_control.c...
-..\Control\flight_mode_control.c(1): warning:  #14-D: extra text after expected end of preprocessing directive
-  #include "PN020Series.h"s
 ..\RC\rc_channel.h(72): warning:  #1295-D: Deprecated declaration get_desired_climb_rate - give arg types
   float get_desired_climb_rate();
 ..\Control\flight_mode_control.c(25): warning:  #188-D: enumerated type mixed with another type
-      bool ignore_checks = (fc_status.armed == DISARMED);
-..\Control\flight_mode_control.c(219): warning:  #188-D: enumerated type mixed with another type
+      bool ignore_checks = (DISARMED == fc_status.armed);
+..\Control\flight_mode_control.c(220): warning:  #188-D: enumerated type mixed with another type
       takeoff_triggered = fc_status.land_complete && (target_climb_rate > 0.0f);
-..\Control\flight_mode_control.c: 4 warnings, 0 errors
-compiling motor_control.c...
-..\Control\motor_control.c(7): warning:  #188-D: enumerated type mixed with another type
-  Motor_t motor = {0};
-..\Control\motor_control.c: 1 warning, 0 errors
+..\Control\flight_mode_control.c(202): warning:  #177-D: variable "takeoff_climb_rate" was declared but never referenced
+      float takeoff_climb_rate = 0.0f;
+..\Control\flight_mode_control.c(203): warning:  #177-D: variable "i" was declared but never referenced
+        static uint8_t i = 0;
+..\Control\flight_mode_control.c: 5 warnings, 0 errors
 compiling position_control.c...
 ..\RC\rc_channel.h(72): warning:  #1295-D: Deprecated declaration get_desired_climb_rate - give arg types
   float get_desired_climb_rate();
-..\Control\position_control.c(653): warning:  #188-D: enumerated type mixed with another type
+..\Control\position_control.c(64): warning:  #223-D: function "printf" declared implicitly
+                printf("poscontrol timeout.\n");
+..\Control\position_control.c(657): warning:  #188-D: enumerated type mixed with another type
       return ((sys_milli() - last_update_z_ms) <= 
 OSCONTROL_ACTIVE_TIMEOUT_MS);
-..\Control\position_control.c: 2 warnings, 0 errors
+..\Control\position_control.c: 3 warnings, 0 errors
+compiling motor_control.c...
+..\Driver\bsp\adc_det.h(11): warning:  #1-D: last line of file ends without a newline
+  #endif 
+..\Control\motor_control.c(8): warning:  #188-D: enumerated type mixed with another type
+  Motor_t motor = {0};
+..\Control\motor_control.c: 2 warnings, 0 errors
 compiling scheduler.c...
 ..\Scheduler\../RC/rc_channel.h(72): warning:  #1295-D: Deprecated declaration get_desired_climb_rate - give arg types
   float get_desired_climb_rate();
-..\Scheduler\scheduler.c(185): warning:  #177-D: variable "_ahrs" was declared but never referenced
+..\Driver\bsp\adc_det.h(11): warning:  #1-D: last line of file ends without a newline
+  #endif 
+..\Scheduler\scheduler.c(164): warning:  #177-D: variable "_ahrs" was declared but never referenced
         EulerAngle _ahrs;
-..\Scheduler\scheduler.c(234): warning:  #177-D: variable "trace_throttle" was declared but never referenced
+..\Scheduler\scheduler.c(247): warning:  #177-D: variable "trace_throttle" was declared but never referenced
         static float trace_throttle = 0.0f;
-..\Scheduler\scheduler.c(318): warning:  #1-D: last line of file ends without a newline
+..\Scheduler\scheduler.c(331): warning:  #1-D: last line of file ends without a newline
   }
-..\Scheduler\scheduler.c: 4 warnings, 0 errors
+..\Scheduler\scheduler.c: 5 warnings, 0 errors
 compiling ahrs.c...
 compiling inertial_sensor.c...
-..\AHRS\inertial_sensor.c(28): warning:  #177-D: variable "last_gyro" was declared but never referenced
+..\AHRS\inertial_sensor.c(37): warning:  #177-D: variable "last_gyro" was declared but never referenced
       static _Vector_Int16 last_gyro;
-..\AHRS\inertial_sensor.c: 1 warning, 0 errors
+..\AHRS\inertial_sensor.c(204): warning:  #223-D: function "printf" declared implicitly
+                                printf("%d, %d, %d\n",inertial_sensor.accel.average.x,inertial_sensor.accel.average.y,inertial_sensor.accel.average.z);
+..\AHRS\inertial_sensor.c(211): warning:  #223-D: function "printf" declared implicitly
+        printf("%d, %d, %d\n", (int16_t)(inertial_sensor.accel.quiet.x), (int16_t)(inertial_sensor.accel.quiet.y), (int16_t)(inertial_sensor.accel.quiet.z));
+..\AHRS\inertial_sensor.c: 3 warnings, 0 errors
 compiling inertial_nav.c...
-..\AHRS\inertial_nav.c(179): warning:  #177-D: variable "count" was declared but never referenced
+..\AHRS\inertial_nav.c(210): warning:  #177-D: variable "count" was declared but never referenced
         static uint8_t count = 0;
 ..\AHRS\inertial_nav.c: 1 warning, 0 errors
 compiling timer_delay.c...
+compiling motor.c...
+..\Driver\motor.c(35): warning:  #223-D: function "printf" declared implicitly
+        printf("period0:%d, period1:%d, period2:%d, period3:%d, motor_duty_range:%d\n", PWM->PERIOD0, PWM->PERIOD1, PWM->PERIOD2, PWM->PERIOD3, motor_duty_range);
+..\Driver\motor.c: 1 warning, 0 errors
 compiling bsp_i2c.c...
 compiling uart_console.c...
 compiling bsp_spi.c...
+compiling adc_det.c...
+..\Driver\bsp\adc_det.h(11): warning:  #1-D: last line of file ends without a newline
+  #endif 
+..\Driver\bsp\adc_det.c: 1 warning, 0 errors
 compiling acmp.c...
 compiling adc.c...
 compiling clk.c...
@@ -391,15 +436,15 @@ compiling rc_channel.c...
 ..\RC\rc_channel.c(204): warning:  #188-D: enumerated type mixed with another type
               switch_event_trigger(ch_index, (switch_on_tick[ch_index] >= 100));
 ..\RC\rc_channel.c(216): warning:  #223-D: function "printf" declared implicitly
-                        printf("set_pid_param_p:%i", (int16_t)(ctrl_loop.rate.pitch.ki * 100));
-..\RC\rc_channel.c(314): warning:  #223-D: function "printf" declared implicitly
+                        printf("set_pid_param_p:%i", (int16_t)(ctrl_loop.rate.pitch.kp * 100));
+..\RC\rc_channel.c(335): warning:  #223-D: function "printf" declared implicitly
       printf("roll code: 0x%X 0x%X 0x%X\n", roll_code[0], roll_code[1], roll_code[2]);
-..\RC\rc_channel.c(524): warning:  #188-D: enumerated type mixed with another type
+..\RC\rc_channel.c(545): warning:  #188-D: enumerated type mixed with another type
           return (rc_channels[
 C_THROTTLE_CH].rc_in < (
 C_CHANNEL_NEUTRAL + 
 C_CHANNEL_DEADZONE * 10));
-..\RC\rc_channel.c(526): warning:  #188-D: enumerated type mixed with another type
+..\RC\rc_channel.c(547): warning:  #188-D: enumerated type mixed with another type
           return (rc_channels[
 C_THROTTLE_CH].rc_in > (
 C_CHANNEL_NEUTRAL - 
@@ -407,10 +452,10 @@ C_CHANNEL_DEADZONE * 10));
 ..\RC\rc_channel.c: 9 warnings, 0 errors
 compiling rf.c...
 linking...
-Program Size: Code=27696 RO-data=624 RW-data=288 ZI-data=1728  
+Program Size: Code=27840 RO-data=624 RW-data=300 ZI-data=1772  
 After Build - User command #1: fromelf --bin ".\output\HD_Drone.axf" --output ".\output\HD_Drone.bin"
 After Build - User command #2: fromelf --text -c ".\output\HD_Drone.axf" --output ".\output\HD_Drone.txt"
-".\output\HD_Drone.axf" - 0 Error(s), 31 Warning(s).
+".\output\HD_Drone.axf" - 0 Error(s), 38 Warning(s).
 *** Completed Cross-Module-Optimization after 3 iteration(s).
 
 <h2>Software Packages used:</h2>
@@ -429,7 +474,7 @@ Package Vendor: ARM
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.0.2
-Build Time Elapsed:  00:01:13
+Build Time Elapsed:  00:00:36
 </pre>
 </body>
 </html>

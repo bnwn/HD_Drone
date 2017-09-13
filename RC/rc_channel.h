@@ -24,7 +24,7 @@
 #define RC_DATA 3
 #define RC_END 4
 
-#define ATT_ROLL_PITCH_YAW_MAX 45 // unit(degree)
+#define ATT_ROLL_PITCH_YAW_MAX 40 // unit(degree)
 #define RC_EULER_PITCH_CH 0
 #define RC_EULER_ROLL_CH 1
 #define RC_THROTTLE_CH 2
@@ -43,7 +43,7 @@
 #define RC_THROTTLE_OUT_LIMIT 0.95f
 
 #ifndef THR_DZ_DEFAULT
-# define THR_DZ_DEFAULT         100            // the deadzone above and below mid throttle while in althold or loiter
+# define THR_DZ_DEFAULT         60            // the deadzone above and below mid throttle while in althold or loiter
 #endif
 
 typedef struct {

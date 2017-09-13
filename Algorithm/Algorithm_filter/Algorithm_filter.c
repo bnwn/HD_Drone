@@ -123,7 +123,7 @@ float LPF_1st(float oldData, float newData, float lpf_factor)
 float Moving_Average(float _filter_arr[], uint8_t _width, float _data, bool _extre)
 {
 	uint8_t i;
-	float sum = 0.0f;
+	double sum = 0.0f;
 	float max_data = _data, min_data = _data;
 	
 	for (i=1; i<_width; i++) {

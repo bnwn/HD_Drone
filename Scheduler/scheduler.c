@@ -19,11 +19,16 @@
 #include "../Driver/motor.h"
 #include "../Scheduler/scheduler.h"
 #include "../RC/rc_channel.h"
+#include "adc_det.h"
 
 static uint32_t main_isr_ticker = 0;
 Slice_Flag slice_flag;
+
+#ifdef __DEVELOP__
 extern _Target_Attitude attitude_target_ang_vel;
 extern float accel_NED[3];
+extern float acc_bias[3];	// body frame ,
+#endif
 
 void scheduler_init(void)
 {
@@ -85,8 +90,10 @@ void fast_loop(void)
 	
 	AHRS_Update();
 	
+	inertial_nav_update();
+	
 	update_flight_mode();
-		
+	
 	slice_flag.main_loop = false;
 	
 #ifdef __DEVELOP__
@@ -142,17 +149,31 @@ void sched_80Hzloop(void)
 
 void sched_50Hzloop(void)
 {
-    _Vector_Float current_ang_vel = get_inertial_vel();
 	if (!slice_flag.loop_50Hz) {
 		return;
 	}
 			
 	rc_channel_read();
-	
-	inertial_nav_update();
-	
 
+	slice_flag.loop_50Hz = false;
+}
+
+void sched_20Hzloop(void)
+{
+    _Vector_Float current_ang_vel = get_inertial_vel();
+	EulerAngle _ahrs;
+	float bat_vol, pwm_det[4];
+	if (!slice_flag.loop_20Hz) {
+		return;
+	}	
+	
+	update_home_pos();
+	switch_handle();
+	adc_convert();
 #ifdef __DEVELOP__	
+	bat_vol = get_battery_vol();
+	motor_pwm_detect(pwm_det);
+	
 	if ((fc_status.printf_flag == 0) || (fc_status.printf_flag == 255))
 		printf("%d,%d,%d,%d,%d,%d,\n", (int16_t)(ahrs.Roll*2+200), (int16_t)(ahrs.Pitch*2+200), (int16_t)(ahrs.Yaw*2+200), (int16_t)(target_attitude.roll*2-200), (int16_t)(target_attitude.pitch*2-200), (int16_t)(target_attitude.yaw*2-200));
 	else if (fc_status.printf_flag == 1)
@@ -169,33 +190,25 @@ void sched_50Hzloop(void)
 		printf ("%d, %d, %d, %d,\n", (int16_t)(motor_duty[MOTOR1_INDEX]*500-300), (int16_t)(motor_duty[MOTOR2_INDEX]*500-300), (int16_t)(motor_duty[MOTOR3_INDEX]*500-300), \
 																														(int16_t)(motor_duty[MOTOR4_INDEX]*500-300));
 	else if (fc_status.printf_flag == 5)
-		printf ("%d, %d, %d, %d,\n", (int16_t)(rc_channels[0].rc_in/5), (int16_t)(rc_channels[1].rc_in/5), (int16_t)(rc_channels[2].rc_in/5), (int16_t)(rc_channels[3].rc_in/5));
+		printf ("%d, %d, %d, %d,\n", (int16_t)(pwm_det[0]*100), (int16_t)(pwm_det[1]*100), (int16_t)(pwm_det[2]*100), (int16_t)(pwm_det[3]*100));
 	else if (fc_status.printf_flag == 6)
-		printf("%d, %d, %d, %d, %d, %d, %d,\n", (int16_t)((fbm320_packet.altitude-home_absolute_pos.z)*100), (int16_t)(get_inav_alt()), (int16_t)(get_inav_velocity().z), \
-											(int16_t)(get_inav_accel().z), (int16_t)(accel_NED[2]*100), (int16_t)((inertial_sensor.accel.filter.z-GRAVITY_MSS)*100), (int16_t)(home_absolute_pos.z*100));
+		printf ("%d, %d, %d, %d,\n", (int16_t)(rc_channels[0].rc_in/5), (int16_t)(rc_channels[1].rc_in/5), (int16_t)(rc_channels[2].rc_in/5), (int16_t)(rc_channels[3].rc_in/5));
 	else if (fc_status.printf_flag == 7)
-		printf("%d, %d, %d, %d, %d, %d, \n", (int16_t)(pos_target.z), (int16_t)(pos_target.vz), (int16_t)(pos_target.az), \
-											(int16_t)(get_inav_alt()), (int16_t)(get_inav_velocity().z), (int16_t)(get_inav_accel().z));
+		printf("%d, %d, %d, %d, %d, %d, %d, %d, %d\n", (int16_t)((fbm320_packet.altitude-home_absolute_pos.z)*100), (int16_t)(get_inav_alt()), (int16_t)(get_inav_velocity().z), \
+											(int16_t)(get_inav_accel().z), (int16_t)(accel_NED[2]*100), (int16_t)((inertial_sensor.accel.filter.z-GRAVITY_MSS)*100), (int16_t)(home_absolute_pos.z*100), \
+												(int16_t)(bat_vol * 100), (int16_t)(acc_bias[2]*100));
+	else if (fc_status.printf_flag == 8)
+		printf("%d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d\n", (int16_t)(pos_target.z), (int16_t)(pos_target.vz), (int16_t)(pos_target.az), \
+											(int16_t)(get_inav_alt()), (int16_t)(get_inav_velocity().z), (int16_t)(get_inav_accel().z), \
+											(int16_t)(pos_error.z), (int16_t)(pos_error.vz), (int16_t)(pos_error.az), \
+											(int16_t)(bat_vol * 100), (int16_t)(motor.thrust.throttle*1000));
 #endif	
-	slice_flag.loop_50Hz = false;
-}
-
-void sched_20Hzloop(void)
-{
-	EulerAngle _ahrs;
-	if (!slice_flag.loop_20Hz) {
-		return;
-	}	
-	
-	update_home_pos();
-	switch_handle();
-
-	
 #ifdef __DEVELOP__
 	//AHRS_Read_Attitude(&_ahrs);
 	//printf("attitude:%d, %d, %d\n", (int16_t)(100*_ahrs.Roll), (int16_t)(100*_ahrs.Pitch), (int16_t)(100*_ahrs.Yaw));
 	//printf("roll:%3.3f, pitch:%3.3f, yaw:%3.3f\n", (float)(_ahrs.Roll), (float)(_ahrs.Pitch), (float)(_ahrs.Yaw));
-//		printf("%d, %d, %d \n", (int16_t)inertial_sensor.accel.filter.x, (int16_t)inertial_sensor.accel.filter.y, (int16_t)inertial_sensor.accel.filter.z);
+//	printf("%d, %d, %d \n", (int16_t)inertial_sensor.accel.average.x, (int16_t)inertial_sensor.accel.average.y, (int16_t)inertial_sensor.accel.average.z);
+//	printf("%d, %d, %d \n", (int16_t)inertial_sensor.accel.relative.x, (int16_t)inertial_sensor.accel.relative.y, (int16_t)inertial_sensor.accel.relative.z);
 //		printf("%d, %d, %d \n", (int16_t)inertial_sensor.gyro.filter.x, (int16_t)inertial_sensor.gyro.filter.y, (int16_t)inertial_sensor.gyro.filter.z);
 //		printf("attitude:%d, %d, %d\n", (int16_t)(100*ahrs.Roll), (int16_t)(100*ahrs.Pitch), (int16_t)(100*ahrs.Yaw));
 //		printf ("%d, %d, %d, %d\n", (int16_t)(motor_duty[MOTOR1_INDEX]*1000), (int16_t)(motor_duty[MOTOR2_INDEX]*1000), (int16_t)(motor_duty[MOTOR3_INDEX]*1000), \

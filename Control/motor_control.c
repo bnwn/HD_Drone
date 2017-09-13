@@ -3,6 +3,7 @@
 #include "Algorithm_filter.h"
 #include "common.h"
 #include "Algorithm_pid.h"
+#include "adc_det.h"
 
 Motor_t motor = {0};
 float target_throttle = 0;
@@ -128,5 +129,36 @@ void set_motor_state(enum Motor_State _state)
 
 float get_throttle_hover(void)
 {
+	if (fc_status.land_complete && (fc_status.armed == DISARMED)) {
+		float bat_vol = get_battery_vol();
+		
+	//	if (bat_vol > 4.05f) {
+	//		throttle_hover = 0.35f;
+	//	} else if (bat_vol > 3.9f) {
+	//		throttle_hover = 0.4f;
+	//	} else if (bat_vol > 3.8f) {
+	//		throttle_hover = 0.42f;
+	//	} else if (bat_vol > 3.7f) {
+	//		throttle_hover = 0.47f;
+	//	} else {
+	//		throttle_hover = 0.5f;
+	//	}
+		if (bat_vol > 4.05f) {
+			throttle_hover = 0.32f;
+		} else if (bat_vol > 3.95f) {
+			throttle_hover = 0.34f;
+		} else if (bat_vol > 3.9f) {
+			throttle_hover = 0.35f;
+		} else if (bat_vol > 3.85f) {
+			throttle_hover = 0.35f;
+		} else if (bat_vol > 3.8f) {
+			throttle_hover = 0.35f;
+		} else if (bat_vol > 3.75f) {
+			throttle_hover = 0.35f;
+		} else {
+			throttle_hover = 0.37f;
+		}
+	}
+	
 	return throttle_hover;
 }

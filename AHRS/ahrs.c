@@ -7,8 +7,8 @@
 #include "common.h"
 
 #if SENSOR_TYPE == SENSOR_BMI160
-#define KpDef 0.87f
-#define KiDef 0.0005f
+#define KpDef 1.0f
+#define KiDef 0.005f
 #define SampleRateHalf 0.005 //0.00125f  //0.001
 #else
 #define KpDef 0.8f

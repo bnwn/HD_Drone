@@ -3,8 +3,8 @@
 #include "attitude_control.h"
 
 #define CONTROL_SENSE_LEVEL0 1
-#define CONTROL_LEANS_ANGLE_MAX_DEFAULT 45 // uint(degree)
-#define VEHIVLE_TAKEOFF_DEFAULT_ALT 0 //uint cm
+#define CONTROL_LEANS_ANGLE_MAX_DEFAULT 30 // uint(degree)
+#define VEHIVLE_TAKEOFF_DEFAULT_ALT 100 //uint cm
 
 enum Flight_Mode {
     Stabilize = 0,

@@ -1,4 +1,4 @@
-#include "PN020Series.h"s
+#include "PN020Series.h"
 #include "flight_mode_control.h"
 #include "motor_control.h"
 #include "attitude_control.h"
@@ -22,7 +22,7 @@ float super_simple_last_bearing, super_simple_cos_yaw, super_simple_sin_yaw ;
 bool set_flight_mode(enum Flight_Mode _mode)
 {
     bool success = false;
-    bool ignore_checks = (fc_status.armed == DISARMED);
+    bool ignore_checks = (DISARMED == fc_status.armed);
 
     if (_mode == control_mode) {
         //prev_control_mode = control_mode;
@@ -157,9 +157,9 @@ void acro_run(void)
 
     set_motor_state(Motor_Unlimited);
 
-    target_throttle = get_desired_throttle_expo();
-	
-	get_desired_leans_angles(&target_attitude, CONTROL_LEANS_ANGLE_MAX_DEFAULT);
+//    target_throttle = get_desired_throttle_expo();
+	target_throttle = 0.45f;
+	get_desired_leans_angles(&target_attitude, 360.0f);
     update_simple_mode(&target_attitude);
 
     attitude_throttle_controller(target_throttle, true, 0.0f);
@@ -200,6 +200,7 @@ void althold_run(void)
 {
     enum AltHold_Mode_State althold_state;
     float takeoff_climb_rate = 0.0f;
+	static uint8_t i = 0;
     float target_climb_rate = 0.0f;
     bool takeoff_triggered;
     static uint32_t timestamp = 0;
@@ -251,27 +252,35 @@ void althold_run(void)
 
     case AltHold_Takeoff:
         // set motors to full range
-        set_motor_state(Motor_Unlimited);
+//        set_motor_state(Motor_Unlimited);
 
-        // initiate take-off
-        if (!takeoff_state.running) {
-            takeoff_timer_start((float)constrain_float(VEHIVLE_TAKEOFF_DEFAULT_ALT,0.0f,1000.0f));
-            // indicate we are taking off
-            set_land_complete(false);
-            // clear i terms
-            poscontrol_init_takeoff();
-        }
+//        // initiate take-off
+//        if (!takeoff_state.running) {
+//            takeoff_timer_start((float)constrain_float(VEHIVLE_TAKEOFF_DEFAULT_ALT,0.0f,1000.0f));
+//            // indicate we are taking off
+//            set_land_complete(false);
+//            // clear i terms
+//            poscontrol_init_takeoff();
+//        }
 
-        // get take-off adjusted pilot and takeoff climb rates
-        takeoff_get_climb_rates(&target_climb_rate, &takeoff_climb_rate);
+//        // get take-off adjusted pilot and takeoff climb rates
+//        takeoff_get_climb_rates(&target_climb_rate, &takeoff_climb_rate);
 
-        // call attitude controller
-        attitude_angle_euler_controller(target_attitude.roll, target_attitude.pitch, target_attitude.yaw, get_smoothing_gain(), dt);
+//        // call attitude controller
+//        attitude_angle_euler_controller(target_attitude.roll, target_attitude.pitch, target_attitude.yaw, get_smoothing_gain(), dt);
+
+//        // call position controller
+//        set_alt_target_from_climb_rate_ff(target_climb_rate, dt, false);
+//        add_takeoff_climb_rate(takeoff_climb_rate, dt);
+//        position_z_controller();
+			set_motor_state(Motor_Unlimited);
+			takeoff_state.running = false;
+			set_land_complete(false);
+			attitude_angle_euler_controller(target_attitude.roll, target_attitude.pitch, target_attitude.yaw, get_smoothing_gain(), dt);
 
         // call position controller
-        set_alt_target_from_climb_rate_ff(target_climb_rate, dt, false);
-        add_takeoff_climb_rate(takeoff_climb_rate, dt);
-        position_z_controller();
+			set_alt_target_from_climb_rate_ff(target_climb_rate, dt, false);
+			position_z_controller();
         break;
 
     case AltHold_Landed:
@@ -307,6 +316,10 @@ void althold_run(void)
         set_alt_target_from_climb_rate_ff(target_climb_rate, dt, false);
         position_z_controller();
         break;
+	default:
+		set_motor_state(Motor_ShutDown);
+		set_land_complete(true);
+		break;
     }
 }
 

@@ -28,3 +28,4 @@
 .\output\motor_control.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\output\motor_control.o: ..\User\common.h
 .\output\motor_control.o: ..\Algorithm\Algorithm_pid\Algorithm_pid.h
+.\output\motor_control.o: ..\Driver\bsp\adc_det.h

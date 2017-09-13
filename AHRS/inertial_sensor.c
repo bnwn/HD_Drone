@@ -21,6 +21,15 @@ void inertial_sensor_init(void)
     LPF2pSetCutoffFreq(&inertial_sensor.gyro.flit_lpf2p.x, IMU_SAMPLE_RATE, IMU_FILTER_CUTOFF_FREQ);
 	LPF2pSetCutoffFreq(&inertial_sensor.gyro.flit_lpf2p.y, IMU_SAMPLE_RATE, IMU_FILTER_CUTOFF_FREQ);
 	LPF2pSetCutoffFreq(&inertial_sensor.gyro.flit_lpf2p.z, IMU_SAMPLE_RATE, IMU_FILTER_CUTOFF_FREQ);
+	
+	inertial_sensor.accel.quiet.x = -187;
+    inertial_sensor.accel.quiet.y = 160;
+    inertial_sensor.accel.quiet.z = 389;
+	fc_status.calibrated_accel = true;
+	
+	if (!fc_status.calibrated_gyro) {
+		gyro_calibration();
+	}
 }
 
 void inertial_sensor_read(void)
@@ -73,7 +82,7 @@ void inertial_sensor_read(void)
     inertial_sensor.gyro.filter.z = LPF_1st(last_gyro.z, inertial_sensor.gyro.relative.z * _gyro_scale, 0.386f);
     last_gyro.z = inertial_sensor.gyro.filter.z;//
 #endif
-    fc_status.accel_updated = true;
+    fc_status.imu_updated = true;
 }
 
 /*====================================================================================================*/
@@ -101,7 +110,7 @@ void gyro_caloffest(float x,float y,float z,uint16_t amount)
 **备注 : None
 **====================================================================================================*/
 /*====================================================================================================*/
-void gyro_offset(void)
+void gyro_calibration(void)
 {
     static uint8_t over_flag=0;
     uint8_t  i,cnt_g = 0;
@@ -150,13 +159,14 @@ void gyro_offset(void)
             else{
                    gyro_caloffest(tempg[0],tempg[1],tempg[2],200);
                    over_flag = 1;
-                   // flag.calibratingG = 0;//成功后清楚校准标记
+                   fc_status.calibrated_gyro = true;
             }
         }
         cnt_g++;
     }
-//    if(flag.calibratingA)
-//      accel_offset();
+    if(!fc_status.calibrated_gyro) {
+      accel_calibration();
+	}
 }
 
 /*====================================================================================================*
@@ -167,15 +177,18 @@ void gyro_offset(void)
 **备注 : None
 **====================================================================================================*/
 /*====================================================================================================*/
-void accel_offset(void)
+void accel_calibration(void)
 {
     int32_t	tempax=0,tempay=0,tempaz=0;
-    uint8_t cnt_a=0;
+    uint16_t cnt_a=0;
     inertial_sensor.accel.quiet.x = 0;
     inertial_sensor.accel.quiet.y = 0;
     inertial_sensor.accel.quiet.z = 0;
 
-    for(cnt_a=0;cnt_a<50;cnt_a++)
+	delay_ms(200);
+	for (cnt_a=1000; cnt_a>0; cnt_a--)
+		bmi160_read_raw(&inertial_sensor);
+    for(cnt_a=0;cnt_a<2000;cnt_a++)
     {
 				switch (SENSOR_TYPE) {
 						case SENSOR_BMI160:
@@ -184,15 +197,18 @@ void accel_offset(void)
 				default:
 						break;
 				}
-		delay_ms(10);
         tempax+= inertial_sensor.accel.average.x;
         tempay+= inertial_sensor.accel.average.y;
         tempaz+= inertial_sensor.accel.average.z;
+				delay_ms(10);
+				printf("%d, %d, %d\n",inertial_sensor.accel.average.x,inertial_sensor.accel.average.y,inertial_sensor.accel.average.z);
     }
     inertial_sensor.accel.quiet.x = tempax/cnt_a;
     inertial_sensor.accel.quiet.y = tempay/cnt_a;
-    inertial_sensor.accel.quiet.z = IMU_ACC_RAW_RANGE - tempaz/cnt_a;
+    inertial_sensor.accel.quiet.z = tempaz/cnt_a - 8192;
     cnt_a = 0;
+	
+	printf("%d, %d, %d\n", (int16_t)(inertial_sensor.accel.quiet.x), (int16_t)(inertial_sensor.accel.quiet.y), (int16_t)(inertial_sensor.accel.quiet.z));
     //flag.calibratingA = 0;
     //EE_SAVE_ACC_OFFSET();//保存数据
 }

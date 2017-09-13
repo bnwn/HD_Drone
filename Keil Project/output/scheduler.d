@@ -40,3 +40,4 @@
 .\output\scheduler.o: ..\Scheduler\../Driver/fbm320.h
 .\output\scheduler.o: ..\Scheduler\../Scheduler/scheduler.h
 .\output\scheduler.o: ..\Scheduler\../RC/rc_channel.h
+.\output\scheduler.o: ..\Driver\bsp\adc_det.h
