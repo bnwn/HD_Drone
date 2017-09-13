@@ -230,17 +230,17 @@ static void switch_event_trigger(uint8_t _ch, bool _is_long_hold)
 //			set_pid_param_p(&ctrl_loop.angle.pitch, (ctrl_loop.angle.pitch.kp - 5.0f));
 //			printf("set_pid_param_p:%i", (int16_t)(ctrl_loop.angle.pitch.kp));
 //            break;
-//		case 0:
-//			set_pid_param_i(&ctrl_loop.rate.roll, (ctrl_loop.rate.roll.ki + 0.01f));
-//			set_pid_param_i(&ctrl_loop.rate.pitch, (ctrl_loop.rate.pitch.ki + 0.01f));
-//			printf("set_pid_param_i:%i", (int16_t)(ctrl_loop.rate.pitch.ki * 100));
-//            break;
-//        case 1:
-//			set_pid_param_i(&ctrl_loop.rate.roll, (ctrl_loop.rate.roll.ki - 0.01f));
-//			set_pid_param_i(&ctrl_loop.rate.pitch, (ctrl_loop.rate.pitch.ki - 0.01f));
-//			printf("set_pid_param_i:%i", (int16_t)(ctrl_loop.rate.pitch.ki*100));
-//            break;
+		case 7:
+			set_pid_param_i(&ctrl_loop.rate.roll, (ctrl_loop.rate.roll.ki + 0.01f));
+			set_pid_param_i(&ctrl_loop.rate.pitch, (ctrl_loop.rate.pitch.ki + 0.01f));
+			printf("set_pid_param_i:%i", (int16_t)(ctrl_loop.rate.pitch.ki * 100));
+            break;
         case 2:
+			set_pid_param_i(&ctrl_loop.rate.roll, (ctrl_loop.rate.roll.ki - 0.01f));
+			set_pid_param_i(&ctrl_loop.rate.pitch, (ctrl_loop.rate.pitch.ki - 0.01f));
+			printf("set_pid_param_i:%i", (int16_t)(ctrl_loop.rate.pitch.ki*100));
+            break;
+//        case 2:
 //			if (fc_status.printf_flag != 255) fc_status.printf_flag = 255;
 //			else {
 //				fc_status.printf_flag = 0x0;
@@ -248,9 +248,9 @@ static void switch_event_trigger(uint8_t _ch, bool _is_long_hold)
 //                fc_status.armed = DISARMED;
 //			}
 		
-			fc_status.printf_flag--;
-			if (fc_status.printf_flag < 0) fc_status.printf_flag = 8;
-            break;
+//			fc_status.printf_flag--;
+//			if (fc_status.printf_flag < 0) fc_status.printf_flag = 8;
+//            break;
         case 3:
             fc_status.armed = DISARMED;
 			set_land_complete(true);
@@ -273,10 +273,10 @@ static void switch_event_trigger(uint8_t _ch, bool _is_long_hold)
 //			if (set_flight_mode(Stabilize))
 //				printf("set Stabilize mode.\n");
             break;
-        case 7:
-			fc_status.printf_flag++;
-			if (fc_status.printf_flag >= 9) fc_status.printf_flag = 0;
-            break;
+//        case 7:
+//			fc_status.printf_flag++;
+//			if (fc_status.printf_flag >= 9) fc_status.printf_flag = 0;
+//            break;
         default:
             break;
     }

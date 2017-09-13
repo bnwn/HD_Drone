@@ -97,11 +97,13 @@ compiling scheduler.c...
   #endif 
 ..\Scheduler\scheduler.c(164): warning:  #177-D: variable "_ahrs" was declared but never referenced
         EulerAngle _ahrs;
+..\Scheduler\scheduler.c(165): warning:  #550-D: variable "bat_vol" was set but never used
+        float bat_vol, pwm_det[4];
 ..\Scheduler\scheduler.c(247): warning:  #177-D: variable "trace_throttle" was declared but never referenced
         static float trace_throttle = 0.0f;
 ..\Scheduler\scheduler.c(331): warning:  #1-D: last line of file ends without a newline
   }
-..\Scheduler\scheduler.c: 5 warnings, 0 errors
+..\Scheduler\scheduler.c: 6 warnings, 0 errors
 compiling ahrs.c...
 compiling inertial_sensor.c...
 ..\AHRS\inertial_sensor.c(37): warning:  #177-D: variable "last_gyro" was declared but never referenced
@@ -169,8 +171,8 @@ C_CHANNEL_DEADZONE * 10));
 ..\RC\rc_channel.c: 9 warnings, 0 errors
 compiling rf.c...
 linking...
-Program Size: Code=31764 RO-data=628 RW-data=300 ZI-data=1772  
-".\output\HD_Drone.axf" - 0 Error(s), 38 Warning(s).
+Program Size: Code=30516 RO-data=628 RW-data=300 ZI-data=1772  
+".\output\HD_Drone.axf" - 0 Error(s), 39 Warning(s).
 
 *** Performing Cross-Module-Optimization:
 compiling bmi160.c...
@@ -240,11 +242,13 @@ compiling scheduler.c...
   #endif 
 ..\Scheduler\scheduler.c(164): warning:  #177-D: variable "_ahrs" was declared but never referenced
         EulerAngle _ahrs;
+..\Scheduler\scheduler.c(165): warning:  #550-D: variable "bat_vol" was set but never used
+        float bat_vol, pwm_det[4];
 ..\Scheduler\scheduler.c(247): warning:  #177-D: variable "trace_throttle" was declared but never referenced
         static float trace_throttle = 0.0f;
 ..\Scheduler\scheduler.c(331): warning:  #1-D: last line of file ends without a newline
   }
-..\Scheduler\scheduler.c: 5 warnings, 0 errors
+..\Scheduler\scheduler.c: 6 warnings, 0 errors
 compiling ahrs.c...
 compiling inertial_sensor.c...
 ..\AHRS\inertial_sensor.c(37): warning:  #177-D: variable "last_gyro" was declared but never referenced
@@ -312,7 +316,7 @@ C_CHANNEL_DEADZONE * 10));
 ..\RC\rc_channel.c: 9 warnings, 0 errors
 compiling rf.c...
 linking...
-Program Size: Code=27840 RO-data=624 RW-data=300 ZI-data=1772  
+Program Size: Code=26600 RO-data=624 RW-data=300 ZI-data=1772  
 compiling bmi160.c...
 ..\Driver\bmi160.c(142): warning:  #177-D: variable "vetcor_init" was declared but never referenced
         bool vetcor_init = false;
@@ -380,11 +384,13 @@ compiling scheduler.c...
   #endif 
 ..\Scheduler\scheduler.c(164): warning:  #177-D: variable "_ahrs" was declared but never referenced
         EulerAngle _ahrs;
+..\Scheduler\scheduler.c(165): warning:  #550-D: variable "bat_vol" was set but never used
+        float bat_vol, pwm_det[4];
 ..\Scheduler\scheduler.c(247): warning:  #177-D: variable "trace_throttle" was declared but never referenced
         static float trace_throttle = 0.0f;
 ..\Scheduler\scheduler.c(331): warning:  #1-D: last line of file ends without a newline
   }
-..\Scheduler\scheduler.c: 5 warnings, 0 errors
+..\Scheduler\scheduler.c: 6 warnings, 0 errors
 compiling ahrs.c...
 compiling inertial_sensor.c...
 ..\AHRS\inertial_sensor.c(37): warning:  #177-D: variable "last_gyro" was declared but never referenced
@@ -452,10 +458,10 @@ C_CHANNEL_DEADZONE * 10));
 ..\RC\rc_channel.c: 9 warnings, 0 errors
 compiling rf.c...
 linking...
-Program Size: Code=27840 RO-data=624 RW-data=300 ZI-data=1772  
+Program Size: Code=26600 RO-data=624 RW-data=300 ZI-data=1772  
 After Build - User command #1: fromelf --bin ".\output\HD_Drone.axf" --output ".\output\HD_Drone.bin"
 After Build - User command #2: fromelf --text -c ".\output\HD_Drone.axf" --output ".\output\HD_Drone.txt"
-".\output\HD_Drone.axf" - 0 Error(s), 38 Warning(s).
+".\output\HD_Drone.axf" - 0 Error(s), 39 Warning(s).
 *** Completed Cross-Module-Optimization after 3 iteration(s).
 
 <h2>Software Packages used:</h2>

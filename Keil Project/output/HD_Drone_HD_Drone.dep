@@ -82,7 +82,7 @@ I (..\User\../AHRS/inertial_nav.h)(0x59B0EC07)
 I (..\User\../Algorithm/Algorithm_math/Algorithm_math.h)(0x59B35154)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x56FE42D6)
 I (..\User\../Algorithm/Algorithm_pid/Algorithm_pid.h)(0x59AEAAFC)
-I (..\User\../Control/attitude_control.h)(0x59B8ADAB)
+I (..\User\../Control/attitude_control.h)(0x59B8B501)
 I (..\User\../Control/motor_control.h)(0x59B3CC85)
 I (..\User\../Control/../Driver/motor.h)(0x59ACB45C)
 I (..\User\../Control/flight_mode_control.h)(0x59B89D0A)
@@ -251,7 +251,7 @@ I (..\Library\StdDriver\inc\timer.h)(0x58EE06E5)
 I (..\Library\StdDriver\inc\uart.h)(0x58EE06E5)
 I (..\Library\StdDriver\inc\wdt.h)(0x58EE06E5)
 I (..\Library\StdDriver\inc\wwdt.h)(0x58EE06E5)
-I (..\Control\attitude_control.h)(0x59B8ADAB)
+I (..\Control\attitude_control.h)(0x59B8B501)
 I (..\Control\../AHRS/inertial_sensor.h)(0x59B6067C)
 I (..\Algorithm\Algorithm_filter\Algorithm_filter.h)(0x59B0FC6D)
 I (..\Control\../AHRS/ahrs.h)(0x59B0AAC3)
@@ -263,7 +263,7 @@ I (..\Control\motor_control.h)(0x59B3CC85)
 I (..\Control\../Driver/motor.h)(0x59ACB45C)
 I (..\RC\rc_channel.h)(0x59B88C3A)
 I (..\User\common.h)(0x59B60756)
-F (..\Control\flight_mode_control.c)(0x59B7E597)(-c --cpu Cortex-M0 -D__EVAL -D__MICROLIB --li -g -O1 --apcs=interwork -I ..\Library\CMSIS\Include -I ..\Library\Device\Panchip\PN020Series\Include -I ..\Library\StdDriver\inc -I ..\Driver -I ..\AHRS -I ..\Algorithm\Algorithm_filter -I ..\Algorithm\Algorithm_pid -I ..\Algorithm\Algorithm_math -I ..\Algorithm\Algorithm_quaternion -I ..\Algorithm\Algorithm_sqLite -I ..\Control -I ..\Driver -I ..\Driver\bsp -I ..\Scheduler -I ..\User -I ..\RC-I "C:\Users\Administrator.DESKTOP-ZXM\Desktop\workspace\HD_Drone\HD_Drone_Firmware\Keil Project\RTE"-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\CMSIS\Include-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\Device\ARM\ARMCM0\Include-D__UVISION_VERSION="520" -D_RTE_ -DARMCM0-o .\output\flight_mode_control.o --omf_browse .\output\flight_mode_control.crf --depend .\output\flight_mode_control.d)
+F (..\Control\flight_mode_control.c)(0x59B8B38F)(-c --cpu Cortex-M0 -D__EVAL -D__MICROLIB --li -g -O1 --apcs=interwork -I ..\Library\CMSIS\Include -I ..\Library\Device\Panchip\PN020Series\Include -I ..\Library\StdDriver\inc -I ..\Driver -I ..\AHRS -I ..\Algorithm\Algorithm_filter -I ..\Algorithm\Algorithm_pid -I ..\Algorithm\Algorithm_math -I ..\Algorithm\Algorithm_quaternion -I ..\Algorithm\Algorithm_sqLite -I ..\Control -I ..\Driver -I ..\Driver\bsp -I ..\Scheduler -I ..\User -I ..\RC-I "C:\Users\Administrator.DESKTOP-ZXM\Desktop\workspace\HD_Drone\HD_Drone_Firmware\Keil Project\RTE"-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\CMSIS\Include-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\Device\ARM\ARMCM0\Include-D__UVISION_VERSION="520" -D_RTE_ -DARMCM0-o .\output\flight_mode_control.o --omf_browse .\output\flight_mode_control.crf --depend .\output\flight_mode_control.d)
 I (..\Library\Device\Panchip\PN020Series\Include\PN020Series.h)(0x58EE06E5)
 I (..\Library\CMSIS\Include\core_cm0.h)(0x58EE06E5)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x56FE42DE)
@@ -284,7 +284,7 @@ I (..\Library\StdDriver\inc\uart.h)(0x58EE06E5)
 I (..\Library\StdDriver\inc\wdt.h)(0x58EE06E5)
 I (..\Library\StdDriver\inc\wwdt.h)(0x58EE06E5)
 I (..\Control\flight_mode_control.h)(0x59B89D0A)
-I (..\Control\attitude_control.h)(0x59B8ADAB)
+I (..\Control\attitude_control.h)(0x59B8B501)
 I (..\Control\../AHRS/inertial_sensor.h)(0x59B6067C)
 I (..\Algorithm\Algorithm_filter\Algorithm_filter.h)(0x59B0FC6D)
 I (..\Control\../AHRS/ahrs.h)(0x59B0AAC3)
@@ -323,7 +323,7 @@ I (..\AHRS\inertial_nav.h)(0x59B0EC07)
 I (..\User\common.h)(0x59B60756)
 I (..\AHRS\inertial_sensor.h)(0x59B6067C)
 I (..\Algorithm\Algorithm_filter\Algorithm_filter.h)(0x59B0FC6D)
-I (..\Control\attitude_control.h)(0x59B8ADAB)
+I (..\Control\attitude_control.h)(0x59B8B501)
 I (..\Control\../AHRS/ahrs.h)(0x59B0AAC3)
 I (..\Control\../AHRS/../Algorithm/Algorithm_quaternion/Algorithm_quaternion.h)(0x59AD4BB5)
 I (..\Control\../Algorithm/Algorithm_math/Algorithm_math.h)(0x59B35154)
@@ -363,7 +363,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x56FE42D6)
 I (..\User\common.h)(0x59B60756)
 I (..\Algorithm\Algorithm_pid\Algorithm_pid.h)(0x59AEAAFC)
 I (..\Driver\bsp\adc_det.h)(0x59B37E08)
-F (..\Scheduler\scheduler.c)(0x59B7E021)(-c --cpu Cortex-M0 -D__EVAL -D__MICROLIB --li -g -O1 --apcs=interwork -I ..\Library\CMSIS\Include -I ..\Library\Device\Panchip\PN020Series\Include -I ..\Library\StdDriver\inc -I ..\Driver -I ..\AHRS -I ..\Algorithm\Algorithm_filter -I ..\Algorithm\Algorithm_pid -I ..\Algorithm\Algorithm_math -I ..\Algorithm\Algorithm_quaternion -I ..\Algorithm\Algorithm_sqLite -I ..\Control -I ..\Driver -I ..\Driver\bsp -I ..\Scheduler -I ..\User -I ..\RC-I "C:\Users\Administrator.DESKTOP-ZXM\Desktop\workspace\HD_Drone\HD_Drone_Firmware\Keil Project\RTE"-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\CMSIS\Include-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\Device\ARM\ARMCM0\Include-D__UVISION_VERSION="520" -D_RTE_ -DARMCM0-o .\output\scheduler.o --omf_browse .\output\scheduler.crf --depend .\output\scheduler.d)
+F (..\Scheduler\scheduler.c)(0x59B8B3EF)(-c --cpu Cortex-M0 -D__EVAL -D__MICROLIB --li -g -O1 --apcs=interwork -I ..\Library\CMSIS\Include -I ..\Library\Device\Panchip\PN020Series\Include -I ..\Library\StdDriver\inc -I ..\Driver -I ..\AHRS -I ..\Algorithm\Algorithm_filter -I ..\Algorithm\Algorithm_pid -I ..\Algorithm\Algorithm_math -I ..\Algorithm\Algorithm_quaternion -I ..\Algorithm\Algorithm_sqLite -I ..\Control -I ..\Driver -I ..\Driver\bsp -I ..\Scheduler -I ..\User -I ..\RC-I "C:\Users\Administrator.DESKTOP-ZXM\Desktop\workspace\HD_Drone\HD_Drone_Firmware\Keil Project\RTE"-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\CMSIS\Include-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\Device\ARM\ARMCM0\Include-D__UVISION_VERSION="520" -D_RTE_ -DARMCM0-o .\output\scheduler.o --omf_browse .\output\scheduler.crf --depend .\output\scheduler.d)
 I (..\Library\Device\Panchip\PN020Series\Include\PN020Series.h)(0x58EE06E5)
 I (..\Library\CMSIS\Include\core_cm0.h)(0x58EE06E5)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x56FE42DE)
@@ -393,7 +393,7 @@ I (..\Scheduler\../AHRS/inertial_nav.h)(0x59B0EC07)
 I (..\Scheduler\../Algorithm/Algorithm_math/Algorithm_math.h)(0x59B35154)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x56FE42D6)
 I (..\Scheduler\../Algorithm/Algorithm_pid/Algorithm_pid.h)(0x59AEAAFC)
-I (..\Scheduler\../Control/attitude_control.h)(0x59B8ADAB)
+I (..\Scheduler\../Control/attitude_control.h)(0x59B8B501)
 I (..\Scheduler\../Control/motor_control.h)(0x59B3CC85)
 I (..\Scheduler\../Control/../Driver/motor.h)(0x59ACB45C)
 I (..\Scheduler\../Control/flight_mode_control.h)(0x59B89D0A)
@@ -462,7 +462,7 @@ I (..\AHRS\../Driver/bsp/timer_delay.h)(0x598D20CC)
 I (..\AHRS\../Algorithm/Algorithm_math/Algorithm_math.h)(0x59B35154)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x56FE42D6)
 I (..\User\common.h)(0x59B60756)
-F (..\AHRS\inertial_nav.c)(0x59B8ADDD)(-c --cpu Cortex-M0 -D__EVAL -D__MICROLIB --li -g -O1 --apcs=interwork -I ..\Library\CMSIS\Include -I ..\Library\Device\Panchip\PN020Series\Include -I ..\Library\StdDriver\inc -I ..\Driver -I ..\AHRS -I ..\Algorithm\Algorithm_filter -I ..\Algorithm\Algorithm_pid -I ..\Algorithm\Algorithm_math -I ..\Algorithm\Algorithm_quaternion -I ..\Algorithm\Algorithm_sqLite -I ..\Control -I ..\Driver -I ..\Driver\bsp -I ..\Scheduler -I ..\User -I ..\RC-I "C:\Users\Administrator.DESKTOP-ZXM\Desktop\workspace\HD_Drone\HD_Drone_Firmware\Keil Project\RTE"-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\CMSIS\Include-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\Device\ARM\ARMCM0\Include-D__UVISION_VERSION="520" -D_RTE_ -DARMCM0-o .\output\inertial_nav.o --omf_browse .\output\inertial_nav.crf --depend .\output\inertial_nav.d)
+F (..\AHRS\inertial_nav.c)(0x59B8B007)(-c --cpu Cortex-M0 -D__EVAL -D__MICROLIB --li -g -O1 --apcs=interwork -I ..\Library\CMSIS\Include -I ..\Library\Device\Panchip\PN020Series\Include -I ..\Library\StdDriver\inc -I ..\Driver -I ..\AHRS -I ..\Algorithm\Algorithm_filter -I ..\Algorithm\Algorithm_pid -I ..\Algorithm\Algorithm_math -I ..\Algorithm\Algorithm_quaternion -I ..\Algorithm\Algorithm_sqLite -I ..\Control -I ..\Driver -I ..\Driver\bsp -I ..\Scheduler -I ..\User -I ..\RC-I "C:\Users\Administrator.DESKTOP-ZXM\Desktop\workspace\HD_Drone\HD_Drone_Firmware\Keil Project\RTE"-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\CMSIS\Include-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\Device\ARM\ARMCM0\Include-D__UVISION_VERSION="520" -D_RTE_ -DARMCM0-o .\output\inertial_nav.o --omf_browse .\output\inertial_nav.crf --depend .\output\inertial_nav.d)
 I (..\Library\Device\Panchip\PN020Series\Include\PN020Series.h)(0x58EE06E5)
 I (..\Library\CMSIS\Include\core_cm0.h)(0x58EE06E5)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x56FE42DE)
@@ -588,7 +588,7 @@ I (..\AHRS\ahrs.h)(0x59B0AAC3)
 I (..\AHRS\../Algorithm/Algorithm_quaternion/Algorithm_quaternion.h)(0x59AD4BB5)
 I (..\AHRS\inertial_sensor.h)(0x59B6067C)
 I (..\Algorithm\Algorithm_filter\Algorithm_filter.h)(0x59B0FC6D)
-I (..\Control\attitude_control.h)(0x59B8ADAB)
+I (..\Control\attitude_control.h)(0x59B8B501)
 I (..\Control\../Algorithm/Algorithm_math/Algorithm_math.h)(0x59B35154)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x56FE42D6)
 I (..\Control\../Algorithm/Algorithm_pid/Algorithm_pid.h)(0x59AEAAFC)
@@ -919,7 +919,7 @@ I (..\Library\StdDriver\inc\timer.h)(0x58EE06E5)
 I (..\Library\StdDriver\inc\uart.h)(0x58EE06E5)
 I (..\Library\StdDriver\inc\wdt.h)(0x58EE06E5)
 I (..\Library\StdDriver\inc\wwdt.h)(0x58EE06E5)
-F (..\RC\rc_channel.c)(0x59B8927F)(-c --cpu Cortex-M0 -D__EVAL -D__MICROLIB --li -g -O1 --apcs=interwork -I ..\Library\CMSIS\Include -I ..\Library\Device\Panchip\PN020Series\Include -I ..\Library\StdDriver\inc -I ..\Driver -I ..\AHRS -I ..\Algorithm\Algorithm_filter -I ..\Algorithm\Algorithm_pid -I ..\Algorithm\Algorithm_math -I ..\Algorithm\Algorithm_quaternion -I ..\Algorithm\Algorithm_sqLite -I ..\Control -I ..\Driver -I ..\Driver\bsp -I ..\Scheduler -I ..\User -I ..\RC-I "C:\Users\Administrator.DESKTOP-ZXM\Desktop\workspace\HD_Drone\HD_Drone_Firmware\Keil Project\RTE"-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\CMSIS\Include-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\Device\ARM\ARMCM0\Include-D__UVISION_VERSION="520" -D_RTE_ -DARMCM0-o .\output\rc_channel.o --omf_browse .\output\rc_channel.crf --depend .\output\rc_channel.d)
+F (..\RC\rc_channel.c)(0x59B8B45C)(-c --cpu Cortex-M0 -D__EVAL -D__MICROLIB --li -g -O1 --apcs=interwork -I ..\Library\CMSIS\Include -I ..\Library\Device\Panchip\PN020Series\Include -I ..\Library\StdDriver\inc -I ..\Driver -I ..\AHRS -I ..\Algorithm\Algorithm_filter -I ..\Algorithm\Algorithm_pid -I ..\Algorithm\Algorithm_math -I ..\Algorithm\Algorithm_quaternion -I ..\Algorithm\Algorithm_sqLite -I ..\Control -I ..\Driver -I ..\Driver\bsp -I ..\Scheduler -I ..\User -I ..\RC-I "C:\Users\Administrator.DESKTOP-ZXM\Desktop\workspace\HD_Drone\HD_Drone_Firmware\Keil Project\RTE"-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\CMSIS\Include-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\Device\ARM\ARMCM0\Include-D__UVISION_VERSION="520" -D_RTE_ -DARMCM0-o .\output\rc_channel.o --omf_browse .\output\rc_channel.crf --depend .\output\rc_channel.d)
 I (..\Library\Device\Panchip\PN020Series\Include\PN020Series.h)(0x58EE06E5)
 I (..\Library\CMSIS\Include\core_cm0.h)(0x58EE06E5)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x56FE42DE)
@@ -942,7 +942,7 @@ I (..\Library\StdDriver\inc\wwdt.h)(0x58EE06E5)
 I (..\RC\rf.h)(0x59AD5076)
 I (..\Driver\bsp\bsp_spi.h)(0x599FE433)
 I (..\RC\rc_channel.h)(0x59B88C3A)
-I (..\Control\attitude_control.h)(0x59B8ADAB)
+I (..\Control\attitude_control.h)(0x59B8B501)
 I (..\Control\../AHRS/inertial_sensor.h)(0x59B6067C)
 I (..\Algorithm\Algorithm_filter\Algorithm_filter.h)(0x59B0FC6D)
 I (..\Control\../AHRS/ahrs.h)(0x59B0AAC3)

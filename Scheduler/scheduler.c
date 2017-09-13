@@ -174,34 +174,34 @@ void sched_20Hzloop(void)
 	bat_vol = get_battery_vol();
 	motor_pwm_detect(pwm_det);
 	
-	if ((fc_status.printf_flag == 0) || (fc_status.printf_flag == 255))
+//	if ((fc_status.printf_flag == 0) || (fc_status.printf_flag == 255))
 		printf("%d,%d,%d,%d,%d,%d,\n", (int16_t)(ahrs.Roll*2+200), (int16_t)(ahrs.Pitch*2+200), (int16_t)(ahrs.Yaw*2+200), (int16_t)(target_attitude.roll*2-200), (int16_t)(target_attitude.pitch*2-200), (int16_t)(target_attitude.yaw*2-200));
-	else if (fc_status.printf_flag == 1)
-		printf("%d,%d,%d,%d,%d,%d,\n", (int16_t)(current_ang_vel.x*10), (int16_t)(current_ang_vel.y*10), (int16_t)(current_ang_vel.z*10), \
-										(int16_t)(attitude_target_ang_vel.roll*10), (int16_t)(attitude_target_ang_vel.pitch*10), (int16_t)(attitude_target_ang_vel.yaw*10));
-	else if (fc_status.printf_flag == 2)
-		printf("%d,%d,%d,%d,%d,%d,\n", (int16_t)((inertial_sensor.accel.average.x-inertial_sensor.accel.quiet.x)*_accel_scale*30+200), (int16_t)((inertial_sensor.accel.average.y-inertial_sensor.accel.quiet.y)*_accel_scale*30+200), \
-										(int16_t)((inertial_sensor.accel.average.z-inertial_sensor.accel.quiet.z)*_accel_scale*10), \
-										(int16_t)(inertial_sensor.accel.filter.x*30-200), (int16_t)(inertial_sensor.accel.filter.y*30-200), (int16_t)(inertial_sensor.accel.filter.z*10));
-	else if (fc_status.printf_flag == 3)
-		printf("%d,%d,%d,%d,%d,%d,\n", (int16_t)(inertial_sensor.gyro.average.x*_gyro_scale+200), (int16_t)(inertial_sensor.gyro.average.y*_gyro_scale+200), (int16_t)(inertial_sensor.gyro.average.z*_gyro_scale+200), \
-										(int16_t)(inertial_sensor.gyro.filter.x-200), (int16_t)(inertial_sensor.gyro.filter.y-200), (int16_t)(inertial_sensor.gyro.filter.z-200));
-	else if (fc_status.printf_flag == 4)
-		printf ("%d, %d, %d, %d,\n", (int16_t)(motor_duty[MOTOR1_INDEX]*500-300), (int16_t)(motor_duty[MOTOR2_INDEX]*500-300), (int16_t)(motor_duty[MOTOR3_INDEX]*500-300), \
-																														(int16_t)(motor_duty[MOTOR4_INDEX]*500-300));
-	else if (fc_status.printf_flag == 5)
-		printf ("%d, %d, %d, %d,\n", (int16_t)(pwm_det[0]*100), (int16_t)(pwm_det[1]*100), (int16_t)(pwm_det[2]*100), (int16_t)(pwm_det[3]*100));
-	else if (fc_status.printf_flag == 6)
-		printf ("%d, %d, %d, %d,\n", (int16_t)(rc_channels[0].rc_in/5), (int16_t)(rc_channels[1].rc_in/5), (int16_t)(rc_channels[2].rc_in/5), (int16_t)(rc_channels[3].rc_in/5));
-	else if (fc_status.printf_flag == 7)
-		printf("%d, %d, %d, %d, %d, %d, %d, %d, %d\n", (int16_t)((fbm320_packet.altitude-home_absolute_pos.z)*100), (int16_t)(get_inav_alt()), (int16_t)(get_inav_velocity().z), \
-											(int16_t)(get_inav_accel().z), (int16_t)(accel_NED[2]*100), (int16_t)((inertial_sensor.accel.filter.z-GRAVITY_MSS)*100), (int16_t)(home_absolute_pos.z*100), \
-												(int16_t)(bat_vol * 100), (int16_t)(acc_bias[2]*100));
-	else if (fc_status.printf_flag == 8)
-		printf("%d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d\n", (int16_t)(pos_target.z), (int16_t)(pos_target.vz), (int16_t)(pos_target.az), \
-											(int16_t)(get_inav_alt()), (int16_t)(get_inav_velocity().z), (int16_t)(get_inav_accel().z), \
-											(int16_t)(pos_error.z), (int16_t)(pos_error.vz), (int16_t)(pos_error.az), \
-											(int16_t)(bat_vol * 100), (int16_t)(motor.thrust.throttle*1000));
+//	else if (fc_status.printf_flag == 1)
+//		printf("%d,%d,%d,%d,%d,%d,\n", (int16_t)(current_ang_vel.x*10), (int16_t)(current_ang_vel.y*10), (int16_t)(current_ang_vel.z*10), \
+//										(int16_t)(attitude_target_ang_vel.roll*10), (int16_t)(attitude_target_ang_vel.pitch*10), (int16_t)(attitude_target_ang_vel.yaw*10));
+//	else if (fc_status.printf_flag == 2)
+//		printf("%d,%d,%d,%d,%d,%d,\n", (int16_t)((inertial_sensor.accel.average.x-inertial_sensor.accel.quiet.x)*_accel_scale*30+200), (int16_t)((inertial_sensor.accel.average.y-inertial_sensor.accel.quiet.y)*_accel_scale*30+200), \
+//										(int16_t)((inertial_sensor.accel.average.z-inertial_sensor.accel.quiet.z)*_accel_scale*10), \
+//										(int16_t)(inertial_sensor.accel.filter.x*30-200), (int16_t)(inertial_sensor.accel.filter.y*30-200), (int16_t)(inertial_sensor.accel.filter.z*10));
+//	else if (fc_status.printf_flag == 3)
+//		printf("%d,%d,%d,%d,%d,%d,\n", (int16_t)(inertial_sensor.gyro.average.x*_gyro_scale+200), (int16_t)(inertial_sensor.gyro.average.y*_gyro_scale+200), (int16_t)(inertial_sensor.gyro.average.z*_gyro_scale+200), \
+//										(int16_t)(inertial_sensor.gyro.filter.x-200), (int16_t)(inertial_sensor.gyro.filter.y-200), (int16_t)(inertial_sensor.gyro.filter.z-200));
+//	else if (fc_status.printf_flag == 4)
+//		printf ("%d, %d, %d, %d,\n", (int16_t)(motor_duty[MOTOR1_INDEX]*500-300), (int16_t)(motor_duty[MOTOR2_INDEX]*500-300), (int16_t)(motor_duty[MOTOR3_INDEX]*500-300), \
+//																														(int16_t)(motor_duty[MOTOR4_INDEX]*500-300));
+//	else if (fc_status.printf_flag == 5)
+//		printf ("%d, %d, %d, %d,\n", (int16_t)(pwm_det[0]*100), (int16_t)(pwm_det[1]*100), (int16_t)(pwm_det[2]*100), (int16_t)(pwm_det[3]*100));
+//	else if (fc_status.printf_flag == 6)
+//		printf ("%d, %d, %d, %d,\n", (int16_t)(rc_channels[0].rc_in/5), (int16_t)(rc_channels[1].rc_in/5), (int16_t)(rc_channels[2].rc_in/5), (int16_t)(rc_channels[3].rc_in/5));
+//	else if (fc_status.printf_flag == 7)
+//		printf("%d, %d, %d, %d, %d, %d, %d, %d, %d\n", (int16_t)((fbm320_packet.altitude-home_absolute_pos.z)*100), (int16_t)(get_inav_alt()), (int16_t)(get_inav_velocity().z), \
+//											(int16_t)(get_inav_accel().z), (int16_t)(accel_NED[2]*100), (int16_t)((inertial_sensor.accel.filter.z-GRAVITY_MSS)*100), (int16_t)(home_absolute_pos.z*100), \
+//												(int16_t)(bat_vol * 100), (int16_t)(acc_bias[2]*100));
+//	else if (fc_status.printf_flag == 8)
+//		printf("%d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d\n", (int16_t)(pos_target.z), (int16_t)(pos_target.vz), (int16_t)(pos_target.az), \
+//											(int16_t)(get_inav_alt()), (int16_t)(get_inav_velocity().z), (int16_t)(get_inav_accel().z), \
+//											(int16_t)(pos_error.z), (int16_t)(pos_error.vz), (int16_t)(pos_error.az), \
+//											(int16_t)(bat_vol * 100), (int16_t)(motor.thrust.throttle*1000));
 #endif	
 #ifdef __DEVELOP__
 	//AHRS_Read_Attitude(&_ahrs);

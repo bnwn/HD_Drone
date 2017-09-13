@@ -1,4 +1,4 @@
-;#<FEEDBACK># ARM Linker, 5060183: Last Updated: Wed Sep 13 12:02:49 2017
+;#<FEEDBACK># ARM Linker, 5060183: Last Updated: Wed Sep 13 12:33:19 2017
 ;VERSION 0.2
 ;FILE acmp.o
 ACMP_Close <= USED 0
@@ -36,7 +36,6 @@ wrap_360_degree <= USED 0
 __asm___15_Algorithm_pid_c_61a19061____REV16 <= USED 0
 __asm___15_Algorithm_pid_c_61a19061____REVSH <= USED 0
 set_input_filter_all <= USED 0
-set_pid_param_i <= USED 0
 ;FILE algorithm_quaternion.o
 __asm___22_Algorithm_quaternion_c_fdc3695e____REV16 <= USED 0
 __asm___22_Algorithm_quaternion_c_fdc3695e____REVSH <= USED 0
